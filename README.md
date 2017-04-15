@@ -1,4 +1,7 @@
-# Installation
+# JarJarScript
+Scripting language project for fun
+
+## Installation
 
 Run these commands in the project root:
 ```bash
@@ -8,7 +11,9 @@ cmake .. && make
 sudo make install
 ```
 
-# Uninstallation
+## Uninstallation
 Remove tge executable from /usr/local/bin.
 
-# Usage
+
+
+
