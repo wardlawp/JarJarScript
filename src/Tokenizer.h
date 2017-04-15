@@ -3,10 +3,12 @@
 
 namespace JarJar {
 
-  class Tokenizer {
+    class Tokenizer {
     
     public:
-      void sayHello();
-      static std::string foo() { return "bar"; }
-  };
+        void sayHello();
+        static std::string foo() {
+            return "bar";
+        }
+    };
 }

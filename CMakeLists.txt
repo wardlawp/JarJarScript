@@ -4,6 +4,7 @@ project (JarJarScript)
 #version number
 set (JarJarScript_VERSION_MAJOR 0)
 set (JarJarScript_VERSION_MINOR 1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 ###############################################################################
 ## Interpreter
