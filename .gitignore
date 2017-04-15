@@ -1,0 +1,11 @@
+# Ignore build files
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+**/CMakeFiles/
+**/cmake_install.cmake
+Makefile
+CMakeHelloWorld
+*.a
+**/*.a
+build/**
