@@ -24,9 +24,8 @@ install (TARGETS JarJarScript DESTINATION bin)
 ###############################################################################
 set(TEST_DIR ${PROJECT_SOURCE_DIR}/tests)
 
-set(TEST_SOURCES
-    ${TEST_DIR}/run_tests.cpp
-    ${TEST_DIR}/TokenizerTest.cpp
+file(GLOB TEST_SOURCES  
+    "${TEST_DIR}/*.cpp"
 )
 
 include_directories(${TEST_DIR})

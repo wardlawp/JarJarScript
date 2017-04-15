@@ -9,3 +9,6 @@ CMakeHelloWorld
 *.a
 **/*.a
 build/**
+
+# Ignore eclipse files
+.project

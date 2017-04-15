@@ -1,8 +1,9 @@
-set(SOURCE_FILES
-    Tokenizer.cpp
+file(GLOB SOURCE_FILES
+    "*.cpp"
 )
-set(INCLUDE_FILES
-    Tokenizer.h
+
+file(GLOB INCLUDE_FILES
+    "*.h"
 )
 
 add_library (JarJar 
