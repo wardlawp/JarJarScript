@@ -20,13 +20,18 @@ namespace JarJar {
 
         bool atEnd();
 
-        void addToken(TokenType type);
+        void addToken(TokenType type, string value = "");
         vector<Token> result;
 
         void scanToken();
-        void matchToken();
+        void matchKeywords();
+        void matchNumeric();
         bool matchMultiCharToken(TokenType t, string reperesentation);
         char peek(int rel);
+        char snack();
+
+        bool isNumeric(char c);
+
 
     public:
         Tokenizer(string source);

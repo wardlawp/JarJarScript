@@ -14,8 +14,8 @@ namespace JarJar {
 
       while(!atEnd())
       {
-          this->start = this->current;
           scanToken();
+          this->start = this->current;
       }
 
       return this->result;
@@ -24,18 +24,46 @@ namespace JarJar {
   void Tokenizer::scanToken()
   {
 
-      matchToken();
+      char curr = source[start];
 
+      if(isNumeric(curr)){
 
-      this->current++;
+          matchNumeric();
+      } else {
+
+          matchKeywords();
+      }
+
+      //TODO unrecognised token exception here
   }
 
+  void Tokenizer::matchNumeric()
+  {
 
-  void Tokenizer::matchToken()
+      bool decimal =  false;
+      char next = snack();
+
+      while(isNumeric(next) or next == '.'){ //TODO refactor dot
+          decimal = decimal? true: next == '.';
+          next = snack();
+      }
+
+      TokenType t = decimal? TokenType::DECIMAL: TokenType::INT;
+
+      addToken(t, source.substr(start, current));
+  }
+
+  bool Tokenizer::isNumeric(char c)
+  {
+
+      return (c <=  '9' && c >= '0');
+  }
+
+  void Tokenizer::matchKeywords()
   {
       vector<pair<TokenType, string>> m = Token::typeToString;
 
-      string curr = source.substr(current, 1);
+      string curr = source.substr(start, 1);
 
       for(pair<TokenType, string> rule: m)
       {
@@ -68,6 +96,15 @@ namespace JarJar {
       return false;
   }
 
+  char Tokenizer::snack()
+  {
+      char next = peek(1);
+
+      if(next != ' ') current +=1; //TODO refactor blank
+
+      return next;
+  }
+
   char Tokenizer::peek(int rel)
   {
       int pos = current + rel;
@@ -80,13 +117,13 @@ namespace JarJar {
 
 
 
-  void Tokenizer::addToken(TokenType type)
+  void Tokenizer::addToken(TokenType type, string value)
   {
-      result.push_back(Token(type, "", "", line));
+      result.push_back(Token(type, value, line));
   }
 
   bool Tokenizer::atEnd()
   {
-      return (this->current > this->source.length());
+      return (this->start >= this->source.length());
   }
 }

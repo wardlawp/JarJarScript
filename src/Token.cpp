@@ -36,10 +36,17 @@ namespace JarJar {
 
     };
 
-    Token::Token(TokenType t, string tx, string v, int l)
+    int Token::getIntVal(){
+        return atoi(value.c_str());
+    }
+
+    double Token::getDoubleVal(){
+        return atof(value.c_str());
+    }
+
+    Token::Token(TokenType t,  string v, int l)
     {
         type = t;
-        text = tx;
         value = v;
         line = l;
     }

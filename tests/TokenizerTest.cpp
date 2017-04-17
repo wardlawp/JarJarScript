@@ -43,8 +43,29 @@ TEST_CASE( "Tokenizer scans keywords", "scan operators" ) {
     TOKEN_CHECK("for", TokenType::FOR);
 }
 
-// TODO
+
 //- Tokenizer can scan primitives string, int, double, bool, null
+TEST_CASE( "Tokenizer scans primitives", "scan operators" ) {
+    SECTION("Scan int"){
+        Tokenizer t = Tokenizer("123");
+        vector<Token> result = t.getTokens();
+
+        REQUIRE(result.size() == 1);
+        REQUIRE(result[0].type == TokenType::INT);
+        REQUIRE(result[0].getIntVal() == 123);
+    }
+
+    SECTION("Scan decimal"){
+        Tokenizer t = Tokenizer("123.23");
+        vector<Token> result = t.getTokens();
+
+        REQUIRE(result.size() == 1);
+        REQUIRE(result[0].type == TokenType::DECIMAL);
+        REQUIRE(result[0].getDoubleVal() == 123.23);
+    }
+}
+// TODO
 //- Tokenizer differentiates certain operators
 //- Tokenizer differentiates keywords from strings
 //- Tokenizer reads sequences
+//- Tokenizer counts lines

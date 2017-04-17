@@ -11,7 +11,7 @@ namespace JarJar {
         LPAREN, RPAREN,
 
         //Primitives
-        BOOL, INT, DECIMEL, STRING,
+        BOOL, INT, DECIMAL, STRING,
 
         //Keywords
         AND, OR, IF, ELSE, BREAK, WHILE, FOR
@@ -19,14 +19,19 @@ namespace JarJar {
 
 
     class Token {
-        public:
-            static vector<pair<TokenType, string>> typeToString;
-            TokenType type;
-            string text;
-            int line;
-            string value;
+    private:
+        string value;
 
-            Token(TokenType type, string text, string value, int line);
+    public:
+        static vector<pair<TokenType, string>> typeToString;
+        TokenType type;
+        int line;
+
+        int getIntVal();
+        double getDoubleVal();
+
+
+        Token(TokenType type, string value, int line);
     };
 
 }
