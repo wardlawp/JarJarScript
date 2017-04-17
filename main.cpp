@@ -4,7 +4,6 @@ using namespace std;
 using namespace JarJar;
 
 int main(int argc, char *argv[]) {
-  Tokenizer* tokenizer = new Tokenizer();
+  Tokenizer tokenizer = Tokenizer("");
 
-  tokenizer->sayHello();  
 }

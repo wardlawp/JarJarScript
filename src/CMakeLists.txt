@@ -1,3 +1,5 @@
+set (CMAKE_INCLUDE_CURRENT_DIR ON) 
+
 file(GLOB SOURCE_FILES
     "*.cpp"
 )
