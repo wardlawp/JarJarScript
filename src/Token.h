@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -23,12 +24,15 @@ namespace JarJar {
         string value;
 
     public:
-        static vector<pair<TokenType, string>> typeToString;
+        static vector<pair<TokenType, string>> typesToString;
+        static map<bool, string> boolsToString;
         TokenType type;
         int line;
 
         int getIntVal();
         double getDoubleVal();
+        string getStringVal();
+        bool getBoolVal();
 
 
         Token(TokenType type, string value, int line);

@@ -27,14 +27,24 @@ namespace JarJar {
       char curr = source[start];
 
       if(isNumeric(curr)){
-
           matchNumeric();
-      } else {
-
+      } else if(curr == '"') {
+          parseString();
+      }
+      else {
           matchKeywords();
       }
 
       //TODO unrecognised token exception here
+  }
+
+  void Tokenizer::parseString()
+  {
+      while(snack() != '"' and !atEnd());
+
+      addToken(TokenType::STRING, source.substr(start + 1, current -1));
+
+      current++;
   }
 
   void Tokenizer::matchNumeric()
@@ -61,7 +71,7 @@ namespace JarJar {
 
   void Tokenizer::matchKeywords()
   {
-      vector<pair<TokenType, string>> m = Token::typeToString;
+      vector<pair<TokenType, string>> m = Token::typesToString;
 
       string curr = source.substr(start, 1);
 
@@ -98,11 +108,13 @@ namespace JarJar {
 
   char Tokenizer::snack()
   {
-      char next = peek(1);
+      if(!atEnd())
+      {
+          current +=1;
+          return source[current];
+      }
 
-      if(next != ' ') current +=1; //TODO refactor blank
-
-      return next;
+      return ' ';
   }
 
   char Tokenizer::peek(int rel)

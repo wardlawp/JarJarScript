@@ -10,7 +10,7 @@ namespace JarJar {
      * Important: order tokens by longest string values to shortest
      * for maximal munch
      */
-    vector<pair<TokenType ,string>> Token::typeToString  =
+    vector<pair<TokenType ,string>> Token::typesToString  =
     {
         {TokenType::BREAK, "break"},
         {TokenType::WHILE, "while"},
@@ -36,12 +36,37 @@ namespace JarJar {
 
     };
 
-    int Token::getIntVal(){
+    map<bool, string> Token::boolsToString =
+    {
+        {true, "ya"},
+        {false, "na"}
+    };
+
+    int Token::getIntVal()
+    {
         return atoi(value.c_str());
     }
 
-    double Token::getDoubleVal(){
+    double Token::getDoubleVal()
+    {
         return atof(value.c_str());
+    }
+
+    string Token::getStringVal()
+    {
+        return value;
+    }
+
+    bool Token::getBoolVal()
+    {
+        for(pair<bool, string> const &rule : boolsToString)
+        {
+            if(rule.second == value){
+                return rule.first;
+            }
+        }
+
+        return false; //TODO should not get here, throw exception
     }
 
     Token::Token(TokenType t,  string v, int l)

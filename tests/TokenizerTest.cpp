@@ -63,6 +63,29 @@ TEST_CASE( "Tokenizer scans primitives", "scan operators" ) {
         REQUIRE(result[0].type == TokenType::DECIMAL);
         REQUIRE(result[0].getDoubleVal() == 123.23);
     }
+
+    SECTION("Scan string"){
+        Tokenizer t = Tokenizer("\" hello \"");
+        vector<Token> result = t.getTokens();
+
+        REQUIRE(result.size() == 1);
+        REQUIRE(result[0].type == TokenType::STRING);
+        REQUIRE(result[0].getStringVal() == " hello ");
+    }
+
+    /*SECTION("Scan bool"){
+        Tokenizer t = Tokenizer("na");
+        vector<Token> result = t.getTokens();
+
+        REQUIRE(result.size() == 1);
+        REQUIRE(result[0].type == TokenType::BOOL);
+        REQUIRE(result[0].getBoolVal() == false);
+
+        t = Tokenizer("ya");
+        result = t.getTokens();
+
+        REQUIRE(result[0].getBoolVal() == true);
+    }*/
 }
 // TODO
 //- Tokenizer differentiates certain operators
