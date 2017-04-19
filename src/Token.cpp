@@ -16,6 +16,7 @@ namespace JarJar {
         {TokenType::WHILE, "while"},
         {TokenType::IF, "ifsa"},
         {TokenType::ELSE, "elsa"},
+        {TokenType::NADA, "nada"},
         {TokenType::FOR, "for"},
         {TokenType::AND, "and"},
         {TokenType::OR, "or"},

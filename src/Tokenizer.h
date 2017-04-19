@@ -2,9 +2,8 @@
 #include <algorithm>
 #include <Token.h>
 #include <vector>
+#include <functional>
 
-//Temporary include
-#include <iostream>
 
 using namespace std;
 
@@ -26,8 +25,9 @@ namespace JarJar {
         void scanToken();
         void matchKeywords();
         void matchNumeric();
+        bool matchBool();
         void parseString();
-        bool matchMultiCharToken(TokenType t, string reperesentation);
+        bool matchMultiCharToken(string reperesentation, auto addFunc);
         char peek(int rel);
         char snack();
 

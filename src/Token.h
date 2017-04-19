@@ -12,7 +12,7 @@ namespace JarJar {
         LPAREN, RPAREN,
 
         //Primitives
-        BOOL, INT, DECIMAL, STRING,
+        BOOL, INT, DECIMAL, STRING, NADA,
 
         //Keywords
         AND, OR, IF, ELSE, BREAK, WHILE, FOR
