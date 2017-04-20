@@ -23,11 +23,12 @@ namespace JarJar {
         vector<Token> result;
 
         void scanToken();
-        void matchKeywords();
+        bool matchKeywords();
         void matchNumeric();
-        bool matchBool();
+        bool whitespace(char c);
+        void skipWhitespace();
         void parseString();
-        bool matchMultiCharToken(string reperesentation, auto addFunc);
+        bool matchMultiCharToken(TokenType t, string reperesentation);
         char peek(int rel);
         char snack();
 

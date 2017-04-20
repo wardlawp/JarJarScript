@@ -85,10 +85,55 @@ TEST_CASE( "Tokenizer scans primitives", "scan operators" ) {
       REQUIRE(result[0].getBoolVal() == true);
    }
 
-   // TODO TOKEN_CHECK("nada", TokenType::NADA);
+   TOKEN_CHECK("nada", TokenType::NADA);
 }
-// TODO
-//- Tokenizer differentiates certain operators
-//- Tokenizer differentiates keywords from strings
-//- Tokenizer reads sequences
+
+//- Tokenizer reads sequences of tokens
+TEST_CASE( "Tokenizer scans sequnce of tokens", "scan sequence" ) {
+   SECTION("Sequence 1") {
+      Tokenizer t = Tokenizer(" na ya   123 \"hello !\" =+ != nada");
+      vector<Token> result = t.getTokens();
+
+      REQUIRE(result.size() == 8);
+
+      CHECK(result[0].type == TokenType::BOOL);
+      CHECK(result[0].getBoolVal() == false);
+
+      CHECK(result[1].type == TokenType::BOOL);
+      CHECK(result[1].getBoolVal() == true);
+
+      CHECK(result[2].type == TokenType::INT);
+      CHECK(result[2].getIntVal() == 123);
+
+      CHECK(result[3].type == TokenType::STRING);
+      CHECK(result[3].getStringVal() == "hello !");
+
+      CHECK(result[4].type == TokenType::ASSIGN);
+
+      CHECK(result[5].type == TokenType::ADD);
+
+      CHECK(result[6].type == TokenType::NOT_EQUALS);
+
+      CHECK(result[7].type == TokenType::NADA);
+   }
+
+   SECTION("Sequence 1") {
+      Tokenizer t = Tokenizer("+===!4.123");
+      vector<Token> result = t.getTokens();
+
+      REQUIRE(result.size() == 5);
+
+      CHECK(result[0].type == TokenType::ADD);
+
+      CHECK(result[1].type == TokenType::EQUALS);
+
+      CHECK(result[2].type == TokenType::ASSIGN);
+
+      CHECK(result[3].type == TokenType::NEGATE);
+
+      CHECK(result[4].type == TokenType::DECIMAL);
+      CHECK(result[4].getDoubleVal() == 4.123);
+   }
+}
+
 //- Tokenizer counts lines

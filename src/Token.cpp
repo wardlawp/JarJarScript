@@ -6,6 +6,10 @@ using namespace std;
 
 namespace JarJar {
 
+
+
+
+
     /**
      * Important: order tokens by longest string values to shortest
      * for maximal munch
@@ -20,6 +24,8 @@ namespace JarJar {
         {TokenType::FOR, "for"},
         {TokenType::AND, "and"},
         {TokenType::OR, "or"},
+        {TokenType::BOOL, TRUE_REPR},
+        {TokenType::BOOL, FALSE_REPR},
         {TokenType::EQUALS, "=="},
         {TokenType::NOT_EQUALS, "!="},
         {TokenType::LTE, "<="},
@@ -39,8 +45,8 @@ namespace JarJar {
 
     map<bool, string> Token::boolsToString =
     {
-        {true, "ya"},
-        {false, "na"}
+        {true, TRUE_REPR},
+        {false, FALSE_REPR}
     };
 
     int Token::getIntVal()

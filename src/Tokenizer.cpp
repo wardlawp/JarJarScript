@@ -26,49 +26,43 @@ void Tokenizer::scanToken() {
       matchNumeric();
    } else if (curr == '"') {
       parseString();
-   } else if(matchBool()) {
-   } else {
-      matchKeywords();
+   } else if(whitespace(curr)){
+      skipWhitespace();
+   } else if(!matchKeywords()){
+
+      //TODO unrecognised token exception here
    }
 
-   //TODO unrecognised token exception here
+
+}
+
+bool Tokenizer::whitespace(char c)
+{
+   return (c == ' ' or c == '\t');
+}
+
+void Tokenizer::skipWhitespace()
+{
+   while(source[current] == ' ' or source[current] == '\t'){
+      current++;
+   }
 }
 
 void Tokenizer::parseString() {
    while (snack() != '"' and !atEnd());
 
-   addToken(TokenType::STRING, source.substr(start + 1, current - 1));
+   addToken(TokenType::STRING, source.substr(start + 1, current - start - 1));
 
    current++;
 }
 
-bool Tokenizer::matchBool() {
-
-   TokenType b = TokenType::BOOL;
-   string _true = Token::boolsToString[true];
-
-   auto  _addTrue = [this, &b, &_true]() { this->addToken(b, _true); };
-
-   if (matchMultiCharToken(_true, _addTrue))return true;
-
-
-   string _false = Token::boolsToString[false];
-
-   auto  _addFalse = [this, &b, &_false]() { this->addToken(b, _false); };
-
-   if (matchMultiCharToken(_false, _addFalse))return true;
-
-   return false;
-}
-
-
-void Tokenizer::matchNumeric() {
-
+void Tokenizer::matchNumeric()
+{
    bool decimal = false;
    char next = snack();
 
-   while (isNumeric(next) or next == '.') { //TODO refactor dot
-      decimal = decimal ? true : next == '.';
+   while (isNumeric(next) or next == DECIMEL_DOT_REPR) {
+      decimal = decimal ? true : next == DECIMEL_DOT_REPR;
       next = snack();
    }
 
@@ -77,37 +71,29 @@ void Tokenizer::matchNumeric() {
    addToken(t, source.substr(start, current));
 }
 
-bool Tokenizer::isNumeric(char c) {
-
+bool Tokenizer::isNumeric(char c)
+{
    return (c <= '9' && c >= '0');
 }
 
-void Tokenizer::matchKeywords() {
-   vector<pair<TokenType, string>> m = Token::typesToString;
-
-   string curr = source.substr(start, 1);
-
-   for (pair<TokenType, string> rule : m) {
-
-      TokenType t = rule.first;
-      auto  _addToken = [this, &t]() { this->addToken(t); };
-
-      if (matchMultiCharToken(rule.second, _addToken))
-         return;
+bool Tokenizer::matchKeywords()
+{
+   for (pair<TokenType, string> rule : Token::typesToString){
+      if (matchMultiCharToken(rule.first, rule.second)) return true;
    }
+
+   return false;
 }
 
-bool Tokenizer::matchMultiCharToken(string representation, auto addFunc) {
+bool Tokenizer::matchMultiCharToken(TokenType t, string representation) {
 
-   if(source == "nada"){
-      int a =1;
-   }
+
    string curr = source.substr(current, 1);
    while (curr == representation.substr(0, curr.length())) {
 
       if (curr == representation) {
          current += curr.length();
-         addFunc();
+         addToken(t, representation);
          return true;
       }
 

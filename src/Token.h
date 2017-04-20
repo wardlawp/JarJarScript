@@ -18,6 +18,9 @@ namespace JarJar {
         AND, OR, IF, ELSE, BREAK, WHILE, FOR
     };
 
+    const string TRUE_REPR = "ya";
+    const string FALSE_REPR = "na";
+    const char DECIMEL_DOT_REPR = '.';
 
     class Token {
     private:
