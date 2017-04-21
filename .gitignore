@@ -12,3 +12,5 @@ build/**
 
 # Ignore eclipse files
 .project
+.cproject
+.settings/

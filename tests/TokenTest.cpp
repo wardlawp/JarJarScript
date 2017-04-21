@@ -27,6 +27,4 @@ TEST_CASE( "Token inputs to correct type", "Token Value Parse" ) {
        t = Token(TokenType::STRING, "ya", 0);
        REQUIRE( t.getBoolVal() == true);
    }
-
-
 }

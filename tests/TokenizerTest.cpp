@@ -4,6 +4,10 @@
 using namespace JarJar;
 using namespace std;
 
+// TODO
+//- Tokenizer handles multiple lines
+//- Tokenizer reads end line characters
+
 #define TOKEN_CHECK(str, T) {\
         SECTION("Scan " str " operator"){ \
             Tokenizer t = Tokenizer(str); \
@@ -14,7 +18,8 @@ using namespace std;
     }
 
 //- Tokenizer can scan operators +,-, /,*, =, !, ==, !=, >, <, >=, <=, (, )
-TEST_CASE( "Tokenizer scans operators", "scan operators" ) {
+TEST_CASE( "Tokenizer scans operators", "scan operators" )
+{
    TOKEN_CHECK("+", TokenType::ADD);
    TOKEN_CHECK("-", TokenType::SUB);
    TOKEN_CHECK("*", TokenType::MUL);
@@ -32,7 +37,8 @@ TEST_CASE( "Tokenizer scans operators", "scan operators" ) {
 }
 
 //- Tokenizer can scan keywords AND, OR, IF, ELSE, BREAK, WHILE, FOR
-TEST_CASE( "Tokenizer scans keywords", "scan operators" ) {
+TEST_CASE( "Tokenizer scans keywords", "scan operators" )
+{
    TOKEN_CHECK("and", TokenType::AND);
    TOKEN_CHECK("or", TokenType::OR);
    TOKEN_CHECK("ifsa", TokenType::IF);
@@ -43,7 +49,8 @@ TEST_CASE( "Tokenizer scans keywords", "scan operators" ) {
 }
 
 //- Tokenizer can scan primitives string, int, double, bool, null
-TEST_CASE( "Tokenizer scans primitives", "scan operators" ) {
+TEST_CASE( "Tokenizer scans primitives", "scan operators" )
+{
    SECTION("Scan int"){
       Tokenizer t = Tokenizer("123");
       vector<Token> result = t.getTokens();
@@ -89,8 +96,9 @@ TEST_CASE( "Tokenizer scans primitives", "scan operators" ) {
 }
 
 //- Tokenizer reads sequences of tokens
-TEST_CASE( "Tokenizer scans sequnce of tokens", "scan sequence" ) {
-   SECTION("Sequence 1") {
+TEST_CASE( "Tokenizer scans sequnce of tokens", "scan sequence" )
+{
+   SECTION("Sequence 1"){
       Tokenizer t = Tokenizer(" na ya   123 \"hello !\" =+ != nada");
       vector<Token> result = t.getTokens();
 
@@ -135,5 +143,3 @@ TEST_CASE( "Tokenizer scans sequnce of tokens", "scan sequence" ) {
       CHECK(result[4].getDoubleVal() == 4.123);
    }
 }
-
-//- Tokenizer counts lines

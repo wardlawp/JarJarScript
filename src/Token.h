@@ -1,44 +1,24 @@
 #include <string>
-#include <vector>
-#include <map>
-
+#include <TokenConstants.h>
 using namespace std;
 
-namespace JarJar {
+namespace JarJar
+{
+   class Token
+   {
+      public:
+         TokenType type;
+         int line;
 
-    enum TokenType {
-        //Operators
-        ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NEGATE,
-        LPAREN, RPAREN,
+         Token(TokenType type, string value, int line);
 
-        //Primitives
-        BOOL, INT, DECIMAL, STRING, NADA,
+         int getIntVal();
+         double getDoubleVal();
+         string getStringVal();
+         bool getBoolVal();
 
-        //Keywords
-        AND, OR, IF, ELSE, BREAK, WHILE, FOR
-    };
-
-    const string TRUE_REPR = "ya";
-    const string FALSE_REPR = "na";
-    const char DECIMEL_DOT_REPR = '.';
-
-    class Token {
-    private:
-        string value;
-
-    public:
-        static vector<pair<TokenType, string>> typesToString;
-        static map<bool, string> boolsToString;
-        TokenType type;
-        int line;
-
-        int getIntVal();
-        double getDoubleVal();
-        string getStringVal();
-        bool getBoolVal();
-
-
-        Token(TokenType type, string value, int line);
-    };
+         private:
+            string value;
+   };
 
 }
