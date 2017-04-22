@@ -1,5 +1,17 @@
 # JarJarScript
-Scripting language project for fun
+
+A scripting language project for fun.
+
+## Usage
+
+So far only interactive parsing is implemented. JarJarScript will scan and parse your input and print out the AST representation.
+
+```bash
+./JarJarScript 
+>25*25+2
+>(25 * 25) + 2
+>_
+```
 
 ## Installation
 
@@ -11,12 +23,40 @@ cmake .. && make
 sudo make install
 ```
 
+### Running Unit Tests
+
 To run the tests:
 ```bash
 cd build
 ./run_tests
 ```
+
+### Building for Debug
+
+When configuring the build directory supply this additional argument to CMake:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make clean
+make
+```
+Your binaries are now ready for gdb.
+
+
+### Configuring Eclipse Project
+
+If you would like to use Eclipse CDT to develop JarJarScript you can run the following command from the project root:
+
+```bash
+cmake -G"Eclipse CDT4 - Unix Makefiles"
+```
+
+Note: you will have to call ```make``` from the project's root directory. This is kind of messy, but unfortunately the "Eclipse CDT4 - Unix Makefiles" 
+option only supports in directory builds.
+
+
 ## Uninstallation
+
 Remove the executable from /usr/local/bin.
 
 
