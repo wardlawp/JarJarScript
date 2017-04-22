@@ -1,3 +1,6 @@
+#ifndef SRC_TOKEN_H_
+#define SRC_TOKEN_H_
+
 #include <string>
 #include <TokenConstants.h>
 using namespace std;
@@ -9,6 +12,7 @@ namespace JarJar
       public:
          TokenType type;
          int line;
+         string value;
 
          Token(TokenType type, string value, int line);
 
@@ -16,9 +20,8 @@ namespace JarJar
          double getDoubleVal();
          string getStringVal();
          bool getBoolVal();
-
-         private:
-            string value;
    };
 
 }
+
+#endif

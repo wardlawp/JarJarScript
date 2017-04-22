@@ -11,8 +11,13 @@ cmake .. && make
 sudo make install
 ```
 
+To run the tests:
+```bash
+cd build
+./run_tests
+```
 ## Uninstallation
-Remove tge executable from /usr/local/bin.
+Remove the executable from /usr/local/bin.
 
 
 
