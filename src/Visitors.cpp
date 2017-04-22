@@ -1,6 +1,5 @@
 #include <Visitors.h>
 
-
 namespace JarJar {
 
    template<class T>

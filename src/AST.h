@@ -5,12 +5,21 @@
 #include <Object.h>
 #include <Token.h>
 
+
 namespace JarJar
 {
+   template<class T>
+   class Visitor;
+
    class Expression
    {
       public:
          virtual ~Expression() {}
+         template<class T>
+         T accept(Visitor<T> * visitor)
+         {
+               return visitor->visit(this);
+         }
    };
 
    class Binary: public Expression
@@ -21,6 +30,7 @@ namespace JarJar
             left = l;
             right = r;
          };
+
          Expression * left;
          Token op;
          Expression * right;
@@ -33,6 +43,7 @@ namespace JarJar
          {
             right = r;
          };
+
          Token op;
          Expression * right;
    };
@@ -41,7 +52,8 @@ namespace JarJar
    {
       public:
          Expression * exp;
-         Grouping(Expression * expression) {
+         Grouping(Expression * expression)
+         {
             exp = expression;
          }
    };
