@@ -18,8 +18,9 @@ int main(int argc, char *argv[]) {
 
       Tokenizer t = Tokenizer(input);
       Parser p = Parser(t.getTokens());
+      Expression * e = p.eval();
 
-      cout << printer->visit(p.eval()) << endl;
+      cout << printer->visit(e) << endl;
    }
 
 }

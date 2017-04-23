@@ -39,7 +39,7 @@ TEST_CASE( "ASTPrinter can print different expressions", "Print AST expressions"
 
 TEST_CASE( "ASTPrinter can print nested expressions", "Print nested expressions" )
 {
-   //Expression 44 * ((23 - 64) / (55 + 4))
+   //Expression: 44 * ((23 - 64) / (55 + 4))
    Binary *innerA = new Binary(new Literal(new Int(23)), Token(TokenType::SUB, "-", 1), new Literal(new Int(64)));
    Grouping *innerGroupA = new Grouping(innerA);
 
@@ -61,5 +61,14 @@ TEST_CASE( "Expressions accept vistors", "Expression accepts visitor" )
    Expression *e = new Literal(new Int(1));
 
    REQUIRE(e->accept(print) == "1");
+}
 
+TEST_CASE( "Automatically shows nesting", "Printer nests" )
+{
+   //Expression: 32 + (55/23)
+   Binary *inner = new Binary(new Literal(new Int(55)), Token(TokenType::DIV, "/", 1), new Literal(new Int(23)));
+   Expression * e = new Binary(new Literal(new Int(32)), Token(TokenType::ADD, "+", 1), inner);
+
+   ASTPrinter *print = new ASTPrinter();
+   REQUIRE(e->accept(print) == "32 + (55 / 23)");
 }

@@ -23,6 +23,9 @@ namespace JarJar {
          virtual string visitUnary(Unary * expr);
          virtual string visitGrouping(Grouping * expr);
          virtual string visitLiteral(Literal * expr);
+
+      private:
+         string wrap(Expression * e);
    };
 }
 

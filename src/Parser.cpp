@@ -15,50 +15,50 @@ namespace JarJar {
 
    Expression * Parser::equality()
    {
-      Expression * lhs = comparison();
+      Expression * expr = comparison();
 
-      if(match({TokenType::EQUALS, TokenType::NOT_EQUALS}))
+      while(match({TokenType::EQUALS, TokenType::NOT_EQUALS}))
       {
-         return new Binary(lhs, previous(), comparison());
+         expr = new Binary(expr, previous(), comparison());
       }
 
-      return lhs;
+      return expr;
    }
 
    Expression * Parser::comparison()
    {
-      Expression * lhs = term();
+      Expression * expr = term();
 
-      if(match({TokenType::LT, TokenType::LTE, TokenType::GT, TokenType::GTE}))
+      while(match({TokenType::LT, TokenType::LTE, TokenType::GT, TokenType::GTE}))
       {
-         return new Binary(lhs, previous(), term());
+         expr = new Binary(expr, previous(), term());
       }
 
-      return lhs;
+      return expr;
    }
 
    Expression * Parser::term()
    {
-      Expression * lhs = factor();
+      Expression * expr = factor();
 
-      if(match({TokenType::ADD, TokenType::SUB}))
+      while(match({TokenType::ADD, TokenType::SUB}))
       {
-         return new Binary(lhs, previous(), factor());
+         expr = new Binary(expr, previous(), factor());
       }
 
-      return lhs;
+      return expr;
    }
 
    Expression * Parser::factor()
    {
-      Expression * lhs = unary();
+      Expression * expr = unary();
 
-      if(match({TokenType::MUL, TokenType::DIV}))
+      while(match({TokenType::MUL, TokenType::DIV}))
       {
-         return new Binary(lhs, previous(), unary());
+         expr = new Binary(expr, previous(), unary());
       }
 
-      return lhs;
+      return expr;
    }
 
    Expression * Parser::unary()
@@ -74,11 +74,13 @@ namespace JarJar {
    Expression * Parser::primary()
    {
       match({TokenType::INT});
+      //{
+         return new Literal(new Int(previous().getIntVal()));
+      /*} else {
+         return equality();
+      }*/
       //TODO other Object types
 
-      //if(t == TokenType::INT){
-         return new Literal(new Int(previous().getIntVal()));
-      //}
    }
 
 

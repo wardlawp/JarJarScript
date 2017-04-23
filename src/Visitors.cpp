@@ -16,16 +16,29 @@ namespace JarJar {
       }
    }
 
+   string ASTPrinter::wrap(Expression * e)
+   {
+      bool notGrouping = (typeid(*e) != typeid(Grouping));
+      bool notLiteral = (typeid(*e) != typeid(Literal));
+
+      if(notGrouping and notLiteral){
+         return '(' + visit(e) + ')';
+      } else
+      {
+         return visit(e);
+      }
+   }
+
    string ASTPrinter::visitBinary(Binary * expr)
    {
-      string left = visit(expr->left);
-      string right = visit(expr->right);
+      string left = wrap(expr->left);
+      string right = wrap(expr->right);
       return left + ' ' + expr->op.value + ' ' + right;
    }
 
    string ASTPrinter::visitUnary(Unary * expr)
    {
-      return expr->op.value + " " + visit(expr->right);
+      return expr->op.value + " " + wrap(expr->right);
    }
 
    string ASTPrinter::visitGrouping(Grouping * expr)
