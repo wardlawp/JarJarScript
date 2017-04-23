@@ -14,13 +14,14 @@ int main(int argc, char *argv[]) {
 
       cout << ">";
       string input;
-      cin >> input;
+      getline(cin, input);
 
       Tokenizer t = Tokenizer(input);
-      Parser p = Parser(t.getTokens());
+      vector<Token> tokens = t.getTokens();
+      Parser p = Parser(tokens);
       Expression * e = p.eval();
 
-      cout << printer->visit(e) << endl;
+      cout << ">" << printer->visit(e) << endl;
    }
 
 }

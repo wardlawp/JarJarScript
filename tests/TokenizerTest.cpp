@@ -143,3 +143,61 @@ TEST_CASE( "Tokenizer scans sequnce of tokens", "scan sequence" )
       CHECK(result[4].getDoubleVal() == 4.123);
    }
 }
+
+//- Tokenizer reads sequences of tokens
+TEST_CASE( "Tokenizer handles whitespace", "whitespace" )
+{
+   SECTION("Sequence 1"){
+      Tokenizer t = Tokenizer(" na ya   +/  +");
+      vector<Token> result = t.getTokens();
+
+      REQUIRE(result.size() == 5);
+
+      CHECK(result[0].type == TokenType::BOOL);
+      CHECK(result[0].value == "na");
+      CHECK(result[1].type == TokenType::BOOL);
+      CHECK(result[1].value == "ya");
+      CHECK(result[2].type == TokenType::ADD);
+      CHECK(result[2].value == "+");
+      CHECK(result[3].type == TokenType::DIV);
+      CHECK(result[3].value == "/");
+      CHECK(result[4].type == TokenType::ADD);
+      CHECK(result[4].value == "+");
+   }
+
+   SECTION("Sequence 2"){
+     Tokenizer t = Tokenizer("5   + 6   / ");
+     vector<Token> result = t.getTokens();
+
+     REQUIRE(result.size() == 4);
+
+     CHECK(result[0].type == TokenType::INT);
+     CHECK(result[0].value == "5");
+     CHECK(result[1].type == TokenType::ADD);
+     CHECK(result[1].value == "+");
+     CHECK(result[2].type == TokenType::INT);
+     CHECK(result[2].value == "6");
+     CHECK(result[3].type == TokenType::DIV);
+     CHECK(result[3].value == "/");
+  }
+
+   SECTION("Sequence 2"){
+     Tokenizer t = Tokenizer("5   (( ** 123 \"213\" ");
+     vector<Token> result = t.getTokens();
+     REQUIRE(result.size() == 7);
+     CHECK(result[0].type == TokenType::INT);
+     CHECK(result[0].value == "5");
+     CHECK(result[1].type == TokenType::LPAREN);
+     CHECK(result[1].value == "(");
+     CHECK(result[2].type == TokenType::LPAREN);
+     CHECK(result[2].value == "(");
+     CHECK(result[3].type == TokenType::MUL);
+     CHECK(result[3].value == "*");
+     CHECK(result[4].type == TokenType::MUL);
+     CHECK(result[4].value == "*");
+     CHECK(result[5].type == TokenType::INT);
+     CHECK(result[5].value == "123");
+     CHECK(result[6].type == TokenType::STRING);
+     CHECK(result[6].value == "213");
+  }
+}

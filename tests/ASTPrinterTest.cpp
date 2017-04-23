@@ -69,6 +69,6 @@ TEST_CASE( "Automatically shows nesting", "Printer nests" )
    Binary *inner = new Binary(new Literal(new Int(55)), Token(TokenType::DIV, "/", 1), new Literal(new Int(23)));
    Expression * e = new Binary(new Literal(new Int(32)), Token(TokenType::ADD, "+", 1), inner);
 
-   ASTPrinter *print = new ASTPrinter();
+   ASTPrinter * print = new ASTPrinter();
    REQUIRE(e->accept(print) == "32 + (55 / 23)");
 }

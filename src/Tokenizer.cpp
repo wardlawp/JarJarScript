@@ -26,7 +26,7 @@ namespace JarJar
 
       char curr = source[start];
 
-      if (isNumeric(curr)) {
+      if (isdigit(curr)) {
          matchNumeric();
       } else if (curr == '"') {
          parseString();
@@ -65,19 +65,14 @@ namespace JarJar
       bool decimal = false;
       char next = snack();
 
-      while (isNumeric(next) or next == DECIMEL_DOT_REPR) {
+      while (isdigit(next) or next == DECIMEL_DOT_REPR) {
          decimal = decimal ? true : next == DECIMEL_DOT_REPR;
          next = snack();
       }
 
       TokenType t = decimal ? TokenType::DECIMAL : TokenType::INT;
 
-      addToken(t, source.substr(start, current));
-   }
-
-   bool Tokenizer::isNumeric(char c)
-   {
-      return (c <= '9' && c >= '0');
+      addToken(t, source.substr(start, current - start));
    }
 
    bool Tokenizer::matchKeywords()

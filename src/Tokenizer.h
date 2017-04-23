@@ -36,8 +36,5 @@ namespace JarJar
          bool matchMultiCharToken(TokenType t, string reperesentation);
          char peek(int rel);
          char snack();
-
-         bool isNumeric(char c);
-
    };
 }
