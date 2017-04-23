@@ -80,6 +80,8 @@ namespace JarJar {
          return equality();
       }*/
       //TODO other Object types
+      //TODO grouping here
+      //TODO throw exception at end of else block
 
    }
 
