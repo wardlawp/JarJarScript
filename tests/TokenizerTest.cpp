@@ -1,5 +1,7 @@
 #include <catch.hpp>
 #include <Tokenizer.h>
+#include <Exceptions.h>
+#include <iostream>
 
 using namespace JarJar;
 using namespace std;
@@ -200,4 +202,23 @@ TEST_CASE( "Tokenizer handles whitespace", "whitespace" )
      CHECK(result[6].type == TokenType::STRING);
      CHECK(result[6].value == "213");
   }
+}
+
+TEST_CASE( "Tokenizer exceptional scenarios", "Exceptions" )
+{
+   SECTION("Unexpected character"){
+      Tokenizer t = Tokenizer("'");
+      REQUIRE_THROWS_AS(t.getTokens(), TokenizerException);
+   }
+
+
+   SECTION("Unterminated string"){
+      Tokenizer t = Tokenizer("\"asdas");
+      REQUIRE_THROWS_AS(t.getTokens(), TokenizerException);
+
+      t = Tokenizer("\"");
+      REQUIRE_THROWS_AS(t.getTokens(), TokenizerException);
+   }
+
+
 }

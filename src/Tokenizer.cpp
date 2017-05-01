@@ -33,7 +33,8 @@ namespace JarJar
       } else if (whitespace(curr)) {
          skipWhitespace();
       } else if (!matchKeywords()) {
-         //TODO unrecognised token exception here
+         Token errorToken = Token(TokenType::ADD, source.substr(start), line);
+         throw TokenizerException(errorToken, "Unrecognized Token.");
       }
    }
 
@@ -51,8 +52,12 @@ namespace JarJar
 
    void Tokenizer::parseString()
    {
-      while (snack() != '"' and !atEnd())
-         ;
+      while (snack() != '"' and !atEnd());
+
+      if(source[current] != '"'){
+         Token errorToken = Token(TokenType::ADD, source.substr(start), line);
+         throw TokenizerException(errorToken, "Unterminated string");
+      }
 
       addToken(TokenType::STRING,
             source.substr(start + 1, current - start - 1));
@@ -107,7 +112,7 @@ namespace JarJar
    {
       if (!atEnd()) {
          current += 1;
-         return source[current];
+         return source[current-1];
       }
 
       return ' ';
