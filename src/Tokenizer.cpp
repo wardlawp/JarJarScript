@@ -112,7 +112,7 @@ namespace JarJar
    {
       if (!atEnd()) {
          current += 1;
-         return source[current-1];
+         return source[current];
       }
 
       return ' ';
@@ -135,6 +135,6 @@ namespace JarJar
 
    bool Tokenizer::atEnd()
    {
-      return (start >= source.length());
+      return (current >= source.length());
    }
 }

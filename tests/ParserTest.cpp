@@ -92,5 +92,21 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       CHECK(typeid(*right2->right) == typeid(Literal));
    }
 
+   SECTION("Match Grouping")
+   {
+      string input = "(5+6)";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+      Expression * result = Parser(tokens).eval();
+
+      REQUIRE(typeid(*result) == typeid(Grouping));
+      Grouping * root = dynamic_cast<Grouping*>(result);
+      REQUIRE(typeid(*root->exp) == typeid(Binary));
+
+      Binary * subExp = dynamic_cast<Binary*>(result);
+      CHECK(typeid(*subExp->left) == typeid(Literal));
+      CHECK(subExp->op.type == TokenType::ADD);
+      CHECK(typeid(*subExp->right) == typeid(Literal));
+   }
+
    //TODO Parser unexpected Token error handling
 }

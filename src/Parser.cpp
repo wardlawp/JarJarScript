@@ -73,21 +73,21 @@ namespace JarJar {
 
    Expression * Parser::primary()
    {
-      match({TokenType::INT});
-      //{
+      TokenType next = peek();
+
+      if(next == TokenType::INT){
+         advance();
          return new Literal(new Int(previous().getIntVal()));
-      /*} else {
-         return equality();
-      }*/
-      //TODO other Object types
-      //TODO grouping here
-      //TODO throw exception at end of else block
+      } else if(next == TokenType::LPAREN){
+         advance();
+         Expression *e = equality();
+         if(!match({TokenType::RPAREN})){
+            //todo
+         }
+      }
+
 
    }
-
-
-
-
 
    bool Parser::match(initializer_list<TokenType> types)
    {
@@ -105,7 +105,7 @@ namespace JarJar {
 
    bool Parser::atEnd()
    {
-      return pos >= tokens.size();
+      return pos >= (tokens.size() -1);
    }
 
    bool Parser::check(TokenType t)
@@ -117,12 +117,12 @@ namespace JarJar {
 
    TokenType Parser::peek()
    {
-      return tokens[pos].type;
+      return tokens.at(pos).type;
    }
 
    Token Parser::previous()
    {
-      return tokens[pos -1];
+      return tokens.at(max(0,pos-1));
    }
 
    Token Parser::advance()
@@ -130,7 +130,5 @@ namespace JarJar {
       if(!atEnd()) pos++;
       return previous();
    }
-
-
 }
 

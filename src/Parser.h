@@ -6,6 +6,7 @@
 #include <AST.h>
 #include <TokenConstants.h>
 #include <initializer_list>
+#include <algorithm>
 
 using namespace std;
 /*
@@ -37,6 +38,7 @@ namespace JarJar {
          Expression * factor();
          Expression * unary();
          Expression * primary();
+         Expression * grouping();
 
          bool match(initializer_list<TokenType> types);
          Token advance();
