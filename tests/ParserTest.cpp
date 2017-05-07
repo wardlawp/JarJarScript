@@ -102,11 +102,16 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       Grouping * root = dynamic_cast<Grouping*>(result);
       REQUIRE(typeid(*root->exp) == typeid(Binary));
 
-      Binary * subExp = dynamic_cast<Binary*>(result);
+      Binary * subExp = dynamic_cast<Binary*>(root->exp);
       CHECK(typeid(*subExp->left) == typeid(Literal));
       CHECK(subExp->op.type == TokenType::ADD);
       CHECK(typeid(*subExp->right) == typeid(Literal));
    }
 
-   //TODO Parser unexpected Token error handling
+   SECTION("Incomplete Grouping Throws Exception")
+   {
+     string input = "(5+6";
+     vector<Token> tokens = Tokenizer(input).getTokens();
+     REQUIRE_THROWS_AS(Parser(tokens).eval(), ParserException);
+   }
 }

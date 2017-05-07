@@ -28,6 +28,11 @@ namespace JarJar {
          }
    };
 
+   class ParserException: TokenizerException {
+      public:
+         ParserException(const Token t, const string customMsg = "") : TokenizerException(t, customMsg){}
+   };
+
 }
 
 #endif

@@ -77,15 +77,19 @@ namespace JarJar {
 
       if(next == TokenType::INT){
          advance();
-         return new Literal(new Int(previous().getIntVal()));
+         return new Literal(new Int(tokens.at(pos).getIntVal()));
       } else if(next == TokenType::LPAREN){
          advance();
          Expression *e = equality();
          if(!match({TokenType::RPAREN})){
-            //todo
+            string cusMsg =  "Expected token '" + typesToString[TokenType::RPAREN].second + "'";
+            throw ParserException(tokens.at(pos), cusMsg);
          }
+         return new Grouping(e);
       }
 
+      string cusMsg =  "Unexpected token '" + typesToString[TokenType::RPAREN].second + "'";
+      throw ParserException(tokens.at(pos), cusMsg);
 
    }
 

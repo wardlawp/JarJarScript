@@ -7,6 +7,7 @@
 #include <TokenConstants.h>
 #include <initializer_list>
 #include <algorithm>
+#include <Exceptions.h>
 
 using namespace std;
 /*
