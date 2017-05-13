@@ -1,10 +1,10 @@
-#include <vector>
-#include <map>
-
-using namespace std;
-
 #ifndef _TOKE_CONSTANTS
 #define _TOKE_CONSTANTS
+
+using namespace std;
+#include <vector>
+#include <map>
+#include <exception>
 
 namespace JarJar
 {
@@ -27,6 +27,7 @@ namespace JarJar
    const char DECIMEL_DOT_REPR = '.';
 
    /**
+     * TODO: This would be better as a map
      * Important: order tokens by longest string values to shortest
      * for maximal munch
      */
@@ -58,6 +59,8 @@ namespace JarJar
       {TokenType::NEGATE, "!"}
 
     };
+
+    const string getStringRepr(const TokenType & t);
 
     const map<bool, string> boolsToString =
     {

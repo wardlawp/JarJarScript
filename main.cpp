@@ -3,6 +3,7 @@
 #include <Parser.h>
 #include <iostream>
 #include <AST.h>
+#include <Interpreter.h>
 
 using namespace std;
 using namespace JarJar;
@@ -21,7 +22,10 @@ int main(int argc, char *argv[]) {
       Parser p = Parser(tokens);
       Expression * e = p.eval();
 
-      cout << ">" << printer->visit(e) << endl;
+      Interpreter *i = new Interpreter();
+      Object * obj = i->visit(e);
+
+      cout << obj->toStr() << endl;
    }
 
 }

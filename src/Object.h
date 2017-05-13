@@ -3,6 +3,8 @@
 
 #include <string>
 #include <iostream>
+#include <Exceptions.h>
+#include <typeinfo>
 using namespace std;
 
 namespace JarJar
@@ -12,6 +14,45 @@ namespace JarJar
       public:
          virtual ~Object() {}
          virtual string toStr() = 0;
+
+         virtual Object * negate()
+         {
+            throw ObjectMethodDoesNotExistException(notImplementedMsg(__PRETTY_FUNCTION__));
+         }
+
+         virtual Object * operator+(Object *  other)
+         {
+            throw ObjectMethodDoesNotExistException(notImplementedMsg(__PRETTY_FUNCTION__));
+         }
+
+         virtual Object * operator-(Object *  other)
+         {
+            throw ObjectMethodDoesNotExistException(notImplementedMsg(__PRETTY_FUNCTION__));
+         }
+
+         virtual Object * operator*(Object *  other)
+         {
+            throw ObjectMethodDoesNotExistException(notImplementedMsg(__PRETTY_FUNCTION__));
+         }
+
+         virtual Object * operator/(Object *  other)
+         {
+            throw ObjectMethodDoesNotExistException(notImplementedMsg(__PRETTY_FUNCTION__));
+         }
+
+         virtual Object * operator=(Object *  other)
+         {
+            throw ObjectMethodDoesNotExistException(notImplementedMsg(__PRETTY_FUNCTION__));
+         }
+
+      private:
+         string notImplementedMsg(string name)
+         {
+            string msg =  " does not implement method ";
+            msg = typeid(this).name() + msg;
+            return msg+ name;
+         }
+
    };
 
    class Int: public Object
@@ -29,30 +70,41 @@ namespace JarJar
             return to_string(val);
          }
 
-         Int operator+(Int other)
+         virtual Object * negate()
          {
-            return Int(val + other.val);
+            return new Int(-val);
          }
 
-         Int operator-(Int other)
+         virtual Object * operator+(Object * other)
          {
-            return Int(val - other.val);
+            return new Int(val + cast(other)->val);
          }
 
-         Int operator*(Int other)
+         virtual Object * operator-(Object * other)
          {
-            return Int(val * other.val);
+            return new Int(val - cast(other)->val);
          }
 
-         Int operator/(Int other)
+         virtual Object * operator*(Object * other)
          {
-            return Int(val / other.val);
+            return new Int(val * cast(other)->val);
          }
 
-         Int operator=(Int other)
+         virtual Object * operator/(Object * other)
          {
-            val = other.val;
-            return *this;
+            return new Int(val / cast(other)->val);
+         }
+
+         virtual Object * operator=(Object * other)
+         {
+            val = cast(other)->val;
+            return this;
+         }
+
+      private:
+         Int * cast(Object * other)
+         {
+            return dynamic_cast<Int*>(other);
          }
    };
 }
