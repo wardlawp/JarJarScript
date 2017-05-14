@@ -2,6 +2,16 @@
 
 A scripting language project for fun.
 
+## Coming soon
+
+Very possibly in the future I will add...
+
+- Memory managment (currently the program makes lots of hanging pointers)
+- Variables
+- Functions
+- Classes
+- Standard Lib
+
 ## Usage
 
 JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. In interactive mode it can handle basic integer arithmetic.
