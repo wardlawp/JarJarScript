@@ -2,6 +2,8 @@
 
 A scripting language project for fun.
 
+![Everyone loves this guy...](http://philip-wardlaw.com/images/jarjar.png)
+
 ## Coming soon
 
 Very possibly in the future I will add...
@@ -11,9 +13,6 @@ Very possibly in the future I will add...
 - Functions
 - Classes
 - Standard Lib
-
-![Everyone loves this guy...](http://philip-wardlaw.com/images/jarjar.png)
-
 
 ## Usage
 
