@@ -2,7 +2,6 @@
 
 A scripting language project for fun.
 
-<<<<<<< HEAD
 ## Coming soon
 
 Very possibly in the future I will add...
