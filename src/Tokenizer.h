@@ -1,7 +1,6 @@
 #ifndef SRC_TOKENIZER_H
 #define SRC_TOKENIZER_H
 
-#include <stdio.h>
 #include <algorithm>
 #include <Token.h>
 #include <TokenConstants.h>

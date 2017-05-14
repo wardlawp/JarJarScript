@@ -1,5 +1,5 @@
 #include <catch.hpp>
-#include <Visitors.h>
+#include <ASTPrinter.h>
 #include <Object.h>
 #include <AST.h>
 #include <Token.h>

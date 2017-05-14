@@ -1,16 +1,15 @@
 #ifndef SRC_INTERPRETER_H_
 #define SRC_INTERPRETER_H_
 
-#include <Visitors.h>
 #include <Object.h>
 #include <AST.h>
 #include <Token.h>
 #include <Exceptions.h>
 #include <TokenConstants.h>
+#include <Visitor.h>
 
 namespace JarJar
 {
-
    class Interpreter : public Visitor<Object*>
    {
       private:

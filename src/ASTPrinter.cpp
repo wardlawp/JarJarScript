@@ -1,9 +1,6 @@
-#include <Visitors.h>
+#include <ASTPrinter.h>
 
 namespace JarJar {
-
-
-
    string ASTPrinter::wrap(Expression * e)
    {
       bool notGrouping = (typeid(*e) != typeid(Grouping));

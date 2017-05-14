@@ -30,17 +30,6 @@ namespace JarJar {
          virtual R visitGrouping(Grouping * expr) = 0;
          virtual R visitLiteral(Literal * expr) = 0;
    };
-
-   class ASTPrinter : public Visitor<string> {
-      public:
-         virtual string visitBinary(Binary * expr);
-         virtual string visitUnary(Unary * expr);
-         virtual string visitGrouping(Grouping * expr);
-         virtual string visitLiteral(Literal * expr);
-
-      private:
-         string wrap(Expression * e);
-   };
 }
 
 #endif /* SRC_VISITORS_H_ */

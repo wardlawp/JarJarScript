@@ -2,7 +2,6 @@
 #define SRC_OBJECT_H_
 
 #include <string>
-#include <iostream>
 #include <Exceptions.h>
 #include <typeinfo>
 using namespace std;

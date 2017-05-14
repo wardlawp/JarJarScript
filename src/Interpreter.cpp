@@ -12,8 +12,8 @@ namespace JarJar
 
    Object * Interpreter::visitBinary(Binary * expr)
    {
-      Object * left = expr->left->accept(this);
-      Object * right = expr->right->accept(this);
+      Object * left = visit(expr->left);
+      Object * right = visit(expr->right);
 
       typeCheck(left,right, expr->op);
 
@@ -29,7 +29,7 @@ namespace JarJar
 
    Object * Interpreter::visitUnary(Unary * expr)
    {
-      Object * right = expr->right->accept(this);
+      Object * right = visit(expr->right);
 
       if(expr->op.type != TokenType::SUB){
          throw InterpreterException("Unary operation " + getStringRepr(expr->op.type) + " not implemented");
@@ -40,7 +40,7 @@ namespace JarJar
 
    Object * Interpreter::visitGrouping(Grouping * expr)
    {
-      return expr->exp->accept(this);
+      return visit(expr->exp);
    }
 
    Object * Interpreter::visitLiteral(Literal * expr)
