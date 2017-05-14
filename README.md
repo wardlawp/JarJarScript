@@ -4,12 +4,14 @@ A scripting language project for fun.
 
 ## Usage
 
-So far only interactive parsing is implemented. JarJarScript will scan and parse your input and print out the AST representation.
+JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. In interactive mode it can handle basic integer arithmetic.
 
 ```bash
 ./JarJarScript 
->25*25+2
->(25 * 25) + 2
+>34/2+(5*4)
+37
+>5+5+5
+15
 >_
 ```
 
