@@ -2,6 +2,8 @@
 
 A scripting language project for fun.
 
+![Everyone loves this guy...](http://philip-wardlaw.com/images/jarjar.png)
+
 ## Usage
 
 JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. In interactive mode it can handle basic integer arithmetic.
