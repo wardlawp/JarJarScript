@@ -8,11 +8,11 @@
 using namespace std;
 
 namespace JarJar {
-   class TokenizerException : exception {
+   class TokenizerException : public runtime_error {
       private:
          string msg;
       public:
-         TokenizerException(const Token t, const string customMsg = "")
+         TokenizerException(const Token t, const string customMsg = ""): runtime_error(customMsg)
          {
             msg = '"'+ t.value + "\" at line " + to_string(t.line) + ".\n";
 
@@ -28,24 +28,24 @@ namespace JarJar {
          }
    };
 
-   class ParserException: TokenizerException {
+   class ParserException: public TokenizerException {
       public:
          ParserException(const Token t, const string customMsg = "") : TokenizerException(t, customMsg){}
    };
 
-   class ObjectMethodDoesNotExistException: runtime_error
+   class ObjectMethodDoesNotExistException: public runtime_error
    {
       public:
          ObjectMethodDoesNotExistException(const std::string& msg) : runtime_error(msg) {}
    };
 
-   class TypeMissMatchException: TokenizerException
+   class TypeMissMatchException: public TokenizerException
    {
       public:
          TypeMissMatchException(const Token t, const string customMsg = "") : TokenizerException(t, customMsg){}
    };
 
-   class InterpreterException: runtime_error
+   class InterpreterException: public runtime_error
    {
       public:
          InterpreterException(const std::string& msg) : runtime_error(msg) {}

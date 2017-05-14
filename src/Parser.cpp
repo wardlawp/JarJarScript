@@ -83,13 +83,13 @@ namespace JarJar {
          advance();
          Expression *e = equality();
          if(!match({TokenType::RPAREN})){
-            string cusMsg =  "Expected token '" + typesToString[TokenType::RPAREN].second + "'";
+            string cusMsg =  "Expected token '" + getStringRepr(TokenType::RPAREN) + "'";
             throw ParserException(tokens.at(pos), cusMsg);
          }
          return new Grouping(e);
       }
 
-      string cusMsg =  "Unexpected token '" + typesToString[TokenType::RPAREN].second + "'";
+      string cusMsg =  "Unexpected token '" + getStringRepr(next) + "'";
       throw ParserException(tokens.at(pos), cusMsg);
 
    }

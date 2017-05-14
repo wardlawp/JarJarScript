@@ -22,6 +22,12 @@ namespace JarJar
             return left->operator+(right);
          case TokenType::SUB :
             return left->operator-(right);
+         case TokenType::MUL :
+            return left->operator*(right);
+         case TokenType::DIV :
+            return left->operator/(right);
+         case TokenType::ASSIGN :
+             return left->operator=(right);
          default:
             throw InterpreterException("Binary operation " + getStringRepr(expr->op.type) + " not implemented");
       }
