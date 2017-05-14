@@ -11,9 +11,9 @@ Very possibly in the future I will add...
 - Functions
 - Classes
 - Standard Lib
-=======
+
 ![Everyone loves this guy...](http://philip-wardlaw.com/images/jarjar.png)
->>>>>>> 27329f8a38d7598b0bd54c740d1c7c10ccb8be75
+
 
 ## Usage
 
