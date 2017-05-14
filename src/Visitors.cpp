@@ -2,19 +2,7 @@
 
 namespace JarJar {
 
-   template<class T>
-   T Visitor<T>::visit(Expression  * e)
-   {
-      if(typeid(*e) == typeid(Binary)){
-         return visitBinary(dynamic_cast<Binary*>(e));
-      } else if (typeid(*e) == typeid(Unary)){
-         return visitUnary(dynamic_cast<Unary*>(e));
-      } else if (typeid(*e) == typeid(Grouping)){
-         return visitGrouping(dynamic_cast<Grouping*>(e));
-      } else if (typeid(*e) == typeid(Literal)){
-         return visitLiteral(dynamic_cast<Literal*>(e));
-      }
-   }
+
 
    string ASTPrinter::wrap(Expression * e)
    {

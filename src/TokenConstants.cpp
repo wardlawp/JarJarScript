@@ -1,7 +1,7 @@
 #include <TokenConstants.h>
 
 namespace JarJar {
-   const string getStringRepr(const TokenType & t);
+   const string getStringRepr(const TokenType & t)
       {
          for (pair<TokenType, string> match : typesToString) {
             if (match.first  == t){

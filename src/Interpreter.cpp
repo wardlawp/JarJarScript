@@ -10,17 +10,10 @@
 namespace JarJar
 {
 
-
-
-   Interpreter::~Interpreter()
-   {
-      // TODO Auto-generated destructor stub
-   }
-
    Object * Interpreter::visitBinary(Binary * expr)
    {
-      Object * left = visit(expr->left);
-      Object * right = visit(expr->right);
+      Object * left = expr->left->accept(this);
+      Object * right = expr->right->accept(this);
 
       typeCheck(left,right, expr->op);
 
@@ -36,7 +29,7 @@ namespace JarJar
 
    Object * Interpreter::visitUnary(Unary * expr)
    {
-      Object * right = visit(expr->right);
+      Object * right = expr->right->accept(this);
 
       if(expr->op.type != TokenType::SUB){
          throw InterpreterException("Unary operation " + getStringRepr(expr->op.type) + " not implemented");
@@ -47,7 +40,7 @@ namespace JarJar
 
    Object * Interpreter::visitGrouping(Grouping * expr)
    {
-      return visit(expr->exp);
+      return expr->exp->accept(this);
    }
 
    Object * Interpreter::visitLiteral(Literal * expr)

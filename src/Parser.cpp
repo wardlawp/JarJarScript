@@ -76,8 +76,9 @@ namespace JarJar {
       TokenType next = peek();
 
       if(next == TokenType::INT){
+         Literal * result = new Literal(new Int(tokens.at(pos).getIntVal()));
          advance();
-         return new Literal(new Int(tokens.at(pos).getIntVal()));
+         return result;
       } else if(next == TokenType::LPAREN){
          advance();
          Expression *e = equality();

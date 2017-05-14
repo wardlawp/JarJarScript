@@ -57,9 +57,8 @@ namespace JarJar
 
    class Int: public Object
    {
-      private:
-         int val;
       public:
+         int val;
 
 
          Int(int _val) {

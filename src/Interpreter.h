@@ -17,7 +17,6 @@ namespace JarJar
          void typeCheck(Object * left, Object * right, Token t);
       public:
          Interpreter() {} ;
-         virtual ~Interpreter();
          virtual Object * visitBinary(Binary * expr);
          virtual Object * visitUnary(Unary * expr);
          virtual Object * visitGrouping(Grouping * expr);

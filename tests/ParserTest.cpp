@@ -76,6 +76,12 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*left1->left) == typeid(Binary));
       REQUIRE(typeid(*left1->right) == typeid(Literal));
 
+      Literal * left1Right = dynamic_cast<Literal*>(left1->right);
+      REQUIRE(typeid(*left1Right->value) == typeid(Int));
+
+      Int * five = dynamic_cast<Int*>(left1Right->value);
+      CHECK(five->val == 5);
+
       Binary * left2 = dynamic_cast<Binary*>(left1->left);
       CHECK(left2->op.type == TokenType::DIV);
       CHECK(typeid(*left2->left) == typeid(Literal));
@@ -85,6 +91,13 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       CHECK(right1->op.type == TokenType::DIV);
       REQUIRE(typeid(*right1->left) == typeid(Binary));
       REQUIRE(typeid(*right1->right) == typeid(Literal));
+
+      Literal * right1Right = dynamic_cast<Literal*>(right1->right);
+      REQUIRE(typeid(*right1Right->value) == typeid(Int));
+
+      Int * one = dynamic_cast<Int*>(right1Right->value);
+      CHECK(one->val == 1);
+
 
       Binary * right2 = dynamic_cast<Binary*>(right1->left);
       CHECK(right2->op.type == TokenType::MUL);

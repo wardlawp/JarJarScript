@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
       Expression * e = p.eval();
 
       Interpreter *i = new Interpreter();
-      Object * obj = i->visit(e);
+      Object * obj = e->accept<Object*>(i);
 
       cout << obj->toStr() << endl;
    }

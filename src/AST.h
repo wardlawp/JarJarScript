@@ -20,6 +20,7 @@ namespace JarJar
          {
                return visitor->visit(this);
          }
+
    };
 
    class Binary: public Expression
