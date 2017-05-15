@@ -36,7 +36,7 @@ namespace JarJar {
    class ObjectMethodDoesNotExistException: public runtime_error
    {
       public:
-         ObjectMethodDoesNotExistException(const std::string& msg) : runtime_error(msg) {}
+         ObjectMethodDoesNotExistException(const string& msg) : runtime_error(msg) {}
    };
 
    class TypeMissMatchException: public TokenizerException
@@ -45,10 +45,16 @@ namespace JarJar {
          TypeMissMatchException(const Token t, const string customMsg = "") : TokenizerException(t, customMsg){}
    };
 
+   class DivideByZeroException:  public runtime_error
+   {
+      public:
+         DivideByZeroException(const string& msg = "") : runtime_error(msg) {}
+   };
+
    class InterpreterException: public runtime_error
    {
       public:
-         InterpreterException(const std::string& msg) : runtime_error(msg) {}
+         InterpreterException(const string& msg) : runtime_error(msg) {}
    };
 }
 

@@ -205,7 +205,13 @@ namespace JarJar
 
          virtual Object * operator/(Object * other)
          {
-            return newChild(val / cast(other)->val);
+            Numerical * otherN = cast(other);
+
+            if(otherN->val == 0){
+               throw DivideByZeroException();
+            }
+
+            return newChild(val / otherN->val);
          }
 
          virtual Object * operator=(Object * other)
