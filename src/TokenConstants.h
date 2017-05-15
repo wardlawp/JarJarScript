@@ -12,7 +12,7 @@ namespace JarJar
    enum TokenType
     {
       //Operators
-      ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NEGATE,
+      ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NOT,
       LPAREN, RPAREN,
 
       //Primitives
@@ -56,7 +56,7 @@ namespace JarJar
       {TokenType::MUL, "*"},
       {TokenType::DIV, "/"},
       {TokenType::ASSIGN, "="},
-      {TokenType::NEGATE, "!"}
+      {TokenType::NOT, "!"}
 
     };
 

@@ -7,6 +7,7 @@
 #include <Exceptions.h>
 #include <TokenConstants.h>
 #include <Visitor.h>
+#include <typeinfo>
 
 namespace JarJar
 {

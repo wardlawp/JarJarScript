@@ -15,12 +15,6 @@ namespace JarJar
    {
       public:
          virtual ~Expression() {}
-         template<class T>
-         T accept(Visitor<T> * visitor)
-         {
-               return visitor->visit(this);
-         }
-
    };
 
    class Binary: public Expression

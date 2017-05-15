@@ -1,6 +1,7 @@
 #include <Parser.h>
 
-namespace JarJar {
+namespace JarJar
+{
 
    Parser::Parser(vector<Token> tokens)
    {
@@ -17,8 +18,7 @@ namespace JarJar {
    {
       Expression * expr = comparison();
 
-      while(match({TokenType::EQUALS, TokenType::NOT_EQUALS}))
-      {
+      while (match( { TokenType::EQUALS, TokenType::NOT_EQUALS })) {
          expr = new Binary(expr, previous(), comparison());
       }
 
@@ -29,8 +29,8 @@ namespace JarJar {
    {
       Expression * expr = term();
 
-      while(match({TokenType::LT, TokenType::LTE, TokenType::GT, TokenType::GTE}))
-      {
+      while (match( { TokenType::LT, TokenType::LTE, TokenType::GT,
+            TokenType::GTE })) {
          expr = new Binary(expr, previous(), term());
       }
 
@@ -41,8 +41,7 @@ namespace JarJar {
    {
       Expression * expr = factor();
 
-      while(match({TokenType::ADD, TokenType::SUB}))
-      {
+      while (match( { TokenType::ADD, TokenType::SUB })) {
          expr = new Binary(expr, previous(), factor());
       }
 
@@ -53,8 +52,7 @@ namespace JarJar {
    {
       Expression * expr = unary();
 
-      while(match({TokenType::MUL, TokenType::DIV}))
-      {
+      while (match( { TokenType::MUL, TokenType::DIV })) {
          expr = new Binary(expr, previous(), unary());
       }
 
@@ -63,8 +61,7 @@ namespace JarJar {
 
    Expression * Parser::unary()
    {
-      if(match({TokenType::SUB}))
-      {
+      if (match( { TokenType::SUB, TokenType::NOT })) {
          return new Unary(previous(), unary());
       }
 
@@ -75,21 +72,35 @@ namespace JarJar {
    {
       TokenType next = peek();
 
-      if(next == TokenType::INT){
+      if (next == TokenType::INT) {
          Literal * result = new Literal(new Int(tokens.at(pos).getIntVal()));
          advance();
          return result;
-      } else if(next == TokenType::LPAREN){
+      } else if (next == TokenType::STRING) {
+         Literal * result = new Literal(
+               new String(tokens.at(pos).getStringVal()));
+         advance();
+         return result;
+      } else if (next == TokenType::BOOL) {
+         Literal * result = new Literal(new Bool(tokens.at(pos).getBoolVal()));
+         advance();
+         return result;
+      }else if (next == TokenType::DECIMAL) {
+         Literal * result = new Literal(new Decimal(tokens.at(pos).getDoubleVal()));
+         advance();
+         return result;
+      } else if (next == TokenType::LPAREN) {
          advance();
          Expression *e = equality();
-         if(!match({TokenType::RPAREN})){
-            string cusMsg =  "Expected token '" + getStringRepr(TokenType::RPAREN) + "'";
+         if (!match( { TokenType::RPAREN })) {
+            string cusMsg = "Expected token '"
+                  + getStringRepr(TokenType::RPAREN) + "'";
             throw ParserException(tokens.at(pos), cusMsg);
          }
          return new Grouping(e);
       }
 
-      string cusMsg =  "Unexpected token '" + getStringRepr(next) + "'";
+      string cusMsg = "Unexpected token '" + getStringRepr(next) + "'";
       throw ParserException(tokens.at(pos), cusMsg);
 
    }
@@ -97,9 +108,8 @@ namespace JarJar {
    bool Parser::match(initializer_list<TokenType> types)
    {
       TokenType next = peek();
-      for( TokenType t : types )
-      {
-         if(next == t){
+      for (TokenType t : types) {
+         if (next == t) {
             advance();
             return true;
          }
@@ -110,12 +120,13 @@ namespace JarJar {
 
    bool Parser::atEnd()
    {
-      return pos >= (tokens.size() -1);
+      return pos >= (tokens.size() - 1);
    }
 
    bool Parser::check(TokenType t)
    {
-      if(atEnd()) return false;
+      if (atEnd())
+         return false;
 
       return t == peek();
    }
@@ -127,12 +138,13 @@ namespace JarJar {
 
    Token Parser::previous()
    {
-      return tokens.at(max(0,pos-1));
+      return tokens.at(max(0, pos - 1));
    }
 
    Token Parser::advance()
    {
-      if(!atEnd()) pos++;
+      if (!atEnd())
+         pos++;
       return previous();
    }
 }

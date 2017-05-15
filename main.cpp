@@ -4,7 +4,6 @@
 #include <iostream>
 #include <exception>
 #include <Exceptions.h>
-#include <typeinfo>
 
 using namespace std;
 using namespace JarJar;
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
       }
       catch (const runtime_error &e)
       {
-         cout << "Caught runtime error " << typeid(e).name() << endl;
+         cout << "Caught runtime error " << type(e) << endl;
          cout << e.what() << endl;
       }
    }

@@ -27,7 +27,7 @@ TEST_CASE( "Tokenizer scans operators", "scan operators" )
    TOKEN_CHECK("*", TokenType::MUL);
    TOKEN_CHECK("/", TokenType::DIV);
    TOKEN_CHECK("=", TokenType::ASSIGN);
-   TOKEN_CHECK("!", TokenType::NEGATE);
+   TOKEN_CHECK("!", TokenType::NOT);
    TOKEN_CHECK("<", TokenType::LT);
    TOKEN_CHECK(">", TokenType::GT);
    TOKEN_CHECK("==", TokenType::EQUALS);
@@ -139,7 +139,7 @@ TEST_CASE( "Tokenizer scans sequnce of tokens", "scan sequence" )
 
       CHECK(result[2].type == TokenType::ASSIGN);
 
-      CHECK(result[3].type == TokenType::NEGATE);
+      CHECK(result[3].type == TokenType::NOT);
 
       CHECK(result[4].type == TokenType::DECIMAL);
       CHECK(result[4].getDoubleVal() == 4.123);

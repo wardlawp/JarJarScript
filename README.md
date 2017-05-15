@@ -16,15 +16,24 @@ Very possibly in the future I will add...
 
 ## Usage
 
-JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. In interactive mode it can handle basic integer arithmetic.
+JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. In interactive mode it can handle basic operations for bools, integers, decimals, and strings.
 
 ```bash
 ./JarJarScript 
->34/2+(5*4)
-37
->5+5+5
-15
->_
+>33+(23/(20+3))*7
+40
+>"I like" + " pie"
+"I like pie"
+>32.44>23.0
+ya
+>ya==!na
+ya
+>"a">"b"
+na
+>!"not empty"
+ya
+>!0
+na
 ```
 
 ## Installation

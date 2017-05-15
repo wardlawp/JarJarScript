@@ -55,13 +55,7 @@ TEST_CASE( "ASTPrinter can print nested expressions", "Print nested expressions"
    REQUIRE(output == "44 * ((23 - 64) / (55 + 4))");
 }
 
-TEST_CASE( "Expressions accept vistors", "Expression accepts visitor" )
-{
-   ASTPrinter *print = new ASTPrinter();
-   Expression *e = new Literal(new Int(1));
 
-   REQUIRE(e->accept(print) == "1");
-}
 
 TEST_CASE( "Automatically shows nesting", "Printer nests" )
 {
@@ -70,5 +64,5 @@ TEST_CASE( "Automatically shows nesting", "Printer nests" )
    Expression * e = new Binary(new Literal(new Int(32)), Token(TokenType::ADD, "+", 1), inner);
 
    ASTPrinter * print = new ASTPrinter();
-   REQUIRE(e->accept(print) == "32 + (55 / 23)");
+   REQUIRE(print->visit(e) == "32 + (55 / 23)");
 }
