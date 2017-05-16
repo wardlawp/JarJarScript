@@ -1,6 +1,6 @@
 # JarJarScript
 
-A scripting language project for fun.
+A scripting language project for fun. Inspired by Robert Nystrom's new book: http://www.craftinginterpreters.com/
 
 ![Everyone loves this guy...](http://philip-wardlaw.com/images/jarjar.png)
 
