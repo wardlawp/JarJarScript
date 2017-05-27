@@ -38,6 +38,16 @@ na
 
 ## Installation
 
+### Dependencies 
+
+- c++14
+
+*Optional:*
+
+- GNU readline
+
+### Instructions
+
 Run these commands in the project root:
 ```bash
 mkdir build
@@ -59,7 +69,7 @@ cd build
 When configuring the build directory supply this additional argument to CMake:
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake .. -DCMAKE_BUILD_TYPE=Debug ..
 make clean
 make
 ```

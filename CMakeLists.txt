@@ -14,8 +14,19 @@ set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 add_subdirectory (${SRC_DIR})
 include_directories(${SRC_DIR})
 
+#Add Readline if found
+find_path(Readline_ROOT_DIR
+    NAMES readline/readline.h
+)
+
+if(Readline_ROOT_DIR)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWITH_READLINE") 
+  include_directories(${Readline_ROOT_DIR}/readline)
+  set(READLINE_LIBS readline)
+endif(Readline_ROOT_DIR)
+
 add_executable (JarJarScript main.cpp)
-target_link_libraries (JarJarScript JarJar)
+target_link_libraries (JarJarScript JarJar ${READLINE_LIBS})
 
 install (TARGETS JarJarScript DESTINATION bin)
 

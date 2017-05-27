@@ -5,6 +5,11 @@
 #include <exception>
 #include <Exceptions.h>
 
+#ifdef WITH_READLINE
+#include <readline/readline.h>
+#include <readline/history.h>
+#endif
+
 using namespace std;
 using namespace JarJar;
 
@@ -35,8 +40,16 @@ int main(int argc, char *argv[])
 
 string getInput()
 {
+#ifdef WITH_READLINE
+   char * line = readline(">");
+   add_history(line);
+   string input = line;
+   free(line);
+   return input;
+#else
    cout << ">";
    string input;
    getline(cin, input);
    return input;
+#endif
 }
