@@ -6,7 +6,7 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 
 ## Coming soon
 
-** Interactive mode is currently broken ** 
+**Interactive mode is currently broken** 
 
 Very possibly in the future I will add...
 
