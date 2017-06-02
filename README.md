@@ -6,10 +6,12 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 
 ## Coming soon
 
+* Interactive mode is currently broken * 
+
 Very possibly in the future I will add...
 
-- Memory managment (currently the program makes lots of hanging pointers)
 - Variables
+- Memory managment (currently the program makes lots of hanging pointers)
 - Functions
 - Classes
 - Standard Lib
@@ -20,19 +22,19 @@ JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter.
 
 ```bash
 ./JarJarScript 
->33+(23/(20+3))*7
+>print 33+(23/(20+3))*7
 40
->"I like" + " pie"
+>print "I like" + " pie"
 "I like pie"
->32.44>23.0
+>print 32.44>23.0
 ya
->ya==!na
+>print ya==!na
 ya
->"a">"b"
+>print "a">"b"
 na
->!"not empty"
+>print !"not empty"
 ya
->!0
+>print !0
 na
 ```
 
