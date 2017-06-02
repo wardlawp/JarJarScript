@@ -32,7 +32,7 @@ TEST_CASE( "ASTPrinter can print different expressions", "Print AST expressions"
    SECTION("Print Binary")
    {
       Expression * u = new Unary(Token(TokenType::SUB, "-", 1), new Literal(new Int(4)));
-      string output = print.visit(u);
+      string output = print.visitExpression(u);
       REQUIRE(output == "- 4");
    }
 }
@@ -51,7 +51,7 @@ TEST_CASE( "ASTPrinter can print nested expressions", "Print nested expressions"
    Expression * final = new Binary(new Literal(new Int(44)), Token(TokenType::MUL, "*", 1), group);
 
    ASTPrinter print = ASTPrinter();
-   string output = print.visit(final);
+   string output = print.visitExpression(final);
    REQUIRE(output == "44 * ((23 - 64) / (55 + 4))");
 }
 
@@ -64,5 +64,5 @@ TEST_CASE( "Automatically shows nesting", "Printer nests" )
    Expression * e = new Binary(new Literal(new Int(32)), Token(TokenType::ADD, "+", 1), inner);
 
    ASTPrinter * print = new ASTPrinter();
-   REQUIRE(print->visit(e) == "32 + (55 / 23)");
+   REQUIRE(print->visitExpression(e) == "32 + (55 / 23)");
 }

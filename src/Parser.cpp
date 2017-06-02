@@ -9,7 +9,42 @@ namespace JarJar
       pos = 0;
    }
 
-   Expression * Parser::eval()
+   vector<Statement*> Parser::eval()
+   {
+      vector<Statement*> result = vector<Statement*>();
+
+      while (!atEnd()) {
+         result.push_back(statement());
+      }
+
+      return result;
+   }
+
+   Statement * Parser::statement()
+   {
+      if(match({ TokenType::PRINT }))
+      {
+         return printStatement();
+      }
+
+      return expressionStatement();
+   }
+
+   Statement * Parser::printStatement()
+   {
+      Expression * e = expression();
+      expect(TokenType::EOL);
+      return new PrintStatment(e);
+   }
+
+   Statement * Parser::expressionStatement()
+   {
+      Expression * e = expression();
+      expect(TokenType::EOL);
+      return new ExpressionStatment(e);
+   }
+
+   Expression * Parser::expression()
    {
       return equality();
    }
@@ -92,11 +127,7 @@ namespace JarJar
       } else if (next == TokenType::LPAREN) {
          advance();
          Expression *e = equality();
-         if (!match( { TokenType::RPAREN })) {
-            string cusMsg = "Expected token '"
-                  + getStringRepr(TokenType::RPAREN) + "'";
-            throw ParserException(tokens.at(pos), cusMsg);
-         }
+         expect(TokenType::RPAREN);
          return new Grouping(e);
       }
 
@@ -146,6 +177,14 @@ namespace JarJar
       if (!atEnd())
          pos++;
       return previous();
+   }
+
+   void Parser::expect(TokenType t)
+   {
+      if (!match( { t })) {
+         string cusMsg = "Expected token '" + getStringRepr(t) + "'";
+         throw ParserException(tokens.at(pos), cusMsg);
+      }
    }
 }
 

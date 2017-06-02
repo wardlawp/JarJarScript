@@ -2,12 +2,12 @@
 #define SRC_ASTPRINTER_H_
 
 #include <AST.h>
-#include <Visitor.h>
+#include <ExperssionVisitor.h>
 #include <string>
 
 namespace JarJar {
 
-   class ASTPrinter : public Visitor<string> {
+   class ASTPrinter : public ExperssionVisitor<string> {
       public:
          virtual string visitBinary(Binary * expr);
          virtual string visitUnary(Unary * expr);

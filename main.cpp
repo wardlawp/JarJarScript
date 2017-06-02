@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
       try
       {
          Tokenizer t = Tokenizer(getInput());
-         Parser p = Parser(t.getTokens());
+         /*Parser p = Parser(t.getTokens());
          Expression * e = p.eval();
 
-         Object * obj = i->visit(e);
+         Object * obj = i->visitExpression(e);
 
-         cout << obj->toStr() << endl;
+         cout << obj->toStr() << endl;*/
       }
       catch (const runtime_error &e)
       {

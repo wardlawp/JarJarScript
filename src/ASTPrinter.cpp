@@ -7,10 +7,10 @@ namespace JarJar {
       bool notLiteral = (typeid(*e) != typeid(Literal));
 
       if(notGrouping and notLiteral){
-         return '(' + visit(e) + ')';
+         return '(' + visitExpression(e) + ')';
       } else
       {
-         return visit(e);
+         return visitExpression(e);
       }
    }
 
@@ -28,7 +28,7 @@ namespace JarJar {
 
    string ASTPrinter::visitGrouping(Grouping * expr)
    {
-      return "(" + visit(expr->exp) + ")";
+      return "(" + visitExpression(expr->exp) + ")";
    }
 
    string ASTPrinter::visitLiteral(Literal * expr)

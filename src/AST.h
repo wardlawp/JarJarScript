@@ -8,9 +8,6 @@
 
 namespace JarJar
 {
-   template<class T>
-   class Visitor;
-
    class Expression
    {
       public:

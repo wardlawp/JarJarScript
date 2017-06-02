@@ -8,9 +8,14 @@
 #include <initializer_list>
 #include <algorithm>
 #include <Exceptions.h>
+#include <Statement.h>
 
 using namespace std;
 /*
+ * program → statement* EOF
+ * statement → exprStatment | printStatment
+ * exprStatment → expression ';'
+ * printStatment → 'print' expression ';'
  * expression → equality
  * equality   → comparison ( ( "!=" | "==" ) comparison )*
  * comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
@@ -27,12 +32,17 @@ namespace JarJar {
    class Parser {
       public:
          Parser(vector<Token> tokens);
-         Expression * eval();
+         vector<Statement*>  eval();
 
       private:
          vector<Token> tokens;
          int pos;
 
+         Statement * statement();
+         Statement * printStatement();
+         Statement * expressionStatement();
+
+         Expression * expression();
          Expression * equality();
          Expression * comparison();
          Expression * term();
@@ -47,6 +57,7 @@ namespace JarJar {
          TokenType peek();
          bool check(TokenType t);
          bool atEnd();
+         void expect(TokenType t);
    };
 }
 

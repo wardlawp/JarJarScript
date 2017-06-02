@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include <Parser.h>
+#include <Statement.h>
 #include <vector>
 #include <Token.h>
 #include <TokenConstants.h>
@@ -9,14 +10,23 @@
 using namespace std;
 using namespace JarJar;
 
+/* Testing helper function */
+Expression * getExpression(Statement * statement)
+{
+   REQUIRE(typeid(*statement) == typeid(ExpressionStatment));
+   return dynamic_cast<ExpressionStatment*>(statement)->expr;
+}
+
 TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
 {
+
+
    SECTION("Match Primary")
    {
       vector<Token> tokens = { Token(TokenType::INT, "5", 1) };
       Parser p = Parser(tokens);
 
-      Expression * result = p.eval();
+      Expression * result = getExpression(p.eval().front());
       REQUIRE(typeid(*result) == typeid(Literal));
 
       Literal * lit = dynamic_cast<Literal*>(result);
@@ -31,7 +41,7 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       vector<Token> tokens = { Token(TokenType::SUB, "-", 1), Token(TokenType::INT, "32", 1) };
       Parser p = Parser(tokens);
 
-      Expression * result = p.eval();
+      Expression * result = getExpression(p.eval().front());
       REQUIRE(typeid(*result) == typeid(Unary));
 
       Unary * un = dynamic_cast<Unary*>(result);
@@ -62,7 +72,7 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
 
       string input = "7/3+5-8*4/1";
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * result = Parser(tokens).eval();
+      Expression * result = getExpression(Parser(tokens).eval().front());
 
 
       REQUIRE(typeid(*result) == typeid(Binary));
@@ -109,7 +119,7 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
    {
       string input = "(5+6)";
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * result = Parser(tokens).eval();
+      Expression * result = getExpression(Parser(tokens).eval().front());
 
       REQUIRE(typeid(*result) == typeid(Grouping));
       Grouping * root = dynamic_cast<Grouping*>(result);
@@ -126,5 +136,23 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
      string input = "(5+6";
      vector<Token> tokens = Tokenizer(input).getTokens();
      REQUIRE_THROWS_AS(Parser(tokens).eval(), ParserException);
+   }
+
+   SECTION("Match ExpressionStatement")
+   {
+      vector<Token> tokens = { Token(TokenType::INT, "5", 1), Token(TokenType::EOL, ";", 1) };
+
+      Statement * result = Parser(tokens).eval().front();
+
+      REQUIRE(typeid(*result) == typeid(ExpressionStatment));
+      ExpressionStatment * stmt = dynamic_cast<ExpressionStatment*>(result);
+
+      REQUIRE(typeid(stmt->expr) == typeid(Literal));
+
+      Literal * literal =  dynamic_cast<Literal*>(stmt->expr);
+      REQUIRE(typeid(*literal->value) == typeid(Int));
+
+      Int * val = dynamic_cast<Int*>(literal->value);
+      CHECK(val->val == 5);
    }
 }

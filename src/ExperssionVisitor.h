@@ -7,11 +7,11 @@
 namespace JarJar {
 
    template<class R>
-   class Visitor {
+   class ExperssionVisitor {
       public:
-         virtual ~Visitor() {}
+         virtual ~ExperssionVisitor() {}
 
-         R visit(Expression * e)
+         R visitExpression(Expression * e)
          {
             if(typeid(*e) == typeid(Binary)){
                return visitBinary(dynamic_cast<Binary*>(e));
@@ -22,6 +22,8 @@ namespace JarJar {
             } else if (typeid(*e) == typeid(Literal)){
                return visitLiteral(dynamic_cast<Literal*>(e));
             }
+
+            throw invalid_argument("Expression type not supported");
          }
 
 

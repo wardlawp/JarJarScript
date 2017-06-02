@@ -5,8 +5,8 @@ namespace JarJar
 
    Object * Interpreter::visitBinary(Binary * expr)
    {
-      Object * left = visit(expr->left);
-      Object * right = visit(expr->right);
+      Object * left = visitExpression(expr->left);
+      Object * right = visitExpression(expr->right);
 
       typeCheck(left,right, expr->op);
 
@@ -38,7 +38,7 @@ namespace JarJar
 
    Object * Interpreter::visitUnary(Unary * expr)
    {
-      Object * right = visit(expr->right);
+      Object * right = visitExpression(expr->right);
 
 
       switch (expr->op.type) {
@@ -54,12 +54,21 @@ namespace JarJar
 
    Object * Interpreter::visitGrouping(Grouping * expr)
    {
-      return visit(expr->exp);
+      return visitExpression(expr->exp);
    }
 
    Object * Interpreter::visitLiteral(Literal * expr)
    {
       return expr->value;
+   }
+
+   void Interpreter::visitPrintStatment(PrintStatment * statement)
+   {
+      cout << visitExpression(statement->expr)->toStr();
+   }
+   void Interpreter::visitExpressionStatment(ExpressionStatment * statement)
+   {
+      visitExpression(statement->expr);
    }
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)
