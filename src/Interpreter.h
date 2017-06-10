@@ -9,7 +9,11 @@
 #include <TokenConstants.h>
 #include <typeinfo>
 #include <StatementVisitor.h>
+#include <Statement.h>
 #include <iostream>
+#include <vector>
+
+using namespace std;
 
 namespace JarJar
 {
@@ -20,6 +24,8 @@ namespace JarJar
          void typeCheck(Object * left, Object * right, Token t);
       public:
          Interpreter() {} ;
+
+         void interpert(vector<Statement*> statements);
 
          /* ExperssionVisitor<Object*> virtual methods */
          virtual Object * visitBinary(Binary * expr);

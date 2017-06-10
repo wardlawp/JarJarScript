@@ -3,6 +3,20 @@
 namespace JarJar
 {
 
+   void Interpreter::interpert(vector<Statement*> statements)
+   {
+      for(auto statement: statements)
+      {
+         try {
+            visitStatement(statement);
+         } catch (InterpreterException &e){
+            //todo
+            cout << e.what() << endl;
+         }
+
+      }
+   }
+
    Object * Interpreter::visitBinary(Binary * expr)
    {
       Object * left = visitExpression(expr->left);

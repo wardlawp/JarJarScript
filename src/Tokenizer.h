@@ -32,6 +32,7 @@ namespace JarJar
 
          void scanToken();
          bool matchKeywords();
+         bool matchIdentifier();
          void matchNumeric();
          bool whitespace(char c);
          void skipWhitespace();

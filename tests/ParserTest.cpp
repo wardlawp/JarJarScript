@@ -155,4 +155,53 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       Int * val = dynamic_cast<Int*>(literal->value);
       CHECK(val->val == 5);
    }
+
+   SECTION("Match VariableStatement with initializer")
+   {
+      string input = "var abc = 5;";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      Statement * result = Parser(tokens).eval().front();
+
+      REQUIRE(typeid(*result) == typeid(VariableStatment));
+      VariableStatment * stmt = dynamic_cast<VariableStatment*>(result);
+
+      CHECK(stmt->name.type == TokenType::IDENTIFIER);
+
+      REQUIRE(typeid(*stmt->expr) == typeid(Literal));
+
+      Literal * literal =  dynamic_cast<Literal*>(stmt->expr);
+      REQUIRE(typeid(*literal->value) == typeid(Int));
+
+      Int * val = dynamic_cast<Int*>(literal->value);
+      CHECK(val->val == 5);
+   }
+
+   SECTION("Match VariableStatement without initializer")
+   {
+      string input = "var abc;";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      Statement * result = Parser(tokens).eval().front();
+
+      REQUIRE(typeid(*result) == typeid(VariableStatment));
+      VariableStatment * stmt = dynamic_cast<VariableStatment*>(result);
+
+      CHECK(stmt->name.type == TokenType::IDENTIFIER);
+
+      CHECK(stmt->expr == 0);
+   }
+
+   SECTION("Match Variable")
+   {
+      string input = "abc;";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      Expression * result = getExpression(Parser(tokens).eval().front());
+
+      REQUIRE(typeid(*result) == typeid(Variable));
+      Variable * var = dynamic_cast<Variable*>(result);
+
+      CHECK(var->name.value == "abc");
+   }
 }

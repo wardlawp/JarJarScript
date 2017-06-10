@@ -60,5 +60,13 @@ namespace JarJar
 
          Object * value;
    };
+
+   class Variable: public Expression
+      {
+         public:
+            Variable(Token n) : name(n){ };
+
+            Token name;
+      };
 }
 #endif /* SRC_AST_H_ */

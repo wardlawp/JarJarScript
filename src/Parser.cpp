@@ -14,11 +14,33 @@ namespace JarJar
       vector<Statement*> result = vector<Statement*>();
 
       while (!atEnd()) {
-         result.push_back(statement());
+         result.push_back(declaration());
       }
 
       return result;
    }
+
+   Statement * Parser::declaration()
+   {
+      if(match({ TokenType::VAR }))
+      {
+         expect(TokenType::IDENTIFIER);
+         Token name = previous();
+
+         if(match({ TokenType::ASSIGN })){
+            Expression * e = expression();
+            expect(TokenType::EOL);
+            return new VariableStatment(name,e);
+         }
+
+         expect(TokenType::EOL);
+         return new VariableStatment(name,0);
+
+      }
+
+      return statement();
+   }
+
 
    Statement * Parser::statement()
    {
@@ -129,6 +151,10 @@ namespace JarJar
          Expression *e = equality();
          expect(TokenType::RPAREN);
          return new Grouping(e);
+      } else if (next == TokenType::IDENTIFIER) {
+         Variable *v = new Variable(tokens.at(pos));
+         advance();
+         return v;
       }
 
       string cusMsg = "Unexpected token '" + getStringRepr(next) + "'";

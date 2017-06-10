@@ -23,12 +23,9 @@ int main(int argc, char *argv[])
       try
       {
          Tokenizer t = Tokenizer(getInput());
-         /*Parser p = Parser(t.getTokens());
-         Expression * e = p.eval();
+         Parser p = Parser(t.getTokens());
+         i->interpert(p.eval());
 
-         Object * obj = i->visitExpression(e);
-
-         cout << obj->toStr() << endl;*/
       }
       catch (const runtime_error &e)
       {

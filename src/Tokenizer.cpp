@@ -32,10 +32,26 @@ namespace JarJar
          parseString();
       } else if (whitespace(curr)) {
          skipWhitespace();
-      } else if (!matchKeywords()) {
+      } else if (!matchKeywords() and !matchIdentifier()) {
          Token errorToken = Token(TokenType::ADD, source.substr(start), line);
          throw TokenizerException(errorToken, "Unrecognized Token.");
       }
+   }
+
+   bool Tokenizer::matchIdentifier()
+   {
+      if(isalpha(source[start])){
+         char next = snack();
+
+         while ((isalnum(next) or next =='_') and !atEnd()){
+            next = snack();
+         }
+
+         addToken(IDENTIFIER, source.substr(start, current - start));
+         return true;
+      }
+
+      return false;
    }
 
    bool Tokenizer::whitespace(char c)

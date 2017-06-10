@@ -39,5 +39,18 @@ namespace JarJar
 
    };
 
+   class VariableStatment: public Statement
+      {
+         public:
+         VariableStatment(Token n, Expression * e) : name(n)
+            {
+               expr = e;
+            };
+
+            Token name;
+            Expression * expr;
+
+      };
+
 }
 #endif /* SRC_STATMENT_H_ */

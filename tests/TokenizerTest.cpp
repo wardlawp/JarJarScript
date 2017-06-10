@@ -48,6 +48,14 @@ TEST_CASE( "Tokenizer scans keywords", "scan operators" )
    TOKEN_CHECK("break", TokenType::BREAK);
    TOKEN_CHECK("while", TokenType::WHILE);
    TOKEN_CHECK("for", TokenType::FOR);
+   TOKEN_CHECK("var", TokenType::VAR);
+}
+
+//- Tokenizer can scan keywords AND, OR, IF, ELSE, BREAK, WHILE, FOR
+TEST_CASE( "Tokenizer scans identifier", "scan identifier" )
+{
+   TOKEN_CHECK("my_var", TokenType::IDENTIFIER);
+   TOKEN_CHECK("ClassName", TokenType::IDENTIFIER);
 }
 
 //- Tokenizer can scan primitives string, int, double, bool, null
@@ -182,6 +190,21 @@ TEST_CASE( "Tokenizer handles whitespace", "whitespace" )
      CHECK(result[3].type == TokenType::DIV);
      CHECK(result[3].value == "/");
   }
+
+   SECTION("Sequence 3"){
+     Tokenizer t = Tokenizer("var blarp = 2; ");
+     vector<Token> result = t.getTokens();
+
+     REQUIRE(result.size() == 5);
+
+     CHECK(result[0].type == TokenType::VAR);
+     CHECK(result[1].type == TokenType::IDENTIFIER);
+     CHECK(result[1].value == "blarp");
+     CHECK(result[2].type == TokenType::ASSIGN);
+     CHECK(result[3].type == TokenType::INT);
+     CHECK(result[3].value == "2");
+     CHECK(result[4].type == TokenType::EOL);
+   }
 
    SECTION("Sequence 2"){
      Tokenizer t = Tokenizer("5   (( ** 123 \"213\" ");

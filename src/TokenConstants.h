@@ -15,13 +15,13 @@ namespace JarJar
       ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NOT,
 
       //
-      LPAREN, RPAREN, EOL,
+      LPAREN, RPAREN, EOL, IDENTIFIER,
 
       //Primitives
       BOOL, INT, DECIMAL, STRING, NADA,
 
       //Keywords
-      AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT
+      AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT, VAR
     };
 
    const string TRUE_REPR = "ya";
@@ -41,6 +41,7 @@ namespace JarJar
       {TokenType::IF, "ifsa"},
       {TokenType::ELSE, "elsa"},
       {TokenType::NADA, "nada"},
+      {TokenType::VAR, "var"},
       {TokenType::FOR, "for"},
       {TokenType::AND, "and"},
       {TokenType::OR, "or"},

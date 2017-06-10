@@ -12,7 +12,9 @@
 
 using namespace std;
 /*
- * program → statement* EOF
+ * program → declaration* EOF
+ * declaration → varDeclaration | statement
+ * varDeclaration → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
  * statement → exprStatment | printStatment
  * exprStatment → expression ';'
  * printStatment → 'print' expression ';'
@@ -23,7 +25,7 @@ using namespace std;
  * factor     → unary ( ( "/" | "*" ) unary )*
  * unary      → ( "!" | "-" ) unary
  *            | primary
- * primary    → NUMBER | STRING | "false" | "true" | "nil"
+ * primary    → NUMBER | STRING | BOOL | NULL | IDENTIFIER
  *            | "(" expression ")"
 */
 
@@ -38,6 +40,7 @@ namespace JarJar {
          vector<Token> tokens;
          int pos;
 
+         Statement * declaration();
          Statement * statement();
          Statement * printStatement();
          Statement * expressionStatement();
