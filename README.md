@@ -38,6 +38,7 @@ ya
 ### Dependencies 
 
 - c++14
+- cmake
 
 *Optional:*
 
