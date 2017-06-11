@@ -11,7 +11,7 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 Very possibly in the future I will add...
 
 - Variables
-- Memory managment (currently the program makes lots of hanging pointers)
+- Memory managment (JarJarScript currently is as leaky as a colander)
 - Functions
 - Classes
 - Standard Lib
@@ -22,20 +22,15 @@ JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter.
 
 ```bash
 ./JarJarScript 
->print 33+(23/(20+3))*7
+>print 33+(23/(20+3))*7;
 40
->print "I like" + " pie"
+>var a = "I like" + " pie";
+>print a;
 "I like pie"
->print 32.44>23.0
+>print32.44>23.0;
 ya
->print ya==!na
+>print !"not empty";
 ya
->print "a">"b"
-na
->print !"not empty"
-ya
->print !0
-na
 ```
 
 ## Installation
@@ -43,6 +38,7 @@ na
 ### Dependencies 
 
 - c++14
+- cmake
 
 *Optional:*
 
