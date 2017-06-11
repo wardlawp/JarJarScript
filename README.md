@@ -11,7 +11,7 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 Very possibly in the future I will add...
 
 - Variables
-- Memory managment (currently the program makes lots of hanging pointers)
+- Memory managment (JarJarScript currently is as leaky as a colander)
 - Functions
 - Classes
 - Standard Lib
