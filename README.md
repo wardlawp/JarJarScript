@@ -22,20 +22,15 @@ JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter.
 
 ```bash
 ./JarJarScript 
->print 33+(23/(20+3))*7
+>print 33+(23/(20+3))*7;
 40
->print "I like" + " pie"
+>var a = "I like" + " pie";
+>print a;
 "I like pie"
->print 32.44>23.0
+>print32.44>23.0;
 ya
->print ya==!na
+>print !"not empty";
 ya
->print "a">"b"
-na
->print !"not empty"
-ya
->print !0
-na
 ```
 
 ## Installation
