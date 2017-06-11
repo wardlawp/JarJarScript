@@ -56,6 +56,12 @@ namespace JarJar {
       public:
          InterpreterException(const string& msg) : runtime_error(msg) {}
    };
+
+   class VariableNotDefinedException: public runtime_error
+   {
+      public:
+         VariableNotDefinedException(const string& msg) : runtime_error(msg) {}
+   };
 }
 
 #endif

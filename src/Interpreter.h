@@ -12,6 +12,7 @@
 #include <Statement.h>
 #include <iostream>
 #include <vector>
+#include <Environment.h>
 
 using namespace std;
 
@@ -22,8 +23,12 @@ namespace JarJar
    {
       private:
          void typeCheck(Object * left, Object * right, Token t);
+         Environment env;
       public:
-         Interpreter() {} ;
+         Interpreter()
+         {
+            env = Environment();
+         };
 
          void interpert(vector<Statement*> statements);
 
@@ -32,12 +37,16 @@ namespace JarJar
          virtual Object * visitUnary(Unary * expr);
          virtual Object * visitGrouping(Grouping * expr);
          virtual Object * visitLiteral(Literal * expr);
+         virtual Object * visitVariable(Variable * expr);
 
          /* StatementVisitor virtual methods */
 
          virtual void visitPrintStatment(PrintStatment * statment);
          virtual void visitExpressionStatment(ExpressionStatment * statment);
+         virtual void visitVariableStatment(VariableStatment * statement);
 
+         /* Public test method for accessing private env safely */
+         Object * getVar(string name);
    };
 
 

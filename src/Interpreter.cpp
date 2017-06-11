@@ -76,13 +76,30 @@ namespace JarJar
       return expr->value;
    }
 
+   Object * Interpreter::visitVariable(Variable * expr)
+   {
+      return env.get(expr->name.value);
+   }
+
    void Interpreter::visitPrintStatment(PrintStatment * statement)
    {
       cout << visitExpression(statement->expr)->toStr();
    }
+
    void Interpreter::visitExpressionStatment(ExpressionStatment * statement)
    {
       visitExpression(statement->expr);
+   }
+
+   void Interpreter::visitVariableStatment(VariableStatment * statement)
+   {
+      string name = statement->name.value;
+      if(statement->expr != 0)
+      {
+         env.define(name, visitExpression(statement->expr));
+      } else {
+         env.define(name, 0);
+      }
    }
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)
@@ -93,6 +110,11 @@ namespace JarJar
          string msg = "Left (" + leftStr + ") and right (" + rightStr + ") operand types do not match";
          throw TypeMissMatchException(t, msg);
       }
+   }
+
+   Object * Interpreter::getVar(string name)
+   {
+      return env.get(name);
    }
 
 }

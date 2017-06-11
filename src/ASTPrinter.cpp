@@ -35,4 +35,9 @@ namespace JarJar {
    {
       return expr->value->toStr();
    }
+
+   string ASTPrinter::visitVariable(Variable * expr)
+   {
+      return "Reference to variable " + expr->name.value;
+   }
 }

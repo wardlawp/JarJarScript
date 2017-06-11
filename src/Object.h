@@ -116,12 +116,14 @@ namespace JarJar
 
          static Bool * TRUE()
          {
-            return new Bool(true);
+            static Bool TRUE = Bool(true);
+            return & TRUE;
          }
 
          static Bool * FALSE()
          {
-            return new Bool(false);
+            static Bool FALSE = Bool(false);
+            return & FALSE;
          }
 
          virtual string toStr() const
@@ -402,6 +404,28 @@ namespace JarJar
             return dynamic_cast<String*>(other);
          }
 
+   };
+
+   class Null : public Object
+   {
+      public:
+         static Null * get()
+         {
+            static Null instance;
+            return & instance;
+         }
+
+         virtual string toStr() const {
+            return getStringRepr(TokenType::NADA);
+         }
+
+         virtual Object * operator==(Object * other)
+         {
+            return Bool::TRUE();
+         }
+
+      private:
+         Null() {};
    };
 
 

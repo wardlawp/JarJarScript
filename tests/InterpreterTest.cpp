@@ -112,6 +112,11 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
      REQUIRE_THROWS_AS(i->visitExpression(ast), TypeMissMatchException);
    }
+
+   SECTION("Variable Expression")
+   {
+     //TODO
+   }
 }
 
 TEST_CASE( "Interpret Statments", "Statments" )
@@ -120,7 +125,7 @@ TEST_CASE( "Interpret Statments", "Statments" )
 
    SECTION("Print statement")
    {
-     string input = "print \"test\";"; // int + string
+     string input = "print \"test\";";
      vector<Token> tokens = Tokenizer(input).getTokens();
      Statement * statement = Parser(tokens).eval().front();
 
@@ -137,5 +142,20 @@ TEST_CASE( "Interpret Statments", "Statments" )
      cout.rdbuf( oldCoutStreamBuf );
 
      CHECK(strCout.str() == "\"test\"");
+   }
+
+   SECTION("Variable statement")
+   {
+     string input = "var a = 5;";
+     vector<Token> tokens = Tokenizer(input).getTokens();
+     Statement * statement = Parser(tokens).eval().front();
+     i->visitStatement(statement);
+
+     Object * result = i->getVar("a");
+     REQUIRE(typeid(*result) == typeid(Int));
+
+     Int * obj = dynamic_cast<Int*>(result);
+
+     CHECK(obj->val == 5);
    }
 }

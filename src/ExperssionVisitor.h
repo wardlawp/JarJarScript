@@ -21,6 +21,8 @@ namespace JarJar {
                return visitGrouping(dynamic_cast<Grouping*>(e));
             } else if (typeid(*e) == typeid(Literal)){
                return visitLiteral(dynamic_cast<Literal*>(e));
+            } else if (typeid(*e) == typeid(Variable)){
+               return visitVariable(dynamic_cast<Variable*>(e));
             }
 
             throw invalid_argument("Expression type not supported");
@@ -31,6 +33,7 @@ namespace JarJar {
          virtual R visitUnary(Unary * expr) = 0;
          virtual R visitGrouping(Grouping * expr) = 0;
          virtual R visitLiteral(Literal * expr) = 0;
+         virtual R visitVariable(Variable * expr) = 0;
    };
 }
 
