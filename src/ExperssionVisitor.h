@@ -13,6 +13,7 @@ namespace JarJar {
 
          R visitExpression(Expression * e)
          {
+            //todo refactor
             if(typeid(*e) == typeid(Binary)){
                return visitBinary(dynamic_cast<Binary*>(e));
             } else if (typeid(*e) == typeid(Unary)){
@@ -23,6 +24,8 @@ namespace JarJar {
                return visitLiteral(dynamic_cast<Literal*>(e));
             } else if (typeid(*e) == typeid(Variable)){
                return visitVariable(dynamic_cast<Variable*>(e));
+            } else if (typeid(*e) == typeid(Assign)){
+               return visitAssign(dynamic_cast<Assign*>(e));
             }
 
             throw invalid_argument("Expression type not supported");
@@ -34,6 +37,7 @@ namespace JarJar {
          virtual R visitGrouping(Grouping * expr) = 0;
          virtual R visitLiteral(Literal * expr) = 0;
          virtual R visitVariable(Variable * expr) = 0;
+         virtual R visitAssign(Assign * expr) = 0;
    };
 }
 

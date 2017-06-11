@@ -5,6 +5,7 @@
 #include <AST.h>
 #include <Object.h>
 #include <Token.h>
+#include <vector>
 
 
 namespace JarJar
@@ -40,17 +41,25 @@ namespace JarJar
    };
 
    class VariableStatment: public Statement
-      {
-         public:
+   {
+      public:
          VariableStatment(Token n, Expression * e) : name(n)
-            {
-               expr = e;
-            };
+         {
+            expr = e;
+         };
 
-            Token name;
-            Expression * expr;
+         Token name;
+         Expression * expr;
 
-      };
+   };
+
+   class Block: public Statement
+   {
+      public:
+         Block(vector<Statement*> s) : statements(s) { };
+         vector<Statement*> statements;
+   };
+
 
 }
 #endif /* SRC_STATMENT_H_ */

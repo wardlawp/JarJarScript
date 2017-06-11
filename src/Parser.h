@@ -12,21 +12,23 @@
 
 using namespace std;
 /*
- * program → declaration* EOF
- * declaration → varDeclaration | statement
+ * program        → declaration* EOF
+ * declaration    → varDeclaration | statement
  * varDeclaration → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
- * statement → exprStatment | printStatment
- * exprStatment → expression ';'
- * printStatment → 'print' expression ';'
- * expression → equality
- * equality   → comparison ( ( "!=" | "==" ) comparison )*
- * comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
- * term       → factor ( ( "-" | "+" ) factor )*
- * factor     → unary ( ( "/" | "*" ) unary )*
- * unary      → ( "!" | "-" ) unary
- *            | primary
- * primary    → NUMBER | STRING | BOOL | NULL | IDENTIFIER
- *            | "(" expression ")"
+ * statement      → exprStatment | printStatment | block
+ * block          → '{' declaration '}'
+ * exprStatment   → expression ';'
+ * printStatment  → 'print' expression ';'
+ * expression     → assignment
+ * assignment     → IDENTIFIER ('=' assignment)? | equality
+ * equality       → comparison ( ( "!=" | "==" ) comparison )*
+ * comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )*
+ * term           → factor ( ( "-" | "+" ) factor )*
+ * factor         → unary ( ( "/" | "*" ) unary )*
+ * unary          → ( "!" | "-" ) unary
+ *                | primary
+ * primary        → NUMBER | STRING | BOOL | NULL | IDENTIFIER
+ *                | "(" expression ")"
 */
 
 namespace JarJar {
@@ -44,7 +46,9 @@ namespace JarJar {
          Statement * statement();
          Statement * printStatement();
          Statement * expressionStatement();
+         Statement * block();
 
+         Expression * assign();
          Expression * expression();
          Expression * equality();
          Expression * comparison();

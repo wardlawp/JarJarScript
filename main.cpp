@@ -13,11 +13,14 @@
 using namespace std;
 using namespace JarJar;
 
+vector<string> output = vector<string>();
+
 string getInput();
+void print();
 
 int main(int argc, char *argv[])
 {
-   Interpreter *i = new Interpreter();
+   Interpreter *i = new Interpreter(&output);
 
    while (true) {
       try
@@ -25,6 +28,7 @@ int main(int argc, char *argv[])
          Tokenizer t = Tokenizer(getInput());
          Parser p = Parser(t.getTokens());
          i->interpert(p.eval());
+         print();
 
       }
       catch (const runtime_error &e)
@@ -33,6 +37,16 @@ int main(int argc, char *argv[])
          cout << e.what() << endl;
       }
    }
+}
+
+void print()
+{
+   for(string s: output)
+   {
+      cout << s << endl;
+   }
+
+   output.clear();
 }
 
 string getInput()

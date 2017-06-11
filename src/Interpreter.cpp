@@ -66,6 +66,15 @@ namespace JarJar
 
    }
 
+   Object * Interpreter::visitAssign(Assign * expr)
+   {
+      Object * value = visitExpression(expr->exp);
+
+      env->assign(expr->name.value, value);
+
+      return value;
+   }
+
    Object * Interpreter::visitGrouping(Grouping * expr)
    {
       return visitExpression(expr->exp);
@@ -78,12 +87,13 @@ namespace JarJar
 
    Object * Interpreter::visitVariable(Variable * expr)
    {
-      return env.get(expr->name.value);
+      return env->get(expr->name.value);
    }
 
    void Interpreter::visitPrintStatment(PrintStatment * statement)
    {
-      cout << visitExpression(statement->expr)->toStr();
+      //short term workaround
+      output->push_back(visitExpression(statement->expr)->toStr());
    }
 
    void Interpreter::visitExpressionStatment(ExpressionStatment * statement)
@@ -96,10 +106,25 @@ namespace JarJar
       string name = statement->name.value;
       if(statement->expr != 0)
       {
-         env.define(name, visitExpression(statement->expr));
+         env->define(name, visitExpression(statement->expr));
       } else {
-         env.define(name, 0);
+         env->define(name, 0);
       }
+   }
+
+   void Interpreter::visitBlock(Block * statement){
+      //TODO memory management on block destruction
+      //TODO handle error scenario and correctly set env back to previous
+      previous = env;
+
+      env = new Environment(previous);
+
+      for(auto s: statement->statements)
+      {
+         visitStatement(s);
+      }
+
+      env = previous;
    }
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)
@@ -114,7 +139,7 @@ namespace JarJar
 
    Object * Interpreter::getVar(string name)
    {
-      return env.get(name);
+      return env->get(name);
    }
 
 }

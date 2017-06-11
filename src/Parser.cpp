@@ -47,6 +47,9 @@ namespace JarJar
       if(match({ TokenType::PRINT }))
       {
          return printStatement();
+      } else if(match({ TokenType::LBRACKET }))
+      {
+         return block();
       }
 
       return expressionStatement();
@@ -66,9 +69,40 @@ namespace JarJar
       return new ExpressionStatment(e);
    }
 
+   Statement * Parser::block()
+   {
+      vector<Statement*> statements = vector<Statement*>();
+
+      while(!check(TokenType::RBRACKET) and !atEnd())
+      {
+         statements.push_back(declaration());
+      }
+
+      expect(TokenType::RBRACKET);
+      return new Block(statements);
+   }
+
    Expression * Parser::expression()
    {
-      return equality();
+      return assign();
+   }
+
+   Expression * Parser::assign()
+   {
+      Expression * lvalue = equality();
+
+      if(match( { TokenType::ASSIGN })){
+
+         if(typeid(Variable) == typeid(*lvalue))
+         {
+            Variable * var = dynamic_cast<Variable*>(lvalue);
+            return new Assign(var->name, assign());
+         }
+
+         throw new ParserException(previous(), "Invalid assignment target");
+      }
+
+      return lvalue;
    }
 
    Expression * Parser::equality()

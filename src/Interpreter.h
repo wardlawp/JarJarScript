@@ -23,11 +23,14 @@ namespace JarJar
    {
       private:
          void typeCheck(Object * left, Object * right, Token t);
-         Environment env;
+         Environment * env;
+         Environment * previous;
+         vector<string> * output;
       public:
-         Interpreter()
+         Interpreter(vector<string> * op = 0)
          {
-            env = Environment();
+            output = op;
+            env = new Environment();
          };
 
          void interpert(vector<Statement*> statements);
@@ -38,12 +41,14 @@ namespace JarJar
          virtual Object * visitGrouping(Grouping * expr);
          virtual Object * visitLiteral(Literal * expr);
          virtual Object * visitVariable(Variable * expr);
+         virtual Object * visitAssign(Assign * expr);
 
          /* StatementVisitor virtual methods */
 
          virtual void visitPrintStatment(PrintStatment * statment);
          virtual void visitExpressionStatment(ExpressionStatment * statment);
          virtual void visitVariableStatment(VariableStatment * statement);
+         virtual void visitBlock(Block * statement);
 
          /* Public test method for accessing private env safely */
          Object * getVar(string name);

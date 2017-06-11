@@ -204,4 +204,62 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
 
       CHECK(var->name.value == "abc");
    }
+
+   SECTION("Match Assign")
+   {
+      string input = "abc = 32;";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      Expression * result = getExpression(Parser(tokens).eval().front());
+
+      REQUIRE(typeid(*result) == typeid(Assign));
+      Assign * assign = dynamic_cast<Assign*>(result);
+
+      CHECK(assign->name.value == "abc");
+
+      REQUIRE(typeid(*assign->exp) == typeid(Literal));
+      Literal * lit = dynamic_cast<Literal*>(assign->exp);
+
+      REQUIRE(typeid(*lit->value) == typeid(Int));
+      Int * obj = dynamic_cast<Int*>(lit->value);
+
+      CHECK(obj->val == 32);
+   }
+
+   SECTION("Match Block")
+   {
+      string input = "{ print \"hi\"; }";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      Statement * result = Parser(tokens).eval().front();
+
+      REQUIRE(typeid(*result) == typeid(Block));
+      Block * block = dynamic_cast<Block*>(result);
+
+      REQUIRE(block->statements.size() == 1);
+
+      REQUIRE(typeid(*block->statements[0]) == typeid(PrintStatment));
+      PrintStatment * print = dynamic_cast<PrintStatment*>(block->statements[0]);
+
+      REQUIRE(typeid(*print->expr) == typeid(Literal));
+      Literal * lit = dynamic_cast<Literal*>(print->expr);
+
+      REQUIRE(typeid(*lit->value) == typeid(String));
+      String * obj = dynamic_cast<String*>(lit->value);
+
+      CHECK(obj->val == "hi");
+   }
+
+   SECTION("Match Block with multiple Statments")
+   {
+      string input = "{ print \"hi\"; print \"hi\"; }";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      Statement * result = Parser(tokens).eval().front();
+
+      REQUIRE(typeid(*result) == typeid(Block));
+      Block * block = dynamic_cast<Block*>(result);
+
+      CHECK(block->statements.size() == 2);
+   }
 }

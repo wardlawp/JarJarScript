@@ -40,4 +40,9 @@ namespace JarJar {
    {
       return "Reference to variable " + expr->name.value;
    }
+
+   string ASTPrinter::visitAssign(Assign * expr)
+   {
+      return "Assignment of variable " + expr->name.value;
+   }
 }

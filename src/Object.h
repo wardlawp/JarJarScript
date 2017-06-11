@@ -406,9 +406,16 @@ namespace JarJar
 
    };
 
+   /**
+    * Singleton, use get()
+    */
    class Null : public Object
    {
       public:
+         /* Explicitly delete these to enforce no copies */
+         Null(Null const&) = delete;
+         void operator=(Null const&) = delete;
+
          static Null * get()
          {
             static Null instance;

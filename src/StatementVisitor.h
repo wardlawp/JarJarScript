@@ -12,6 +12,7 @@ namespace JarJar {
 
          void visitStatement(Statement * s)
          {
+            //TODO refactor
             if(typeid(*s) == typeid(PrintStatment)){
                visitPrintStatment(dynamic_cast<PrintStatment*>(s));
                return;
@@ -20,6 +21,9 @@ namespace JarJar {
                return ;
             } else if (typeid(*s) == typeid(VariableStatment)){
                visitVariableStatment(dynamic_cast<VariableStatment*>(s));
+               return ;
+            } else if (typeid(*s) == typeid(Block)){
+               visitBlock(dynamic_cast<Block*>(s));
                return ;
             }
 
@@ -30,6 +34,7 @@ namespace JarJar {
          virtual void visitPrintStatment(PrintStatment * statment) = 0;
          virtual void visitExpressionStatment(ExpressionStatment * statment) = 0;
          virtual void visitVariableStatment(VariableStatment * statement) = 0;
+         virtual void visitBlock(Block * statement) = 0;
    };
 }
 

@@ -106,11 +106,11 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
    SECTION("Miss matching types Throws Exception")
    {
-     string input = "5+\"5\";"; // int + string
-     vector<Token> tokens = Tokenizer(input).getTokens();
-     Expression * ast = getExpression(Parser(tokens).eval().front());
+      string input = "5+\"5\";"; // int + string
+      vector<Token> tokens = Tokenizer(input).getTokens();
+      Expression * ast = getExpression(Parser(tokens).eval().front());
 
-     REQUIRE_THROWS_AS(i->visitExpression(ast), TypeMissMatchException);
+      REQUIRE_THROWS_AS(i->visitExpression(ast), TypeMissMatchException);
    }
 
    SECTION("Variable Expression")
@@ -125,37 +125,36 @@ TEST_CASE( "Interpret Statments", "Statments" )
 
    SECTION("Print statement")
    {
-     string input = "print \"test\";";
-     vector<Token> tokens = Tokenizer(input).getTokens();
-     Statement * statement = Parser(tokens).eval().front();
+      vector<string> output = vector<string>();
+      i = new Interpreter(&output);
 
-     //Capture std out
-     streambuf* oldCoutStreamBuf = cout.rdbuf();
-     ostringstream strCout;
-     cout.rdbuf( strCout.rdbuf() );
-
-     //Run print statement
-     i->visitStatement(statement);
+      string input = "print \"test\";";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+      Statement * statement = Parser(tokens).eval().front();
 
 
-     //restore old stream
-     cout.rdbuf( oldCoutStreamBuf );
+      //Run print statement
+      i->visitStatement(statement);
 
-     CHECK(strCout.str() == "\"test\"");
+
+      REQUIRE(output.size() == 1);
+      CHECK(output[0] == "\"test\"");
    }
 
    SECTION("Variable statement")
    {
-     string input = "var a = 5;";
-     vector<Token> tokens = Tokenizer(input).getTokens();
-     Statement * statement = Parser(tokens).eval().front();
-     i->visitStatement(statement);
+      string input = "var a = 5;";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+      Statement * statement = Parser(tokens).eval().front();
+      i->visitStatement(statement);
 
-     Object * result = i->getVar("a");
-     REQUIRE(typeid(*result) == typeid(Int));
+      Object * result = i->getVar("a");
+      REQUIRE(typeid(*result) == typeid(Int));
 
-     Int * obj = dynamic_cast<Int*>(result);
+      Int * obj = dynamic_cast<Int*>(result);
 
-     CHECK(obj->val == 5);
+      CHECK(obj->val == 5);
    }
+
+   //TODO test Assignment, block execution
 }

@@ -15,7 +15,7 @@ namespace JarJar
       ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NOT,
 
       //
-      LPAREN, RPAREN, EOL, IDENTIFIER,
+      LPAREN, RPAREN, EOL, IDENTIFIER, LBRACKET, RBRACKET,
 
       //Primitives
       BOOL, INT, DECIMAL, STRING, NADA,
@@ -53,6 +53,8 @@ namespace JarJar
       {TokenType::GTE, ">="},
       {TokenType::LPAREN, "("},
       {TokenType::RPAREN, ")"},
+      {TokenType::LBRACKET, "{"},
+      {TokenType::RBRACKET, "}"},
       {TokenType::EOL, ";"},
       {TokenType::ADD, "+"},
       {TokenType::SUB, "-"},

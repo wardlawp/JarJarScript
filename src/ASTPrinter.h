@@ -14,6 +14,7 @@ namespace JarJar {
          virtual string visitGrouping(Grouping * expr);
          virtual string visitLiteral(Literal * expr);
          virtual string visitVariable(Variable * expr);
+         virtual string visitAssign(Assign * expr);
 
       private:
          string wrap(Expression * e);
