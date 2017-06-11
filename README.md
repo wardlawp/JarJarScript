@@ -6,11 +6,10 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 
 ## Coming soon
 
-**Interactive mode is currently broken** 
+- Jar Jar like syntax!
 
 Very possibly in the future I will add...
 
-- Variables
 - Memory managment (JarJarScript currently is as leaky as a colander)
 - Functions
 - Classes
@@ -27,10 +26,12 @@ JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter.
 >var a = "I like" + " pie";
 >print a;
 "I like pie"
->print32.44>23.0;
+>print 32.44 > 23.0;
 ya
->print !"not empty";
-ya
+>{ var a = 4; print a; }
+4
+>print a;
+"I like pie"
 ```
 
 ## Installation
