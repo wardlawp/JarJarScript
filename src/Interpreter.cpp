@@ -92,8 +92,10 @@ namespace JarJar
 
    void Interpreter::visitPrintStatment(PrintStatment * statement)
    {
+      //TODO need to delete here for anything produced by statement OTHER than from a Literal
+      Object* result = visitExpression(statement->expr);
       //short term workaround
-      output->push_back(visitExpression(statement->expr)->toStr());
+      output->push_back(result->toStr());
    }
 
    void Interpreter::visitExpressionStatment(ExpressionStatment * statement)
@@ -124,6 +126,7 @@ namespace JarJar
          visitStatement(s);
       }
 
+      delete env;
       env = previous;
    }
 

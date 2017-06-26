@@ -24,6 +24,11 @@ namespace JarJar
             expr = e;
          };
 
+         ~PrintStatment()
+         {
+            delete expr;
+         }
+
          Expression * expr;
 
    };
@@ -35,6 +40,11 @@ namespace JarJar
          {
             expr = e;
          };
+
+         ~ExpressionStatment()
+         {
+            delete expr;
+         }
 
          Expression * expr;
 
@@ -48,6 +58,11 @@ namespace JarJar
             expr = e;
          };
 
+         ~VariableStatment()
+         {
+            delete expr;
+         }
+
          Token name;
          Expression * expr;
 
@@ -57,6 +72,12 @@ namespace JarJar
    {
       public:
          Block(vector<Statement*> s) : statements(s) { };
+
+         ~Block()
+         {
+            for(auto s: statements) delete s;
+         }
+
          vector<Statement*> statements;
    };
 

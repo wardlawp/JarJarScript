@@ -33,6 +33,11 @@ namespace JarJar
             env = new Environment();
          };
 
+         ~Interpreter()
+         {
+            delete env;
+         }
+
          void interpert(vector<Statement*> statements);
 
          /* ExperssionVisitor<Object*> virtual methods */

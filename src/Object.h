@@ -9,13 +9,16 @@ using namespace std;
 
 namespace JarJar
 {
+   class Null;
    class Object
    {
       public:
-         virtual ~Object()
-         {
-         }
+         virtual ~Object(){ }
          virtual string toStr() const = 0;
+         virtual Object* clone() = 0;
+
+         static void deleteObject(Object* obj);
+         static Object* copyObject(Object* obj);
 
          virtual Object * negate()
          {
@@ -114,6 +117,11 @@ namespace JarJar
             val = _val;
          }
 
+         Object* clone()
+         {
+            return new Bool(*this);
+         }
+
          static Bool * TRUE()
          {
             static Bool TRUE = Bool(true);
@@ -178,6 +186,11 @@ namespace JarJar
          Numerical(T _val)
          {
             val = _val;
+         }
+
+         Object* clone()
+         {
+            return newChild(val);
          }
 
          virtual  string toStr() const
@@ -325,6 +338,11 @@ namespace JarJar
             val = _val;
          }
 
+         Object* clone()
+         {
+            return new String(*this);
+         }
+
          virtual  string toStr() const
          {
             return "\"" + val + "\"";
@@ -420,6 +438,11 @@ namespace JarJar
          {
             static Null instance;
             return & instance;
+         }
+
+         Object* clone()
+         {
+            return get();
          }
 
          virtual string toStr() const {

@@ -18,7 +18,9 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
 
       Object * storedValue = global.get("test");
 
-      CHECK(storedValue == value);
+      //Pointers won't equal, but values should
+      CHECK(storedValue != value);
+      CHECK(storedValue->operator==(value));
    }
 
    SECTION("Define without initialized")
@@ -35,7 +37,7 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
       Object * value = new Int(4);
       global.define("test", value);
 
-      CHECK(global.get("test") == value);
+      CHECK(global.get("test")->operator==(value));
 
       global.assign("test", Null::get());
 
@@ -60,7 +62,7 @@ TEST_CASE( "Test Nested", "Assign" )
 
       Environment inner = Environment(&global);
 
-      CHECK(inner.get("test") == value);
+      CHECK(inner.get("test")->operator==(value));
    }
 
    SECTION("Modify parent variables")
@@ -70,7 +72,7 @@ TEST_CASE( "Test Nested", "Assign" )
 
       Environment inner = Environment(&global);
 
-      CHECK(global.get("test") == value);
+      CHECK(global.get("test")->operator==(value));
 
       inner.assign("test", Null::get());
 

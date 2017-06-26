@@ -27,8 +27,11 @@ int main(int argc, char *argv[])
       {
          Tokenizer t = Tokenizer(getInput());
          Parser p = Parser(t.getTokens());
-         i->interpert(p.eval());
+         vector<Statement*> statements = p.eval();
+         i->interpert(statements);
          print();
+
+         for(auto s: statements) delete s;
 
       }
       catch (const runtime_error &e)

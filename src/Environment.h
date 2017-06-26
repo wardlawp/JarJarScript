@@ -14,6 +14,12 @@ namespace JarJar {
       public:
          Environment(Environment * parent = 0);
 
+         ~Environment()
+         {
+            for(auto val: m)
+               Object::deleteObject(val.second);
+         }
+
 
          void define(string name, Object* value);
          void assign(string name, Object* value);

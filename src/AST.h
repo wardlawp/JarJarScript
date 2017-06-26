@@ -23,6 +23,11 @@ namespace JarJar
             right = r;
          };
 
+         ~Binary()
+         {
+            delete left, right;
+         }
+
          Expression * left;
          Token op;
          Expression * right;
@@ -36,6 +41,11 @@ namespace JarJar
             right = r;
          };
 
+         ~Unary()
+         {
+            delete right;
+         }
+
          Token op;
          Expression * right;
    };
@@ -48,6 +58,11 @@ namespace JarJar
          {
             exp = expression;
          }
+
+         ~Grouping()
+         {
+            delete exp;
+         }
    };
 
    class Literal: public Expression
@@ -57,6 +72,11 @@ namespace JarJar
          {
             value = val;
          };
+
+         ~Literal()
+         {
+            Object::deleteObject(value);
+         }
 
          Object * value;
    };
@@ -75,6 +95,11 @@ namespace JarJar
          Assign(Token n, Expression * expression) : name(n)
          {
             exp = expression;
+         }
+
+         ~Assign()
+         {
+            delete exp;
          }
 
          Token name;

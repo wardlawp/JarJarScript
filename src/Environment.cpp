@@ -26,7 +26,7 @@ namespace JarJar {
          value = Null::get();
       }
 
-      m[name] = value;
+      m[name] = Object::copyObject(value);
    }
 
    Object * Environment::get(string name)
