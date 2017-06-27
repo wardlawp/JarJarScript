@@ -17,83 +17,96 @@ namespace JarJar
       }
    }
 
-   Object * Interpreter::visitBinary(Binary * expr)
+   SafeObject Interpreter::visitBinary(Binary * expr)
    {
-      Object * left = visitExpression(expr->left);
-      Object * right = visitExpression(expr->right);
+      Object * left = visitExpression(expr->left).get();
+      Object * right = visitExpression(expr->right).get();
 
       typeCheck(left,right, expr->op);
 
+      Object* val;
+
       switch (expr->op.type) {
          case TokenType::ADD :
-            return left->operator+(right);
+            val = left->operator+(right);
+            break;
          case TokenType::SUB :
-            return left->operator-(right);
+            val = left->operator-(right);
+            break;
          case TokenType::MUL :
-            return left->operator*(right);
+            val = left->operator*(right);
+            break;
          case TokenType::DIV :
-            return left->operator/(right);
+            val = left->operator/(right);
+            break;
          case TokenType::ASSIGN :
-             return left->operator=(right);
+            val = left->operator=(right);
+            break;
          case TokenType::GT :
-           return left->operator>(right);
+            val = left->operator>(right);
+            break;
         case TokenType::GTE :
-           return left->operator>=(right);
+           val = left->operator>=(right);
+           break;
         case TokenType::LT :
-           return left->operator<(right);
+           val = left->operator<(right);
+           break;
         case TokenType::LTE :
-            return left->operator<=(right);
+           val = left->operator<=(right);
+           break;
         case TokenType::EQUALS :
-           return left->operator==(right);
+           val = left->operator==(right);
+           break;
          default:
             throw InterpreterException("Binary operation " + getStringRepr(expr->op.type) + " not implemented");
       }
+
+      return SafeObject(val);
    }
 
-   Object * Interpreter::visitUnary(Unary * expr)
+   SafeObject Interpreter::visitUnary(Unary * expr)
    {
-      Object * right = visitExpression(expr->right);
+      Object * right = visitExpression(expr->right).get();
 
 
       switch (expr->op.type) {
          case TokenType::SUB:
-           return right->negate();
+           return SafeObject(right->negate());
          case TokenType::NOT:
-             return right->operator !();
+             return SafeObject(right->operator !());
         default:
            throw InterpreterException("Unary operation " + getStringRepr(expr->op.type) + " not implemented");
       }
 
    }
 
-   Object * Interpreter::visitAssign(Assign * expr)
+   SafeObject Interpreter::visitAssign(Assign * expr)
    {
-      Object * value = visitExpression(expr->exp);
+      SafeObject value = visitExpression(expr->exp);
 
       env->assign(expr->name.value, value);
 
       return value;
    }
 
-   Object * Interpreter::visitGrouping(Grouping * expr)
+   SafeObject Interpreter::visitGrouping(Grouping * expr)
    {
       return visitExpression(expr->exp);
    }
 
-   Object * Interpreter::visitLiteral(Literal * expr)
+   SafeObject Interpreter::visitLiteral(Literal * expr)
    {
-      return expr->value;
+      return SafeObject(expr->value);
    }
 
-   Object * Interpreter::visitVariable(Variable * expr)
+   SafeObject Interpreter::visitVariable(Variable * expr)
    {
       return env->get(expr->name.value);
    }
 
    void Interpreter::visitPrintStatment(PrintStatment * statement)
    {
-      //TODO need to delete here for anything produced by statement OTHER than from a Literal
-      Object* result = visitExpression(statement->expr);
+      SafeObject result = visitExpression(statement->expr);
       //short term workaround
       output->push_back(result->toStr());
    }
@@ -140,7 +153,7 @@ namespace JarJar
       }
    }
 
-   Object * Interpreter::getVar(string name)
+   SafeObject Interpreter::getVar(string name)
    {
       return env->get(name);
    }

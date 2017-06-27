@@ -13,16 +13,17 @@
 #include <iostream>
 #include <vector>
 #include <Environment.h>
+#include <Typedefs.h>
 
 using namespace std;
 
 namespace JarJar
 {
 
-   class Interpreter : public ExperssionVisitor<Object*>, public StatementVisitor
+   class Interpreter : public ExperssionVisitor<SafeObject>, public StatementVisitor
    {
       private:
-         void typeCheck(Object * left, Object * right, Token t);
+         void typeCheck(Object* left, Object* right, Token t);
          Environment * env;
          Environment * previous;
          vector<string> * output;
@@ -41,22 +42,22 @@ namespace JarJar
          void interpert(vector<Statement*> statements);
 
          /* ExperssionVisitor<Object*> virtual methods */
-         virtual Object * visitBinary(Binary * expr);
-         virtual Object * visitUnary(Unary * expr);
-         virtual Object * visitGrouping(Grouping * expr);
-         virtual Object * visitLiteral(Literal * expr);
-         virtual Object * visitVariable(Variable * expr);
-         virtual Object * visitAssign(Assign * expr);
+         virtual SafeObject visitBinary(Binary* expr);
+         virtual SafeObject visitUnary(Unary* expr);
+         virtual SafeObject visitGrouping(Grouping* expr);
+         virtual SafeObject visitLiteral(Literal* expr);
+         virtual SafeObject visitVariable(Variable* expr);
+         virtual SafeObject visitAssign(Assign* expr);
 
          /* StatementVisitor virtual methods */
 
-         virtual void visitPrintStatment(PrintStatment * statment);
-         virtual void visitExpressionStatment(ExpressionStatment * statment);
-         virtual void visitVariableStatment(VariableStatment * statement);
-         virtual void visitBlock(Block * statement);
+         virtual void visitPrintStatment(PrintStatment* statment);
+         virtual void visitExpressionStatment(ExpressionStatment* statment);
+         virtual void visitVariableStatment(VariableStatment* statement);
+         virtual void visitBlock(Block* statement);
 
          /* Public test method for accessing private env safely */
-         Object * getVar(string name);
+         SafeObject getVar(string name);
    };
 
 

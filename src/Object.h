@@ -5,6 +5,8 @@
 #include <Exceptions.h>
 #include <Type.h>
 #include <TokenConstants.h>
+#include <memory>
+
 using namespace std;
 
 namespace JarJar
@@ -434,15 +436,22 @@ namespace JarJar
          Null(Null const&) = delete;
          void operator=(Null const&) = delete;
 
-         static Null * get()
+         static shared_ptr<JarJar::Object> get()
          {
             static Null instance;
-            return & instance;
+
+            auto dontDeleteMe = [](Object*){};
+            return shared_ptr<JarJar::Object>(&instance, dontDeleteMe);
+         }
+
+         static Object* addr()
+         {
+            return Null::get().get();
          }
 
          Object* clone()
          {
-            return get();
+            return addr();
          }
 
          virtual string toStr() const {

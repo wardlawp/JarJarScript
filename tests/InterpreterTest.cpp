@@ -6,6 +6,7 @@
 #include <typeinfo>
 #include <Tokenizer.h>
 #include <Interpreter.h>
+#include <Typedefs.h>
 
 using namespace std;
 using namespace JarJar;
@@ -26,8 +27,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       REQUIRE(typeid(*literalExp) == typeid(Literal));
 
       //TODO make visitExpression private?
-      Object * obj = i->visitExpression(literalExp);
-      REQUIRE(typeid(*obj) == typeid(Int));
+      SafeObject obj = i->visitExpression(literalExp);
+      REQUIRE(typeid(*obj.get()) == typeid(Int));
    }
 
    SECTION("Interpret Binary")
@@ -37,8 +38,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       Expression * binaryExpr = getExpression(p.eval().front());
       REQUIRE(typeid(*binaryExpr) == typeid(Binary));
 
-      Object * obj = i->visitExpression(binaryExpr);
-      REQUIRE(typeid(*obj) == typeid(Int));
+      SafeObject obj = i->visitExpression(binaryExpr);
+      REQUIRE(typeid(*obj.get()) == typeid(Int));
       CHECK(obj->toStr() == "17");
    }
 
@@ -49,9 +50,9 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       Expression * binaryExpr = getExpression(p.eval().front());
 
 
-      Object * obj = i->visitExpression(binaryExpr);
-      REQUIRE(typeid(*obj) == typeid(String));
-      String * sObj = dynamic_cast<String*>(obj);
+      SafeObject obj = i->visitExpression(binaryExpr);
+      REQUIRE(typeid(*obj.get()) == typeid(String));
+      String * sObj = dynamic_cast<String*>(obj.get());
       CHECK(sObj->val == "Hello World!");
    }
 
@@ -62,8 +63,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       Expression * ast = getExpression(Parser(tokens).eval().front());
 
 
-      Object * obj = i->visitExpression(ast);
-      REQUIRE(typeid(*obj) == typeid(Int));
+      SafeObject obj = i->visitExpression(ast);
+      REQUIRE(typeid(*obj.get()) == typeid(Int));
       CHECK(obj->toStr() == "-25");
    }
 
@@ -73,10 +74,10 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       Expression * binaryComparison = getExpression(Parser(tokens).eval().front());
 
 
-      Object * obj = i->visitExpression(binaryComparison);
-      REQUIRE(typeid(*obj) == typeid(Bool));
+      SafeObject obj = i->visitExpression(binaryComparison);
+      REQUIRE(typeid(*obj.get()) == typeid(Bool));
 
-      Bool * bObj = dynamic_cast<Bool*>(obj);
+      Bool * bObj = dynamic_cast<Bool*>(obj.get());
       CHECK(bObj->val == true);
    }
 
@@ -87,8 +88,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       Expression * ast = getExpression(Parser(tokens).eval().front());
 
 
-      Object * obj = i->visitExpression(ast);
-      Bool * bObj = dynamic_cast<Bool*>(obj);
+      SafeObject obj = i->visitExpression(ast);
+      Bool * bObj = dynamic_cast<Bool*>(obj.get());
       CHECK(bObj->val == true);
    }
 
@@ -99,8 +100,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       Expression * ast = getExpression(Parser(tokens).eval().front());
 
 
-      Object * obj = i->visitExpression(ast);
-      Bool * bObj = dynamic_cast<Bool*>(obj);
+      SafeObject obj = i->visitExpression(ast);
+      Bool * bObj = dynamic_cast<Bool*>(obj.get());
       CHECK(bObj->val == true);
    }
 
@@ -148,10 +149,10 @@ TEST_CASE( "Interpret Statments", "Statments" )
       Statement * statement = Parser(tokens).eval().front();
       i->visitStatement(statement);
 
-      Object * result = i->getVar("a");
-      REQUIRE(typeid(*result) == typeid(Int));
+      SafeObject result = i->getVar("a");
+      REQUIRE(typeid(*result.get()) == typeid(Int));
 
-      Int * obj = dynamic_cast<Int*>(result);
+      Int * obj = dynamic_cast<Int*>(result.get());
 
       CHECK(obj->val == 5);
    }

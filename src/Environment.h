@@ -5,6 +5,7 @@
 #include <string>
 #include <Object.h>
 #include <Exceptions.h>
+#include <Typedefs.h>
 
 using namespace std;
 
@@ -13,21 +14,13 @@ namespace JarJar {
    class Environment {
       public:
          Environment(Environment * parent = 0);
-
-         ~Environment()
-         {
-            for(auto val: m)
-               Object::deleteObject(val.second);
-         }
-
-
-         void define(string name, Object* value);
-         void assign(string name, Object* value);
-         Object * get(string name);
+         void define(string name, SafeObject value);
+         void assign(string name, SafeObject value);
+         SafeObject get(string name);
 
       private:
          Environment * parent;
-         map<string, Object*> m;
+         map<string, SafeObject> m;
    };
 }
 

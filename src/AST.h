@@ -75,7 +75,7 @@ namespace JarJar
 
          ~Literal()
          {
-            Object::deleteObject(value);
+            //Don't delete object as they will be guarded by shared_ptrs
          }
 
          Object * value;
