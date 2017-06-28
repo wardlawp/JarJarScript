@@ -97,7 +97,9 @@ namespace JarJar
          if(typeid(Variable) == typeid(*lvalue))
          {
             Variable * var = dynamic_cast<Variable*>(lvalue);
-            return new Assign(var->name, assign());
+            Expression * result = new Assign(var->name, assign());
+            delete var;
+            return result;
          }
 
          throw new ParserException(previous(), "Invalid assignment target");

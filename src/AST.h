@@ -83,6 +83,7 @@ namespace JarJar
    {
       public:
          Variable(Token n) : name(n){ };
+         ~Variable() {}
 
          Token name;
    };
