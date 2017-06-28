@@ -7,23 +7,26 @@
 #include <Tokenizer.h>
 #include <Interpreter.h>
 #include <Typedefs.h>
+#include <memory>
 
 using namespace std;
 using namespace JarJar;
 
 /* Testing helper function, defined in ParserTest.cpp */
-Expression * getExpression(Statement * statement);
+Expression * getExpression(shared_ptr<Statement>  statement);
 
 
 TEST_CASE( "Interpret Expressions", "Expressions" )
 {
-   Interpreter *i = new Interpreter();
+   shared_ptr<Interpreter> interp = shared_ptr<Interpreter>(new Interpreter());
+   Interpreter *i = interp.get();
 
    SECTION("Interpret Literal")
    {
       vector<Token> tokens = { Token(TokenType::INT, "5", 1), Token(TokenType::EOL, ";", 1)  };
-      Parser p = Parser(tokens);
-      Expression * literalExp = getExpression(p.eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * literalExp = getExpression(statements.front());
+
       REQUIRE(typeid(*literalExp) == typeid(Literal));
 
       //TODO make visitExpression private?
@@ -35,7 +38,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
       vector<Token> tokens = { Token(TokenType::INT, "32", 1), Token(TokenType::SUB, "-", 1), Token(TokenType::INT, "15", 1), Token(TokenType::EOL, ";", 1) };
       Parser p = Parser(tokens);
-      Expression * binaryExpr = getExpression(p.eval().front());
+      auto statements = p.eval();
+      Expression * binaryExpr = getExpression(statements.front());
       REQUIRE(typeid(*binaryExpr) == typeid(Binary));
 
       SafeObject obj = i->visitExpression(binaryExpr);
@@ -47,7 +51,9 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
       vector<Token> tokens = { Token(TokenType::STRING, "Hello ", 1), Token(TokenType::ADD, "+", 1), Token(TokenType::STRING, "World!", 1), Token(TokenType::EOL, ";", 1) };
       Parser p = Parser(tokens);
-      Expression * binaryExpr = getExpression(p.eval().front());
+      auto statements = p.eval();
+      Expression * binaryExpr = getExpression(statements.front());
+
 
 
       SafeObject obj = i->visitExpression(binaryExpr);
@@ -60,7 +66,10 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
       string input = "7/3+5-8*4/1;"; //result: 2 + 5 - 8*4 = 7-32 = -25
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * ast = getExpression(Parser(tokens).eval().front());
+      Parser p = Parser(tokens);
+      auto statements = p.eval();
+      Expression * ast = getExpression(statements.front());
+
 
 
       SafeObject obj = i->visitExpression(ast);
@@ -71,7 +80,9 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    SECTION("Interpret greater than")
    {
       vector<Token> tokens = Tokenizer("5>4;").getTokens();
-      Expression * binaryComparison = getExpression(Parser(tokens).eval().front());
+      Parser p = Parser(tokens);
+      auto statements = p.eval();
+      Expression * binaryComparison = getExpression(statements.front());
 
 
       SafeObject obj = i->visitExpression(binaryComparison);
@@ -85,7 +96,9 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
       string input = "(7/3+5-8*4/1)==-25;"; //result: 2 + 5 - 8*4 = 7-32 = -25
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * ast = getExpression(Parser(tokens).eval().front());
+
+      auto statements = Parser(tokens).eval();
+      Expression * ast = getExpression(statements.front());
 
 
       SafeObject obj = i->visitExpression(ast);
@@ -97,7 +110,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
       string input = "\"hel\"+\"lo\"==\"hello\";"; // "hel" + "lo" == "hello"
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * ast = getExpression(Parser(tokens).eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * ast = getExpression(statements.front());
 
 
       SafeObject obj = i->visitExpression(ast);
@@ -109,7 +123,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
       string input = "5+\"5\";"; // int + string
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * ast = getExpression(Parser(tokens).eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * ast = getExpression(statements.front());
 
       REQUIRE_THROWS_AS(i->visitExpression(ast), TypeMissMatchException);
    }
@@ -122,7 +137,8 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
 TEST_CASE( "Interpret Statments", "Statments" )
 {
-   Interpreter *i = new Interpreter();
+   shared_ptr<Interpreter> interp = shared_ptr<Interpreter>(new Interpreter());
+   Interpreter *i = interp.get();
 
    SECTION("Print statement")
    {
@@ -131,7 +147,9 @@ TEST_CASE( "Interpret Statments", "Statments" )
 
       string input = "print \"test\";";
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Statement * statement = Parser(tokens).eval().front();
+
+      auto statements = Parser(tokens).eval();
+      Statement * statement = statements.front().get();
 
 
       //Run print statement
@@ -140,13 +158,15 @@ TEST_CASE( "Interpret Statments", "Statments" )
 
       REQUIRE(output.size() == 1);
       CHECK(output[0] == "\"test\"");
+      delete i;
    }
 
    SECTION("Variable statement")
    {
       string input = "var a = 5;";
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Statement * statement = Parser(tokens).eval().front();
+      auto statements = Parser(tokens).eval();
+      Statement * statement = statements.front().get();
       i->visitStatement(statement);
 
       SafeObject result = i->getVar("a");

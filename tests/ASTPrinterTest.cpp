@@ -12,14 +12,18 @@ TEST_CASE( "ASTPrinter can print different expressions", "Print AST expressions"
 
    SECTION("Print Literal")
    {
-      string output = print.visitLiteral(new Literal(new Int(1)));
+      Literal* lit = new Literal(new Int(1));
+      string output = print.visitLiteral(lit);
       REQUIRE(output == "1");
+      delete lit;
    }
 
    SECTION("Print Grouping")
    {
-      string output = print.visitGrouping(new Grouping(new Literal(new Int(1))));
+      Grouping* group = new Grouping(new Literal(new Int(1)));
+      string output = print.visitGrouping(group);
       REQUIRE(output == "(1)");
+      delete group;
    }
 
    SECTION("Print Binary")
@@ -27,6 +31,7 @@ TEST_CASE( "ASTPrinter can print different expressions", "Print AST expressions"
       Binary *b = new Binary(new Literal(new Int(2)), Token(TokenType::ADD, "+", 1), new Literal(new Int(4)));
       string output = print.visitBinary(b);
       REQUIRE(output == "2 + 4");
+      delete b;
    }
 
    SECTION("Print Binary")
@@ -34,6 +39,7 @@ TEST_CASE( "ASTPrinter can print different expressions", "Print AST expressions"
       Expression * u = new Unary(Token(TokenType::SUB, "-", 1), new Literal(new Int(4)));
       string output = print.visitExpression(u);
       REQUIRE(output == "- 4");
+      delete u;
    }
 }
 
@@ -53,6 +59,8 @@ TEST_CASE( "ASTPrinter can print nested expressions", "Print nested expressions"
    ASTPrinter print = ASTPrinter();
    string output = print.visitExpression(final);
    REQUIRE(output == "44 * ((23 - 64) / (55 + 4))");
+
+   delete final;
 }
 
 
@@ -60,9 +68,11 @@ TEST_CASE( "ASTPrinter can print nested expressions", "Print nested expressions"
 TEST_CASE( "Automatically shows nesting", "Printer nests" )
 {
    //Expression: 32 + (55/23)
-   Binary *inner = new Binary(new Literal(new Int(55)), Token(TokenType::DIV, "/", 1), new Literal(new Int(23)));
-   Expression * e = new Binary(new Literal(new Int(32)), Token(TokenType::ADD, "+", 1), inner);
+   Binary* inner = new Binary(new Literal(new Int(55)), Token(TokenType::DIV, "/", 1), new Literal(new Int(23)));
+   Expression* e = new Binary(new Literal(new Int(32)), Token(TokenType::ADD, "+", 1), inner);
 
    ASTPrinter * print = new ASTPrinter();
    REQUIRE(print->visitExpression(e) == "32 + (55 / 23)");
+   delete e;
+   delete print;
 }

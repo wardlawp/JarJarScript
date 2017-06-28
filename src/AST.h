@@ -25,7 +25,8 @@ namespace JarJar
 
          ~Binary()
          {
-            delete left, right;
+            delete left;
+            delete right;
          }
 
          Expression * left;
@@ -70,15 +71,12 @@ namespace JarJar
       public:
          Literal(Object *val)
          {
-            value = val;
+            value = shared_ptr<Object>(val);
          };
 
-         ~Literal()
-         {
-            //Don't delete object as they will be guarded by shared_ptrs
-         }
+         ~Literal(){}
 
-         Object * value;
+         shared_ptr<Object>  value;
    };
 
    class Variable: public Expression

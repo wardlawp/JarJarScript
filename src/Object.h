@@ -119,6 +119,8 @@ namespace JarJar
             val = _val;
          }
 
+         ~Bool() {}
+
          Object* clone()
          {
             return new Bool(*this);
@@ -126,14 +128,12 @@ namespace JarJar
 
          static Bool * TRUE()
          {
-            static Bool TRUE = Bool(true);
-            return & TRUE;
+            return new Bool(true);
          }
 
          static Bool * FALSE()
          {
-            static Bool FALSE = Bool(false);
-            return & FALSE;
+            return new Bool(false);
          }
 
          virtual string toStr() const
@@ -189,6 +189,8 @@ namespace JarJar
          {
             val = _val;
          }
+
+         ~Numerical() {}
 
          Object* clone()
          {
@@ -304,6 +306,7 @@ namespace JarJar
    {
       public:
          Int(int _val) : Numerical(_val) {};
+         ~Int() {};
       private:
          virtual Numerical * cast(Object * other)
          {
@@ -319,6 +322,7 @@ namespace JarJar
    {
       public:
          Decimal(double _val) : Numerical(_val) {};
+         ~Decimal() {};
       private:
          virtual Numerical * cast(Object * other)
          {
@@ -339,6 +343,8 @@ namespace JarJar
          {
             val = _val;
          }
+
+         ~String() {}
 
          Object* clone()
          {
@@ -465,6 +471,7 @@ namespace JarJar
 
       private:
          Null() {};
+         ~Null() {};
    };
 
 

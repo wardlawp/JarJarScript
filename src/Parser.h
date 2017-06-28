@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <Exceptions.h>
 #include <Statement.h>
+#include <memory>
 
 using namespace std;
 /*
@@ -36,7 +37,7 @@ namespace JarJar {
    class Parser {
       public:
          Parser(vector<Token> tokens);
-         vector<Statement*>  eval();
+         vector<shared_ptr<Statement>>  eval();
 
       private:
          vector<Token> tokens;

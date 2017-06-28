@@ -8,7 +8,7 @@ using namespace std;
 using namespace JarJar;
 
 
-/*TEST_CASE( "Test Un-Nested", "Un-Nested" )
+TEST_CASE( "Test Un-Nested", "Un-Nested" )
 {
    Environment global = Environment();
 
@@ -21,7 +21,9 @@ using namespace JarJar;
 
       //Pointers won't equal, but values should
       CHECK(storedValue.get() != value.get());
-      CHECK(storedValue->operator==(value.get()));
+      Bool* b = dynamic_cast<Bool*>(storedValue->operator==(value.get()));
+      CHECK(b->val == true);
+      delete b;
    }
 
    SECTION("Define without initialized")
@@ -38,7 +40,9 @@ using namespace JarJar;
       SafeObject value = SafeObject(new Int(4));
       global.define("test", value);
 
-      CHECK(global.get("test")->operator==(value.get()));
+      Bool* b = dynamic_cast<Bool*>(global.get("test")->operator==(value.get()));
+      CHECK(b->val == true);
+      delete b;
 
       global.assign("test", Null::get());
 
@@ -63,7 +67,9 @@ TEST_CASE( "Test Nested", "Assign" )
 
       Environment inner = Environment(&global);
 
-      CHECK(inner.get("test")->operator==(value.get()));
+      Bool* b = dynamic_cast<Bool*>(inner.get("test")->operator==(value.get()));
+      CHECK(b->val == true);
+      delete b;
    }
 
    SECTION("Modify parent variables")
@@ -73,7 +79,9 @@ TEST_CASE( "Test Nested", "Assign" )
 
       Environment inner = Environment(&global);
 
-      CHECK(global.get("test")->operator==(value.get()));
+      Bool* b = dynamic_cast<Bool*>(global.get("test")->operator==(value.get()));
+      CHECK(b->val == true);
+      delete b;
 
       inner.assign("test", Null::get());
 
@@ -89,6 +97,6 @@ TEST_CASE( "Test Nested", "Assign" )
       REQUIRE_THROWS_AS(global.get("test"), VariableNotDefinedException);
       CHECK(inner.get("test").get() == Null::addr());
    }
-}*/
+}
 
 

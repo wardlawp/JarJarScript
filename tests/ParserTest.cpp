@@ -6,15 +6,17 @@
 #include <TokenConstants.h>
 #include <typeinfo>
 #include <Tokenizer.h>
+#include <memory>
 
 using namespace std;
 using namespace JarJar;
 
 /* Testing helper function */
-Expression * getExpression(Statement * statement)
+Expression * getExpression(shared_ptr<Statement>  statement)
 {
+   auto ptr = statement.get();
    REQUIRE(typeid(*statement) == typeid(ExpressionStatment));
-   return dynamic_cast<ExpressionStatment*>(statement)->expr;
+   return dynamic_cast<ExpressionStatment*>(ptr)->expr;
 }
 
 TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
@@ -26,12 +28,13 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       vector<Token> tokens = { Token(TokenType::INT, "5", 1), Token(TokenType::EOL, ";", 1) };
       Parser p = Parser(tokens);
 
-      Expression * result = getExpression(p.eval().front());
+      auto statements = p.eval();
+      Expression * result = getExpression(statements.front());
       REQUIRE(typeid(*result) == typeid(Literal));
 
       Literal * lit = dynamic_cast<Literal*>(result);
-      REQUIRE(typeid(*lit->value) == typeid(Int));
-      REQUIRE(lit->value->toStr() == "5");
+      REQUIRE(typeid(*lit->value.get()) == typeid(Int));
+      REQUIRE(lit->value.get()->toStr() == "5");
    }
 
    //TODO match more types of primaries (string, bool, null, grouping)
@@ -41,7 +44,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       vector<Token> tokens = { Token(TokenType::SUB, "-", 1), Token(TokenType::INT, "32", 1), Token(TokenType::EOL, ";", 1) };
       Parser p = Parser(tokens);
 
-      Expression * result = getExpression(p.eval().front());
+      auto statements = p.eval();
+      Expression * result = getExpression(statements.front());
       REQUIRE(typeid(*result) == typeid(Unary));
 
       Unary * un = dynamic_cast<Unary*>(result);
@@ -49,8 +53,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*un->right) == typeid(Literal));
 
       Literal * lit = dynamic_cast<Literal*>(un->right);
-      REQUIRE(typeid(*lit->value) == typeid(Int));
-      REQUIRE(lit->value->toStr() == "32");
+      REQUIRE(typeid(*lit->value.get()) == typeid(Int));
+      REQUIRE(lit->value.get()->toStr() == "32");
    }
 
    SECTION("Match Nested")
@@ -72,7 +76,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
 
       string input = "7/3+5-8*4/1;";
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * result = getExpression(Parser(tokens).eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * result = getExpression(statements.front());
 
 
       REQUIRE(typeid(*result) == typeid(Binary));
@@ -87,9 +92,9 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*left1->right) == typeid(Literal));
 
       Literal * left1Right = dynamic_cast<Literal*>(left1->right);
-      REQUIRE(typeid(*left1Right->value) == typeid(Int));
+      REQUIRE(typeid(*left1Right->value.get()) == typeid(Int));
 
-      Int * five = dynamic_cast<Int*>(left1Right->value);
+      Int * five = dynamic_cast<Int*>(left1Right->value.get());
       CHECK(five->val == 5);
 
       Binary * left2 = dynamic_cast<Binary*>(left1->left);
@@ -103,9 +108,9 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*right1->right) == typeid(Literal));
 
       Literal * right1Right = dynamic_cast<Literal*>(right1->right);
-      REQUIRE(typeid(*right1Right->value) == typeid(Int));
+      REQUIRE(typeid(*right1Right->value.get()) == typeid(Int));
 
-      Int * one = dynamic_cast<Int*>(right1Right->value);
+      Int * one = dynamic_cast<Int*>(right1Right->value.get());
       CHECK(one->val == 1);
 
 
@@ -119,7 +124,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
    {
       string input = "(5+6);";
       vector<Token> tokens = Tokenizer(input).getTokens();
-      Expression * result = getExpression(Parser(tokens).eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * result = getExpression(statements.front());
 
       REQUIRE(typeid(*result) == typeid(Grouping));
       Grouping * root = dynamic_cast<Grouping*>(result);
@@ -142,7 +148,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
    {
       vector<Token> tokens = { Token(TokenType::INT, "5", 1), Token(TokenType::EOL, ";", 1) };
 
-      Statement * result = Parser(tokens).eval().front();
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
 
       REQUIRE(typeid(*result) == typeid(ExpressionStatment));
       ExpressionStatment * stmt = dynamic_cast<ExpressionStatment*>(result);
@@ -150,9 +157,9 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*stmt->expr) == typeid(Literal));
 
       Literal * literal =  dynamic_cast<Literal*>(stmt->expr);
-      REQUIRE(typeid(*literal->value) == typeid(Int));
+      REQUIRE(typeid(*literal->value.get()) == typeid(Int));
 
-      Int * val = dynamic_cast<Int*>(literal->value);
+      Int * val = dynamic_cast<Int*>(literal->value.get());
       CHECK(val->val == 5);
    }
 
@@ -161,7 +168,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       string input = "var abc = 5;";
       vector<Token> tokens = Tokenizer(input).getTokens();
 
-      Statement * result = Parser(tokens).eval().front();
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
 
       REQUIRE(typeid(*result) == typeid(VariableStatment));
       VariableStatment * stmt = dynamic_cast<VariableStatment*>(result);
@@ -171,9 +179,9 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*stmt->expr) == typeid(Literal));
 
       Literal * literal =  dynamic_cast<Literal*>(stmt->expr);
-      REQUIRE(typeid(*literal->value) == typeid(Int));
+      REQUIRE(typeid(*literal->value.get()) == typeid(Int));
 
-      Int * val = dynamic_cast<Int*>(literal->value);
+      Int * val = dynamic_cast<Int*>(literal->value.get());
       CHECK(val->val == 5);
    }
 
@@ -182,7 +190,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       string input = "var abc;";
       vector<Token> tokens = Tokenizer(input).getTokens();
 
-      Statement * result = Parser(tokens).eval().front();
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
 
       REQUIRE(typeid(*result) == typeid(VariableStatment));
       VariableStatment * stmt = dynamic_cast<VariableStatment*>(result);
@@ -197,7 +206,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       string input = "abc;";
       vector<Token> tokens = Tokenizer(input).getTokens();
 
-      Expression * result = getExpression(Parser(tokens).eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * result = getExpression(statements.front());
 
       REQUIRE(typeid(*result) == typeid(Variable));
       Variable * var = dynamic_cast<Variable*>(result);
@@ -210,7 +220,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       string input = "abc = 32;";
       vector<Token> tokens = Tokenizer(input).getTokens();
 
-      Expression * result = getExpression(Parser(tokens).eval().front());
+      auto statements = Parser(tokens).eval();
+      Expression * result = getExpression(statements.front());
 
       REQUIRE(typeid(*result) == typeid(Assign));
       Assign * assign = dynamic_cast<Assign*>(result);
@@ -220,8 +231,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*assign->exp) == typeid(Literal));
       Literal * lit = dynamic_cast<Literal*>(assign->exp);
 
-      REQUIRE(typeid(*lit->value) == typeid(Int));
-      Int * obj = dynamic_cast<Int*>(lit->value);
+      REQUIRE(typeid(*lit->value.get()) == typeid(Int));
+      Int * obj = dynamic_cast<Int*>(lit->value.get());
 
       CHECK(obj->val == 32);
    }
@@ -231,7 +242,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       string input = "{ print \"hi\"; }";
       vector<Token> tokens = Tokenizer(input).getTokens();
 
-      Statement * result = Parser(tokens).eval().front();
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
 
       REQUIRE(typeid(*result) == typeid(Block));
       Block * block = dynamic_cast<Block*>(result);
@@ -244,8 +256,8 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(typeid(*print->expr) == typeid(Literal));
       Literal * lit = dynamic_cast<Literal*>(print->expr);
 
-      REQUIRE(typeid(*lit->value) == typeid(String));
-      String * obj = dynamic_cast<String*>(lit->value);
+      REQUIRE(typeid(*lit->value.get()) == typeid(String));
+      String * obj = dynamic_cast<String*>(lit->value.get());
 
       CHECK(obj->val == "hi");
    }
@@ -255,7 +267,9 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       string input = "{ print \"hi\"; print \"hi\"; }";
       vector<Token> tokens = Tokenizer(input).getTokens();
 
-      Statement * result = Parser(tokens).eval().front();
+
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
 
       REQUIRE(typeid(*result) == typeid(Block));
       Block * block = dynamic_cast<Block*>(result);

@@ -17,12 +17,12 @@ namespace JarJar {
          return parent->assign(name, value);
       }
 
-      m[name] = SafeObject(Object::copyObject(value.get()));
+      define(name, value);
    }
 
    void Environment::define(string name, SafeObject value)
    {
-      if(value == 0){
+      if(value == 0 or value.get() == Null::addr()){
          m[name] = Null::get();
       } else {
          m[name] = SafeObject(Object::copyObject(value.get()));

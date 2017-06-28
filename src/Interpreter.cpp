@@ -3,12 +3,12 @@
 namespace JarJar
 {
 
-   void Interpreter::interpert(vector<Statement*> statements)
+   void Interpreter::interpert(vector<shared_ptr<Statement>> statements)
    {
       for(auto statement: statements)
       {
          try {
-            visitStatement(statement);
+            visitStatement(statement.get());
          } catch (InterpreterException &e){
             //todo
             cout << e.what() << endl;
@@ -19,8 +19,11 @@ namespace JarJar
 
    SafeObject Interpreter::visitBinary(Binary * expr)
    {
-      Object * left = visitExpression(expr->left).get();
-      Object * right = visitExpression(expr->right).get();
+      SafeObject lRef = visitExpression(expr->left);
+      SafeObject rRef = visitExpression(expr->right);
+
+      Object * left = lRef.get();
+      Object * right = rRef.get();
 
       typeCheck(left,right, expr->op);
 
@@ -66,7 +69,8 @@ namespace JarJar
 
    SafeObject Interpreter::visitUnary(Unary * expr)
    {
-      Object * right = visitExpression(expr->right).get();
+      SafeObject ref = visitExpression(expr->right);
+      Object * right = ref.get();
 
 
       switch (expr->op.type) {

@@ -14,6 +14,7 @@
 #include <vector>
 #include <Environment.h>
 #include <Typedefs.h>
+#include <memory>
 
 using namespace std;
 
@@ -39,7 +40,7 @@ namespace JarJar
             delete env;
          }
 
-         void interpert(vector<Statement*> statements);
+         void interpert(vector<shared_ptr<Statement>> statements);
 
          /* ExperssionVisitor<Object*> virtual methods */
          virtual SafeObject visitBinary(Binary* expr);

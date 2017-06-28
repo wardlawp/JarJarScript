@@ -4,6 +4,7 @@
 #include <iostream>
 #include <exception>
 #include <Exceptions.h>
+#include <memory>
 
 #ifdef WITH_READLINE
 #include <readline/readline.h>
@@ -25,13 +26,17 @@ int main(int argc, char *argv[])
    while (true) {
       try
       {
-         Tokenizer t = Tokenizer(getInput());
+         string input = getInput();
+
+         if(input == "quit") break;
+
+         Tokenizer t = Tokenizer(input);
          Parser p = Parser(t.getTokens());
-         vector<Statement*> statements = p.eval();
-         i->interpert(statements);
+
+         i->interpert(p.eval());
          print();
 
-         for(auto s: statements) delete s;
+
 
       }
       catch (const runtime_error &e)
@@ -40,6 +45,8 @@ int main(int argc, char *argv[])
          cout << e.what() << endl;
       }
    }
+
+   delete i;
 }
 
 void print()

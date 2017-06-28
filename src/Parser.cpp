@@ -9,12 +9,13 @@ namespace JarJar
       pos = 0;
    }
 
-   vector<Statement*> Parser::eval()
+   vector<shared_ptr<Statement>> Parser::eval()
    {
-      vector<Statement*> result = vector<Statement*>();
+      auto result = vector<shared_ptr<Statement>>();
 
       while (!atEnd()) {
-         result.push_back(declaration());
+         auto ptr = shared_ptr<Statement>(declaration());
+         result.push_back(ptr);
       }
 
       return result;
@@ -164,7 +165,8 @@ namespace JarJar
       TokenType next = peek();
 
       if (next == TokenType::INT) {
-         Literal * result = new Literal(new Int(tokens.at(pos).getIntVal()));
+         Object* into= new Int(tokens.at(pos).getIntVal());
+         Literal * result = new Literal(into);
          advance();
          return result;
       } else if (next == TokenType::STRING) {
