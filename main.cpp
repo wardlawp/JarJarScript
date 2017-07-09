@@ -5,6 +5,7 @@
 #include <exception>
 #include <Exceptions.h>
 #include <memory>
+#include <queue>
 
 #ifdef WITH_READLINE
 #include <readline/readline.h>
@@ -14,7 +15,7 @@
 using namespace std;
 using namespace JarJar;
 
-vector<string> output = vector<string>();
+auto output = queue<string>();
 
 string getInput();
 void print();
@@ -51,12 +52,11 @@ int main(int argc, char *argv[])
 
 void print()
 {
-   for(string s: output)
+   while(!output.empty())
    {
-      cout << s << endl;
+      cout << output.front() << endl;
+      output.pop();
    }
-
-   output.clear();
 }
 
 string getInput()

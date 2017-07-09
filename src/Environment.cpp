@@ -27,8 +27,6 @@ namespace JarJar {
       } else {
          m[name] = SafeObject(Object::copyObject(value.get()));
       }
-
-
    }
 
    SafeObject Environment::get(string name)

@@ -111,8 +111,10 @@ namespace JarJar
    void Interpreter::visitPrintStatment(PrintStatment * statement)
    {
       SafeObject result = visitExpression(statement->expr);
-      //short term workaround
-      output->push_back(result->toStr());
+
+      if(output != nullptr){
+         output->push(result->toStr());
+      }
    }
 
    void Interpreter::visitExpressionStatment(ExpressionStatment * statement)

@@ -12,6 +12,7 @@
 #include <Statement.h>
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <Environment.h>
 #include <Typedefs.h>
 #include <memory>
@@ -27,9 +28,9 @@ namespace JarJar
          void typeCheck(Object* left, Object* right, Token t);
          Environment * env;
          Environment * previous;
-         vector<string> * output;
+         queue<string> * output;
       public:
-         Interpreter(vector<string> * op = 0)
+         Interpreter(queue<string> * op = nullptr)
          {
             output = op;
             env = new Environment();
