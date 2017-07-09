@@ -16,7 +16,8 @@ using namespace std;
  * program        → declaration* EOF
  * declaration    → varDeclaration | statement
  * varDeclaration → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
- * statement      → exprStatment | printStatment | block
+ * statement      → exprStatment | ifStatement | printStatment | block
+ * ifStatement    → 'if' '(' expression ')' statement ( 'else' statement )? ;
  * block          → '{' declaration '}'
  * exprStatment   → expression ';'
  * printStatment  → 'print' expression ';'
@@ -46,6 +47,7 @@ namespace JarJar {
          Statement * declaration();
          Statement * statement();
          Statement * printStatement();
+         Statement * ifStatement();
          Statement * expressionStatement();
          Statement * block();
 

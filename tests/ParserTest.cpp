@@ -270,4 +270,32 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
 
       CHECK(block->statements.size() == 2);
    }
+
+   SECTION("Match If Statement")
+   {
+      string input = "ifsa(ya) { print \"Hi\"; var a = 5;} elsa { print \"bye\";}";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
+
+      REQUIRE(typeid(*result) == typeid(IfStatement));
+      IfStatement * ifStatment = dynamic_cast<IfStatement*>(result);
+
+      REQUIRE(typeid(*ifStatment->truthTest) == typeid(Literal));
+      Literal* truth = dynamic_cast<Literal*>(ifStatment->truthTest);
+
+      auto trueBool = unique_ptr<Object>(Bool::TRUE());
+      CHECK(truth->value->operator==(trueBool.get()));
+
+      REQUIRE(typeid(*ifStatment->trueBranch) == typeid(Block));
+      REQUIRE(typeid(*ifStatment->falseBranch) == typeid(Block));
+
+      Block * trueBlock = dynamic_cast<Block*>(ifStatment->trueBranch);
+      CHECK(trueBlock->statements.size() == 2);
+
+      Block * falseBlock = dynamic_cast<Block*>(ifStatment->falseBranch);
+      CHECK(falseBlock->statements.size() == 1);
+   }
 }

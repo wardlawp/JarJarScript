@@ -12,6 +12,8 @@ using namespace std;
 namespace JarJar
 {
    class Null;
+   class Bool;
+
    class Object
    {
       public:
@@ -21,6 +23,8 @@ namespace JarJar
 
          static void deleteObject(Object* obj);
          static Object* copyObject(Object* obj);
+
+         virtual bool truthy() = 0;
 
          virtual Object * negate()
          {
@@ -121,6 +125,11 @@ namespace JarJar
 
          ~Bool() {}
 
+         virtual bool truthy()
+         {
+            return val;
+         }
+
          Object* clone()
          {
             return new Bool(*this);
@@ -191,6 +200,11 @@ namespace JarJar
          }
 
          ~Numerical() {}
+
+         virtual bool truthy()
+         {
+            return val != 0;
+         }
 
          Object* clone()
          {
@@ -344,6 +358,11 @@ namespace JarJar
             val = _val;
          }
 
+         virtual bool truthy()
+         {
+            return val != "";
+         }
+
          ~String() {}
 
          Object* clone()
@@ -441,6 +460,11 @@ namespace JarJar
          /* Explicitly delete these to enforce no copies */
          Null(Null const&) = delete;
          void operator=(Null const&) = delete;
+
+         virtual bool truthy()
+         {
+            return false;
+         }
 
          static shared_ptr<JarJar::Object> get()
          {

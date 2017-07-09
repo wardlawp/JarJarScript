@@ -25,6 +25,9 @@ namespace JarJar {
             } else if (typeid(*s) == typeid(Block)){
                visitBlock(dynamic_cast<Block*>(s));
                return ;
+            } else if (typeid(*s) == typeid(IfStatement)){
+               visitIfStatement(dynamic_cast<IfStatement*>(s));
+               return ;
             }
 
             throw invalid_argument("Statement type not supported");
@@ -35,6 +38,7 @@ namespace JarJar {
          virtual void visitExpressionStatment(ExpressionStatment * statment) = 0;
          virtual void visitVariableStatment(VariableStatment * statement) = 0;
          virtual void visitBlock(Block * statement) = 0;
+         virtual void visitIfStatement(IfStatement * statement) = 0;
    };
 }
 

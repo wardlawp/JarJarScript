@@ -134,8 +134,6 @@ namespace JarJar
    }
 
    void Interpreter::visitBlock(Block * statement){
-      //TODO memory management on block destruction
-      //TODO handle error scenario and correctly set env back to previous
       previous = env;
 
       env = new Environment(previous);
@@ -148,6 +146,21 @@ namespace JarJar
       delete env;
       env = previous;
    }
+
+   void Interpreter::visitIfStatement(IfStatement * statement)
+   {
+      SafeObject truth = visitExpression(statement->truthTest);
+      Object * t = truth.get();
+
+      if(t->truthy())
+      {
+         visitStatement(statement->trueBranch);
+      } else if (statement->falseBranch != nullptr){
+         visitStatement(statement->falseBranch);
+      }
+   }
+
+
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)
    {

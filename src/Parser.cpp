@@ -51,9 +51,29 @@ namespace JarJar
       } else if(match({ TokenType::LBRACKET }))
       {
          return block();
+      } else if(match( { TokenType::IF })){
+         return ifStatement();
       }
 
       return expressionStatement();
+   }
+
+   Statement* Parser::ifStatement()
+   {
+      expect(TokenType::LPAREN);
+      Expression* truthTest = expression();
+      expect(TokenType::RPAREN);
+
+      Statement* trueBranch = statement();
+      Statement* falseBranch = nullptr;
+
+      if(match({ TokenType::ELSE }))
+      {
+         falseBranch = statement();
+      }
+
+      return new IfStatement(truthTest, trueBranch, falseBranch);
+
    }
 
    Statement * Parser::printStatement()

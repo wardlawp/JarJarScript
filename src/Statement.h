@@ -81,6 +81,28 @@ namespace JarJar
          vector<Statement*> statements;
    };
 
+   class IfStatement: public Statement
+   {
+      public:
+         IfStatement(Expression* exp, Statement* trueBranch, Statement* falseBranch = nullptr)
+         {
+            truthTest = exp;
+            this->trueBranch = trueBranch;
+            this->falseBranch = falseBranch;
+         };
+
+         ~IfStatement()
+         {
+            delete truthTest;
+            delete trueBranch;
+            delete falseBranch;
+         }
+
+         Expression* truthTest;
+         Statement* trueBranch;
+         Statement* falseBranch;
+   };
+
 
 }
 #endif /* SRC_STATMENT_H_ */

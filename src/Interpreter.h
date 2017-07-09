@@ -57,6 +57,7 @@ namespace JarJar
          virtual void visitExpressionStatment(ExpressionStatment* statment);
          virtual void visitVariableStatment(VariableStatment* statement);
          virtual void visitBlock(Block* statement);
+         virtual void visitIfStatement(IfStatement * statement);
 
          /* Public test method for accessing private env safely */
          SafeObject getVar(string name);

@@ -168,5 +168,32 @@ TEST_CASE( "Interpret Statments", "Statments" )
       CHECK(obj->val == 5);
    }
 
+   SECTION("If statement")
+   {
+      auto output = queue<string>();
+      i = new Interpreter(&output);
+
+      vector<Token> tokens = stringToTokens("ifsa(ya == ya) {print \"test\";} elsa { print \"boo\";}");
+
+      auto statements = parse(tokens);
+      Statement * statement = statements.front().get();
+
+      //Run print statement
+      i->visitStatement(statement);
+
+      tokens = stringToTokens("ifsa(na == ya) {print \"nooo\";} elsa { print \"yusssss\";}");
+
+      statements = parse(tokens);
+      statement = statements.front().get();
+      i->visitStatement(statement);
+
+      REQUIRE(output.size() == 2);
+      CHECK(output.front() == "\"test\"");
+      output.pop();
+      CHECK(output.front() == "\"yusssss\"");
+
+      delete i;
+   }
+
    //TODO test Assignment, block execution,
 }
