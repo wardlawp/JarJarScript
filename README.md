@@ -10,14 +10,21 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 
 Very possibly in the future I will add...
 
-- Memory managment (JarJarScript currently is as leaky as a colander)
 - Functions
 - Classes
 - Standard Lib
 
 ## Usage
 
-JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. In interactive mode it can handle basic operations for bools, integers, decimals, and strings.
+JarJarScript has a basic implementation of a Tokenizer, Parser, and Interpreter. 
+
+The languge supports:
+
+- Bools, integers, decimals, and strings.
+- Arithemitic of build in types
+- Conditional statements
+- Loops 
+
 
 ```bash
 ./JarJarScript 
@@ -32,13 +39,16 @@ ya
 4
 >print a;
 "I like pie"
+>if(a) { var b = 2; while(b) { print a; b = b -1; } }
+"I like pie"
+"I like pie"
 ```
 
 ## Installation
 
 ### Dependencies 
 
-- c++14
+- C++14
 - cmake
 
 *Optional:*
@@ -68,7 +78,7 @@ cd build
 When configuring the build directory supply this additional argument to CMake:
 
 ```bash
-cmake .. -DCMAKE_BUILD_TYPE=Debug ..
+cmake .. -DCMAKE_BUILD_TYPE=Debug 
 make clean
 make
 ```
