@@ -103,6 +103,26 @@ namespace JarJar
          Statement* falseBranch;
    };
 
+   class WhileStatement: public Statement
+   {
+      public:
+         WhileStatement(Expression* truth, Statement* sbody)
+         {
+            truthTest = truth;
+            body = sbody;
+         };
+
+         ~WhileStatement()
+         {
+            delete truthTest;
+            delete body;
+         }
+
+         Expression* truthTest;
+         Statement* body;
+
+   };
+
 
 }
 #endif /* SRC_STATMENT_H_ */

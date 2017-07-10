@@ -178,6 +178,14 @@ namespace JarJar
       }
    }
 
+   void Interpreter::visitWhileStatement(WhileStatement* statement)
+   {
+      while(visitExpression(statement->truthTest)->truthy())
+      {
+         visitStatement(statement->body);
+      }
+   }
+
 
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)

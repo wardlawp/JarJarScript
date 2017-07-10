@@ -53,9 +53,20 @@ namespace JarJar
          return block();
       } else if(match( { TokenType::IF })){
          return ifStatement();
+      } else if(match( { TokenType::WHILE })){
+         return whilE();
       }
 
       return expressionStatement();
+   }
+
+   Statement* Parser::whilE()
+   {
+      expect(TokenType::LPAREN);
+      Expression* truthTest = expression();
+      expect(TokenType::RPAREN);
+
+      return new WhileStatement(truthTest, statement());
    }
 
    Statement* Parser::ifStatement()
@@ -122,7 +133,7 @@ namespace JarJar
             return result;
          }
 
-         throw new ParserException(previous(), "Invalid assignment target");
+         throw ParserException(previous(), "Invalid assignment target");
       }
 
       return lvalue;

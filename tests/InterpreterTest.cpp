@@ -152,7 +152,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    }
 }
 
-TEST_CASE( "Interpret Statments", "Statments" )
+TEST_CASE( "Interpret Statements", "Statements" )
 {
    auto interp = unique_ptr<Interpreter>(new Interpreter());
    Interpreter *i = interp.get();
@@ -214,6 +214,31 @@ TEST_CASE( "Interpret Statments", "Statments" )
       CHECK(output.front() == "\"test\"");
       output.pop();
       CHECK(output.front() == "\"yusssss\"");
+
+      delete i;
+   }
+
+   SECTION("While statement")
+   {
+      auto output = queue<string>();
+      i = new Interpreter(&output);
+
+      vector<Token> tokens = stringToTokens("var a = 3; while(a){ print a; a = a-1; }");
+
+      auto statements = parse(tokens);
+      REQUIRE(statements.size() == 2);
+
+      //Run the two statements
+      i->visitStatement(statements[0].get());
+      i->visitStatement(statements[1].get());
+
+      REQUIRE(output.size() == 3);
+      CHECK(output.front() == "3");
+      output.pop();
+      CHECK(output.front() == "2");
+      output.pop();
+      CHECK(output.front() == "1");
+
 
       delete i;
    }

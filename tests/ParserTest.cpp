@@ -316,4 +316,30 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       Block * falseBlock = dynamic_cast<Block*>(ifStatment->falseBranch);
       CHECK(falseBlock->statements.size() == 1);
    }
+
+   SECTION("Match While")
+   {
+      string input = "while(ya) { print \"Hi\"; var a = 5; }";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+
+      auto statements = Parser(tokens).eval();
+      Statement * result = statements.front().get();
+
+      REQUIRE(typeid(*result) == typeid(WhileStatement));
+      WhileStatement * whileStmt = dynamic_cast<WhileStatement*>(result);
+
+      REQUIRE(typeid(*whileStmt->truthTest) == typeid(Literal));
+      Literal* truth = dynamic_cast<Literal*>(whileStmt->truthTest);
+
+      auto trueBool = unique_ptr<Object>(Bool::TRUE());
+      CHECK(truth->value->operator==(trueBool.get()));
+
+      REQUIRE(typeid(*whileStmt->body) == typeid(Block));
+
+      Block * body = dynamic_cast<Block*>(whileStmt->body);
+      CHECK(body->statements.size() == 2);
+
+
+   }
 }

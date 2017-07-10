@@ -12,25 +12,21 @@ namespace JarJar {
 
          void visitStatement(Statement * s)
          {
-            //TODO refactor
             if(typeid(*s) == typeid(PrintStatment)){
                visitPrintStatment(dynamic_cast<PrintStatment*>(s));
-               return;
             } else if (typeid(*s) == typeid(ExpressionStatment)){
                visitExpressionStatment(dynamic_cast<ExpressionStatment*>(s));
-               return ;
             } else if (typeid(*s) == typeid(VariableStatment)){
                visitVariableStatment(dynamic_cast<VariableStatment*>(s));
-               return ;
             } else if (typeid(*s) == typeid(Block)){
                visitBlock(dynamic_cast<Block*>(s));
-               return ;
             } else if (typeid(*s) == typeid(IfStatement)){
                visitIfStatement(dynamic_cast<IfStatement*>(s));
-               return ;
+            } else if (typeid(*s) == typeid(WhileStatement)){
+               visitWhileStatement(dynamic_cast<WhileStatement*>(s));
+            } else {
+               throw invalid_argument("Statement type not supported");
             }
-
-            throw invalid_argument("Statement type not supported");
          }
 
 
@@ -39,6 +35,7 @@ namespace JarJar {
          virtual void visitVariableStatment(VariableStatment * statement) = 0;
          virtual void visitBlock(Block * statement) = 0;
          virtual void visitIfStatement(IfStatement * statement) = 0;
+         virtual void visitWhileStatement(WhileStatement * statement) = 0;
    };
 }
 
