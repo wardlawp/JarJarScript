@@ -39,7 +39,7 @@ ya
 4
 >print a;
 "I like pie"
->if(a) { var b = 2; while(b) { print a; b = b -1; } }
+>ifsa(a) { var b = 2; while(b) { print a; b = b -1; } }
 "I like pie"
 "I like pie"
 ```
