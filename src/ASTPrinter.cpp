@@ -45,4 +45,9 @@ namespace JarJar {
    {
       return "Assignment of variable " + expr->name.value;
    }
+
+   string ASTPrinter::visitLogical(Logical * expr)
+   {
+      return visitExpression(expr->left) + " " + getStringRepr(expr->t) + " " + visitExpression(expr->left);
+   }
 }

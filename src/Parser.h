@@ -13,6 +13,8 @@
 
 using namespace std;
 /*
+ * STATEMENTS
+ * ==========
  * program        → declaration* EOF
  * declaration    → varDeclaration | statement
  * varDeclaration → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
@@ -21,16 +23,21 @@ using namespace std;
  * block          → '{' declaration '}'
  * exprStatment   → expression ';'
  * printStatment  → 'print' expression ';'
+ * ====================================================================================
+ * EXPRESSIONS
+ * ===========
  * expression     → assignment
- * assignment     → IDENTIFIER ('=' assignment)? | equality
- * equality       → comparison ( ( "!=" | "==" ) comparison )*
- * comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )*
- * term           → factor ( ( "-" | "+" ) factor )*
- * factor         → unary ( ( "/" | "*" ) unary )*
- * unary          → ( "!" | "-" ) unary
+ * assignment     → IDENTIFIER ( '=' assignment )? | logicalOr
+ * logicalOr      → logicalAnd ( 'or' logicalAnd )*
+ * logicalAnd     → equality ( 'and' logicalAnd )*
+ * equality       → comparison ( ( '!=' | '==' ) comparison )*
+ * comparison     → term ( ( '>' | '>=' | '<' | '<=' ) term )*
+ * term           → factor ( ( '-' | '+' ) factor )*
+ * factor         → unary ( ( '/' | '*' ) unary )*
+ * unary          → ( '!' | '-' ) unary
  *                | primary
  * primary        → NUMBER | STRING | BOOL | NULL | IDENTIFIER
- *                | "(" expression ")"
+ *                | '(' expression ')'
 */
 
 namespace JarJar {
@@ -53,6 +60,8 @@ namespace JarJar {
 
          Expression * assign();
          Expression * expression();
+         Expression * logicalOr();
+         Expression * logicalAnd();
          Expression * equality();
          Expression * comparison();
          Expression * term();

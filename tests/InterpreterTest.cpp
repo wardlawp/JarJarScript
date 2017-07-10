@@ -127,6 +127,29 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    {
      //TODO
    }
+
+   SECTION("Interperet Logical Expression")
+   {
+      vector<Token> tokens = stringToTokens("5 and 6;");
+
+      auto statements = parse(tokens);
+      Expression * logical = getFirstExpression(statements);
+      SafeObject obj = i->visitExpression(logical);
+
+      REQUIRE(typeid(*obj.get()) == typeid(Int));
+      Int * intObj = dynamic_cast<Int*>(obj.get());
+      CHECK(intObj->val == 6);
+
+      tokens = stringToTokens("\"\" or \"wabbits\";");
+
+      auto statements2 = parse(tokens);
+      logical = getFirstExpression(statements2);
+      obj = i->visitExpression(logical);
+
+      REQUIRE(typeid(*obj.get()) == typeid(String));
+      String * sObj = dynamic_cast<String*>(obj.get());
+      CHECK(sObj->val == "wabbits");
+   }
 }
 
 TEST_CASE( "Interpret Statments", "Statments" )

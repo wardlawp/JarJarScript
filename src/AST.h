@@ -104,5 +104,26 @@ namespace JarJar
          Token name;
          Expression * exp;
    };
+
+   class Logical : public Expression
+   {
+      public:
+         Logical(Expression * left, TokenType op, Expression * right) : t(op)
+         {
+            this->left = left;
+            this->right = right;
+         }
+
+         ~Logical()
+         {
+            delete left;
+            delete right;
+         }
+
+         TokenType t;
+         Expression * left;
+         Expression * right;
+
+   };
 }
 #endif /* SRC_AST_H_ */

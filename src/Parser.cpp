@@ -110,7 +110,7 @@ namespace JarJar
 
    Expression * Parser::assign()
    {
-      Expression * lvalue = equality();
+      Expression * lvalue = logicalOr();
 
       if(match( { TokenType::ASSIGN })){
 
@@ -127,6 +127,29 @@ namespace JarJar
 
       return lvalue;
    }
+
+   Expression * Parser::logicalOr()
+   {
+      Expression * lvalue = logicalAnd();
+      if(match( { TokenType::OR })){
+         Expression * right = logicalAnd();
+         return new Logical(lvalue, TokenType::OR, right);
+      }
+
+      return lvalue;
+   }
+
+   Expression * Parser::logicalAnd()
+   {
+      Expression * lvalue = equality();
+      if(match( { TokenType::AND })){
+         Expression * right = equality();
+         return new Logical(lvalue, TokenType::AND, right);
+      }
+
+      return lvalue;
+   }
+
 
    Expression * Parser::equality()
    {

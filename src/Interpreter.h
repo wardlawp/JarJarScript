@@ -50,6 +50,7 @@ namespace JarJar
          virtual SafeObject visitLiteral(Literal* expr);
          virtual SafeObject visitVariable(Variable* expr);
          virtual SafeObject visitAssign(Assign* expr);
+         virtual SafeObject visitLogical(Logical * expr);
 
          /* StatementVisitor virtual methods */
 

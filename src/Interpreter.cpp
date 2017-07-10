@@ -93,6 +93,24 @@ namespace JarJar
       return value;
    }
 
+   SafeObject Interpreter::visitLogical(Logical * expr)
+   {
+      SafeObject leftResult = visitExpression(expr->left);
+
+      if(expr->t == TokenType::OR)
+      {
+         if(leftResult->truthy()){
+               return leftResult;
+         }
+      } else {
+         if(!leftResult->truthy()){
+            return leftResult;
+         }
+      }
+
+      return visitExpression(expr->right);
+   }
+
    SafeObject Interpreter::visitGrouping(Grouping * expr)
    {
       return visitExpression(expr->exp);

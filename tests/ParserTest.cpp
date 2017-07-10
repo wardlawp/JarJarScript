@@ -114,6 +114,24 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       CHECK(typeid(*right2->right) == typeid(Literal));
    }
 
+   SECTION("Match Logical")
+   {
+      string input = "ya or na;";
+      vector<Token> tokens = Tokenizer(input).getTokens();
+
+      auto statements = Parser(tokens).eval();
+      Expression * result = getFirstExpression(statements);
+
+
+      REQUIRE(typeid(*result) == typeid(Logical));
+      Logical * expr = dynamic_cast<Logical*>(result);
+
+      CHECK(typeid(*expr->left) == typeid(Literal));
+      CHECK(typeid(*expr->right) == typeid(Literal));
+
+      CHECK(expr->t == TokenType::OR);
+   }
+
    SECTION("Match Grouping")
    {
       string input = "(5+6);";

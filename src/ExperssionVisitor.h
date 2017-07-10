@@ -26,6 +26,8 @@ namespace JarJar {
                return visitVariable(dynamic_cast<Variable*>(e));
             } else if (typeid(*e) == typeid(Assign)){
                return visitAssign(dynamic_cast<Assign*>(e));
+            }else if (typeid(*e) == typeid(Logical)){
+               return visitLogical(dynamic_cast<Logical*>(e));
             }
 
             throw invalid_argument("Expression type not supported");
@@ -38,6 +40,7 @@ namespace JarJar {
          virtual R visitLiteral(Literal * expr) = 0;
          virtual R visitVariable(Variable * expr) = 0;
          virtual R visitAssign(Assign * expr) = 0;
+         virtual R visitLogical(Logical * expr) = 0;
    };
 }
 
