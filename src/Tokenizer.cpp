@@ -32,7 +32,7 @@ namespace JarJar
          parseString();
       } else if (whitespace(curr)) {
          skipWhitespace();
-      } else if (!matchKeywords() and !matchIdentifier()) {
+      } else if (!matchKeywords() && !matchIdentifier()) {
          Token errorToken = Token(TokenType::ADD, source.substr(start), line);
          throw TokenizerException(errorToken, "Unrecognized Token.");
       }
@@ -43,7 +43,7 @@ namespace JarJar
       if(isalpha(source[start])){
          char next = snack();
 
-         while ((isalnum(next) or next =='_') and !atEnd()){
+         while ((isalnum(next) || next =='_') && !atEnd()){
             next = snack();
          }
 
@@ -56,19 +56,19 @@ namespace JarJar
 
    bool Tokenizer::whitespace(char c)
    {
-      return (c == ' ' or c == '\t');
+      return (c == ' ' || c == '\t');
    }
 
    void Tokenizer::skipWhitespace()
    {
-      while (source[current] == ' ' or source[current] == '\t') {
+      while (source[current] == ' ' || source[current] == '\t') {
          current++;
       }
    }
 
    void Tokenizer::parseString()
    {
-      while (snack() != '"' and !atEnd());
+      while (snack() != '"' && !atEnd());
 
       if(source[current] != '"'){
          Token errorToken = Token(TokenType::ADD, source.substr(start), line);
@@ -86,7 +86,7 @@ namespace JarJar
       bool decimal = false;
       char next = snack();
 
-      while (isdigit(next) or next == DECIMEL_DOT_REPR) {
+      while (isdigit(next) || next == DECIMEL_DOT_REPR) {
          decimal = decimal ? true : next == DECIMEL_DOT_REPR;
          next = snack();
       }

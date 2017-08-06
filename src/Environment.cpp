@@ -22,7 +22,7 @@ namespace JarJar {
 
    void Environment::define(string name, SafeObject value)
    {
-      if(value == 0 or value.get() == Null::addr()){
+      if(value == 0 || value.get() == Null::addr()){
          m[name] = Null::get();
       } else {
          m[name] = SafeObject(Object::copyObject(value.get()));

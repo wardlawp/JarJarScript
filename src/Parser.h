@@ -10,6 +10,7 @@
 #include <Exceptions.h>
 #include <Statement.h>
 #include <memory>
+#include <algorithm>
 
 using namespace std;
 /*

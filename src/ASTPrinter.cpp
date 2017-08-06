@@ -6,7 +6,7 @@ namespace JarJar {
       bool notGrouping = (typeid(*e) != typeid(Grouping));
       bool notLiteral = (typeid(*e) != typeid(Literal));
 
-      if(notGrouping and notLiteral){
+      if(notGrouping && notLiteral){
          return '(' + visitExpression(e) + ')';
       } else
       {

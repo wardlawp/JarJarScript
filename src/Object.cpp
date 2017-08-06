@@ -13,7 +13,7 @@ namespace JarJar
 
    void Object::deleteObject(Object* obj)
    {
-      if (obj != Null::addr() and obj != nullptr) {
+      if (obj != Null::addr() && obj != nullptr) {
          delete obj;
       }
    }

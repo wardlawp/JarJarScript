@@ -105,7 +105,7 @@ namespace JarJar
    {
       vector<Statement*> statements = vector<Statement*>();
 
-      while(!check(TokenType::RBRACKET) and !atEnd())
+      while(!check(TokenType::RBRACKET) && !atEnd())
       {
          statements.push_back(declaration());
       }
@@ -167,7 +167,8 @@ namespace JarJar
       Expression * expr = comparison();
 
       while (match( { TokenType::EQUALS, TokenType::NOT_EQUALS })) {
-         expr = new Binary(expr, previous(), comparison());
+         Token op = previous();
+         expr = new Binary(expr, op, comparison());
       }
 
       return expr;
@@ -179,7 +180,8 @@ namespace JarJar
 
       while (match( { TokenType::LT, TokenType::LTE, TokenType::GT,
             TokenType::GTE })) {
-         expr = new Binary(expr, previous(), term());
+         Token op = previous();
+         expr = new Binary(expr, op, term());
       }
 
       return expr;
@@ -190,7 +192,8 @@ namespace JarJar
       Expression * expr = factor();
 
       while (match( { TokenType::ADD, TokenType::SUB })) {
-         expr = new Binary(expr, previous(), factor());
+         Token op = previous();
+         expr = new Binary(expr, op , factor());
       }
 
       return expr;
@@ -201,7 +204,8 @@ namespace JarJar
       Expression * expr = unary();
 
       while (match( { TokenType::MUL, TokenType::DIV })) {
-         expr = new Binary(expr, previous(), unary());
+         Token op = previous();
+         expr = new Binary(expr, op, unary());
       }
 
       return expr;
@@ -210,7 +214,8 @@ namespace JarJar
    Expression * Parser::unary()
    {
       if (match( { TokenType::SUB, TokenType::NOT })) {
-         return new Unary(previous(), unary());
+         Token op = previous();
+         return new Unary(op, unary());
       }
 
       return primary();
