@@ -11,20 +11,22 @@
 #include <Statement.h>
 #include <memory>
 #include <algorithm>
+#include <typeinfo>
 
 using namespace std;
 /*
  * STATEMENTS
  * ==========
- * program        → declaration* EOF
- * declaration    → varDeclaration | statement
- * varDeclaration → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
- * statement      → exprStatment | ifStatement | printStatment | block | whileStatment
- * whileStatment  → 'while' '(' expression ')' statement;
- * ifStatement    → 'if' '(' expression ')' statement ( 'else' statement )? ;
- * block          → '{' declaration '}'
- * exprStatment   → expression ';'
- * printStatment  → 'print' expression ';'
+ * program         → declaration* EOF
+ * declaration     → varDeclaration | statement
+ * varDeclaration  → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
+ * statement       → exprStatement | ifStatement | printStatement | block | whileStatement | forStatement
+ * whileStatement  → 'while' '(' expression ')' statement;
+ * forStatement    → 'for' '(' varDeclaration | exprStatement | ':' expression? ';' expression? ')' statement
+ * ifStatement     → 'if' '(' expression ')' statement ( 'else' statement )? ;
+ * block           → '{' declaration '}'
+ * exprStatement   → expression ';'
+ * printStatement  → 'print' expression ';'
  * ====================================================================================
  * EXPRESSIONS
  * ===========
@@ -61,6 +63,12 @@ namespace JarJar {
          Statement * block();
          Statement * whilE();
 
+         Statement* foR();
+         Statement* forInitStatement();
+         Block* forBody(Expression* postExpression);
+         Expression * forExpression(bool consumeEOL = true);
+
+
          Expression * assign();
          Expression * expression();
          Expression * logicalOr();
@@ -71,7 +79,6 @@ namespace JarJar {
          Expression * factor();
          Expression * unary();
          Expression * primary();
-         Expression * grouping();
 
          bool match(initializer_list<TokenType> types);
          Token advance();

@@ -27,7 +27,6 @@ namespace JarJar
       private:
          void typeCheck(Object* left, Object* right, Token t);
          Environment * env;
-         Environment * previous;
          queue<string> * output;
       public:
          Interpreter(queue<string> * op = nullptr)

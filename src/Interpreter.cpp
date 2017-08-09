@@ -152,7 +152,7 @@ namespace JarJar
    }
 
    void Interpreter::visitBlock(Block * statement){
-      previous = env;
+      Environment* previous = env;
 
       env = new Environment(previous);
 

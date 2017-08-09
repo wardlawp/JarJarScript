@@ -55,9 +55,72 @@ namespace JarJar
          return ifStatement();
       } else if(match( { TokenType::WHILE })){
          return whilE();
+      } else if (match({ TokenType::FOR })) {
+         return foR();
       }
 
       return expressionStatement();
+   }
+
+   /**
+    * Perform syntactic desugaring
+    * Expect: 'for' '(' varDeclaration | exprStatement | ':' expression? ';' expression? ')' statement
+    * Produce: block { <varDeclaration> | <exprStatement>, while(<truth test>?){ <body>; <post statement>;? }
+    *
+    */
+   Statement* Parser::foR()
+   {
+      expect(TokenType::LPAREN);
+
+      Statement* initStatement = forInitStatement();
+      Expression* truthTest = forExpression();
+      Expression* postExpression = forExpression(false);
+     
+      if (truthTest == nullptr) {
+         truthTest = new Literal(Bool::TRUE());
+      }
+
+      expect(TokenType::RPAREN);
+      
+      Statement* while_ = new WhileStatement(truthTest, forBody(postExpression));
+      vector<Statement*> forDeSugared{ initStatement, while_ };
+
+      return new Block(forDeSugared);
+   }
+
+   Block* Parser::forBody(Expression* postExpression)
+   {
+      Statement* body = statement();
+
+      if (typeid(*body) != typeid(Block)) {
+         body = new Block(vector<Statement*>{body});
+      }
+
+      if (postExpression != nullptr) {
+         dynamic_cast<Block*>(body)->statements.push_back(new ExpressionStatment(postExpression));
+      }
+
+      return static_cast<Block*>(body);
+
+   }
+
+   Statement* Parser::forInitStatement()
+   {
+      if (match({ TokenType::EOL })) {
+         return nullptr;
+      }
+
+      Statement* forInit = declaration();
+
+      bool correctStatementType = (typeid(*forInit) == typeid(ExpressionStatment))
+         || (typeid(*forInit) == typeid(VariableStatment));
+
+      if (!correctStatementType) {
+         string cusMsg = "Expected var declaration or expression statement.";
+         throw ParserException(tokens.at(pos), cusMsg);
+      }
+
+      return forInit;
    }
 
    Statement* Parser::whilE()
@@ -117,6 +180,21 @@ namespace JarJar
    Expression * Parser::expression()
    {
       return assign();
+   }
+
+   Expression * Parser::forExpression(bool consumeEOL)
+   {
+      Expression* expr = nullptr;
+      if (!match({ TokenType::EOL }))
+      {
+         expr = expression();
+
+         if (consumeEOL) {
+            expect(TokenType::EOL);
+         }
+      }
+
+      return expr;
    }
 
    Expression * Parser::assign()
