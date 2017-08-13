@@ -11216,9 +11216,6 @@ namespace Catch {
 // Standard C/C++ main entry point
 int main (int argc, char * argv[]) {
     int result = Catch::Session().run( argc, argv );
-    //Library hack to stop prompt from closing on windows:
-    std::cout << "Press enter to continue...";
-    std::cin.get();
     return ( result < 0xff ? result : 0xff );
 }
 
