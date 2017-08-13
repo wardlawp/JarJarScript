@@ -97,7 +97,7 @@ namespace JarJar
       }
 
       if (postExpression != nullptr) {
-         dynamic_cast<Block*>(body)->statements.push_back(new ExpressionStatment(postExpression));
+         static_cast<Block*>(body)->statements.push_back(new ExpressionStatment(postExpression));
       }
 
       return static_cast<Block*>(body);
