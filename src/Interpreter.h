@@ -16,6 +16,7 @@
 #include <Environment.h>
 #include <Typedefs.h>
 #include <memory>
+#include <Function.h>
 
 using namespace std;
 
@@ -29,10 +30,12 @@ namespace JarJar
          Environment * env;
          queue<string> * output;
       public:
+         Environment * global;
          Interpreter(queue<string> * op = nullptr)
          {
             output = op;
-            env = new Environment();
+            global = new Environment();
+            env = global;
          };
 
          ~Interpreter()
@@ -50,6 +53,7 @@ namespace JarJar
          virtual SafeObject visitVariable(Variable* expr);
          virtual SafeObject visitAssign(Assign* expr);
          virtual SafeObject visitLogical(Logical * expr);
+         virtual SafeObject visitCall(Call * expr);
 
          /* StatementVisitor virtual methods */
 
@@ -59,6 +63,9 @@ namespace JarJar
          virtual void visitBlock(Block* statement);
          virtual void visitIfStatement(IfStatement * statement);
          virtual void visitWhileStatement(WhileStatement * statement);
+         virtual void visitFunctionDeclaration(FunctionDeclaration * statement);
+
+         void executeBlock(Block* statement, Environment* env);
 
          /* Public test method for accessing private env safely */
          SafeObject getVar(string name);

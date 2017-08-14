@@ -111,6 +111,34 @@ namespace JarJar
       return visitExpression(expr->right);
    }
 
+   SafeObject Interpreter::visitCall(Call * expr)
+   {
+      //Eval callee
+      SafeObject so = visitExpression(expr->callee);
+
+      Function* fun = dynamic_cast<Function*>(so.get());
+      if (fun == nullptr)
+      {
+         throw InterpreterException("Object not callable"); //TODO improve
+         //TODO throw exception
+      }
+
+      if (expr->arguments.size() != fun->arity())
+      {
+         //TODO throw exception
+      }
+
+      vector<SafeObject> args{};
+
+      for (auto e : expr->arguments)
+      {
+         args.push_back(visitExpression(e));
+      }
+
+
+      return fun->call(this, args);
+   }
+
    SafeObject Interpreter::visitGrouping(Grouping * expr)
    {
       return visitExpression(expr->exp);
@@ -152,9 +180,14 @@ namespace JarJar
    }
 
    void Interpreter::visitBlock(Block * statement){
-      Environment* previous = env;
+     
+      return executeBlock(statement, new Environment(env));
+   }
 
-      env = new Environment(previous);
+   void Interpreter::executeBlock(Block * statement, Environment* targetEnv)
+   {
+      Environment* previous = env;
+      env = targetEnv;
 
       for(auto s: statement->statements)
       {
@@ -186,6 +219,12 @@ namespace JarJar
       }
    }
 
+   
+   void Interpreter::visitFunctionDeclaration(FunctionDeclaration* decl)
+   {
+      Object* funObj = new Function(decl);
+      env->define(decl->name.value, SafeObject(funObj));
+   }
 
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)

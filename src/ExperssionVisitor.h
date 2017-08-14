@@ -1,8 +1,8 @@
-#include <AST.h>
-#include <typeinfo>
-
 #ifndef SRC_VISITORS_H_
 #define SRC_VISITORS_H_
+
+#include <AST.h>
+#include <typeinfo>
 
 namespace JarJar {
 
@@ -26,8 +26,10 @@ namespace JarJar {
                return visitVariable(dynamic_cast<Variable*>(e));
             } else if (typeid(*e) == typeid(Assign)){
                return visitAssign(dynamic_cast<Assign*>(e));
-            }else if (typeid(*e) == typeid(Logical)){
+            } else if (typeid(*e) == typeid(Logical)){
                return visitLogical(dynamic_cast<Logical*>(e));
+            }  else if (typeid(*e) == typeid(Call)) {
+               return visitCall(dynamic_cast<Call*>(e));
             }
 
             throw invalid_argument("Expression type not supported");
@@ -41,6 +43,7 @@ namespace JarJar {
          virtual R visitVariable(Variable * expr) = 0;
          virtual R visitAssign(Assign * expr) = 0;
          virtual R visitLogical(Logical * expr) = 0;
+         virtual R visitCall(Call * expr) = 0;
    };
 }
 

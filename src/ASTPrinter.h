@@ -16,6 +16,7 @@ namespace JarJar {
          virtual string visitVariable(Variable * expr);
          virtual string visitAssign(Assign * expr);
          virtual string visitLogical(Logical * expr);
+         virtual string visitCall(Call * expr);
 
       private:
          string wrap(Expression * e);

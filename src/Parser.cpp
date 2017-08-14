@@ -37,19 +37,48 @@ namespace JarJar
          expect(TokenType::EOL);
          return new VariableStatment(name,0);
 
+      }  else if (match({ TokenType::FUN })) {
+         return function();
       }
 
       return statement();
    }
 
+   Statement * Parser::function()
+   {
+      expect(TokenType::IDENTIFIER); //TODO no text to string repr for this type
+      Token name = previous();
+
+      vector<Token> params = parameters();
+
+      expect(TokenType::LBRACKET);
+      Block* body = dynamic_cast<Block*>(block());
+
+      return new FunctionDeclaration(name, params, body);
+   }
+
+   vector<Token> Parser::parameters()
+   {
+      expect(TokenType::LPAREN);
+      vector<Token> results;
+
+      while (match({ TokenType::IDENTIFIER, TokenType::COMMA }))
+      {
+         Token prev = previous();
+         if (prev.type == TokenType::IDENTIFIER) {
+            results.push_back(prev);
+         }
+      }
+
+      expect(TokenType::RPAREN);
+      return results;
+   }
 
    Statement * Parser::statement()
    {
-      if(match({ TokenType::PRINT }))
-      {
+      if(match({ TokenType::PRINT })) {
          return printStatement();
-      } else if(match({ TokenType::LBRACKET }))
-      {
+      } else if(match({ TokenType::LBRACKET })){
          return block();
       } else if(match( { TokenType::IF })){
          return ifStatement();
@@ -289,6 +318,24 @@ namespace JarJar
       return expr;
    }
 
+   Expression * Parser::call()
+   {
+      Expression* exp = primary();
+
+      if (match({ TokenType::LPAREN }))
+      {
+         vector<Expression*> args;
+         while (!match({ TokenType::RPAREN }))
+         {
+            args.push_back(expression());
+         }
+
+         return new Call(exp, previous(), args);
+      }
+
+      return exp;
+   }
+
    Expression * Parser::unary()
    {
       if (match( { TokenType::SUB, TokenType::NOT })) {
@@ -296,7 +343,7 @@ namespace JarJar
          return new Unary(op, unary());
       }
 
-      return primary();
+      return call();
    }
 
    Expression * Parser::primary()
