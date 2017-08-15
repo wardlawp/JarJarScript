@@ -51,24 +51,6 @@ namespace JarJar
          Expression * right;
    };
 
-   class Call : public Expression
-   {
-   public:
-      Call(Expression* calle,Token rPar, vector<Expression*> args) : callee(calle), rParen(rPar), arguments(args) {};
-
-      ~Call()
-      {
-         for (auto a : arguments)
-         {
-            delete a;
-         }
-      }
-
-      Token rParen;
-      Expression* callee;
-      vector<Expression*> arguments;
-   };
-
    class Grouping: public Expression
    {
       public:

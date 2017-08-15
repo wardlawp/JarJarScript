@@ -15,13 +15,13 @@ namespace JarJar
       ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NOT,
 
       //
-      LPAREN, RPAREN, EOL, IDENTIFIER, LBRACKET, RBRACKET, COMMA,
+      LPAREN, RPAREN, EOL, IDENTIFIER, LBRACKET, RBRACKET,
 
       //Primitives
       BOOL, INT, DECIMAL, STRING, NADA,
 
       //Keywords
-      AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT, VAR, FUN
+      AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT, VAR
     };
 
    const string TRUE_REPR = "ya";
@@ -42,7 +42,6 @@ namespace JarJar
       {TokenType::ELSE, "elsa"},
       {TokenType::NADA, "nada"},
       {TokenType::VAR, "var"},
-      {TokenType::FUN, "fun"},
       {TokenType::FOR, "for"},
       {TokenType::AND, "and"},
       {TokenType::OR, "or"},
@@ -64,8 +63,8 @@ namespace JarJar
       {TokenType::MUL, "*"},
       {TokenType::DIV, "/"},
       {TokenType::ASSIGN, "="},
-      {TokenType::NOT, "!"},
-      {TokenType::COMMA, ","}
+      {TokenType::NOT, "!"}
+
     };
 
     const string getStringRepr(const TokenType & t);

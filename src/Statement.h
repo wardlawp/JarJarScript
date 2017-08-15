@@ -123,21 +123,6 @@ namespace JarJar
 
    };
 
-   class FunctionDeclaration : public Statement
-   {
-   public:
-      FunctionDeclaration(Token n, vector<Token> params, Block* b) : name(n), parameters(params), body(b) {};
-      
-      ~FunctionDeclaration()
-      {
-         delete body;
-      }
-
-      Token name;
-      vector<Token> parameters;
-      Block* body;
-
-   };
 
 }
 #endif /* SRC_STATMENT_H_ */

@@ -50,9 +50,4 @@ namespace JarJar {
    {
       return visitExpression(expr->left) + " " + getStringRepr(expr->t) + " " + visitExpression(expr->left);
    }
-
-   string ASTPrinter::visitCall(Call * expr)
-   {
-      return "Function call to " + visitExpression(expr->callee);
-   }
 }
