@@ -8,9 +8,9 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 
 - Jar Jar like syntax!
 
-Very possibly in the future I will add...
+Coming in the future I will add...
 
-- Functions
+- Functions (currently working on this, will be ready in August '17)
 - Classes
 - Standard Lib
 
