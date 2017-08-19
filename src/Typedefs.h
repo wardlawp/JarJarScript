@@ -4,7 +4,6 @@
 #include <memory>
 #include <Object.h>
 
-typedef std::shared_ptr<JarJar::Object> SafeObject;
-
+typedef std::shared_ptr<JarJar::Object> SObject;
 
 #endif /* SRC_TYPEDEFS_H_ */

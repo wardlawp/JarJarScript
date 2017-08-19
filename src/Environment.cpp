@@ -5,10 +5,10 @@ namespace JarJar {
    Environment::Environment(Environment * parent)
    {
       this->parent = parent;
-      m = map<string, SafeObject>();
+      m = map<string, SObject>();
    }
 
-   void Environment::assign(string name, SafeObject value)
+   void Environment::assign(string name, Object* value)
    {
       if(m.count(name) != 1){
          if(parent == 0) {
@@ -20,16 +20,16 @@ namespace JarJar {
       define(name, value);
    }
 
-   void Environment::define(string name, SafeObject value)
+   void Environment::define(string name, Object* value)
    {
-      if(value == 0 || value.get() == Null::addr()){
+      if(value == 0 || value == Null::addr()){
          m[name] = Null::get();
       } else {
-         m[name] = SafeObject(Object::copyObject(value.get()));
+         m[name] = SObject(Object::copyObject(value));
       }
    }
 
-   SafeObject Environment::get(string name)
+   SObject Environment::get(string name)
    {
       if(m.count(name) != 1){
          if(parent != 0)

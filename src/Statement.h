@@ -128,14 +128,11 @@ namespace JarJar
    public:
       FunctionDeclaration(Token n, vector<Token> params, Block* b) : name(n), parameters(params), body(b) {};
       
-      ~FunctionDeclaration()
-      {
-         delete body;
-      }
+      ~FunctionDeclaration(){ }
 
       Token name;
       vector<Token> parameters;
-      Block* body;
+      shared_ptr<Block> body;
 
    };
 

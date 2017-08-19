@@ -324,16 +324,27 @@ namespace JarJar
 
       if (match({ TokenType::LPAREN }))
       {
-         vector<Expression*> args;
-         while (!match({ TokenType::RPAREN }))
-         {
-            args.push_back(expression());
-         }
-
+         
+         vector<Expression*> args = callArgs();
+         expect(TokenType::RPAREN);
+         
          return new Call(exp, previous(), args);
       }
 
       return exp;
+   }
+
+   vector<Expression*> Parser::callArgs()
+   {
+      vector<Expression*> args;
+      if (!check({ TokenType::RPAREN }))
+      {
+         do {
+            args.push_back(expression());
+         } while (match({ TokenType::COMMA }));
+      }
+
+      return args;
    }
 
    Expression * Parser::unary()

@@ -84,6 +84,7 @@ namespace JarJar {
          Expression* factor();
          Expression* unary();
          Expression* call();
+         vector<Expression*> callArgs();
          Expression* primary();
 
          bool match(initializer_list<TokenType> types);

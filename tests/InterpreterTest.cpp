@@ -27,7 +27,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       REQUIRE(typeid(*literalExp) == typeid(Literal));
 
 
-      SafeObject obj = i->visitExpression(literalExp);
+      SObject obj = i->visitExpression(literalExp);
       REQUIRE(typeid(*obj.get()) == typeid(Int));
    }
 
@@ -41,7 +41,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
       REQUIRE(typeid(*binaryExpr) == typeid(Binary));
 
-      SafeObject obj = i->visitExpression(binaryExpr);
+      SObject obj = i->visitExpression(binaryExpr);
       REQUIRE(typeid(*obj.get()) == typeid(Int));
       CHECK(obj->toStr() == "17");
    }
@@ -53,7 +53,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       auto statements = parse(tokens);
       Expression * binaryExpr = getFirstExpression(statements);
 
-      SafeObject obj = i->visitExpression(binaryExpr);
+      SObject obj = i->visitExpression(binaryExpr);
       REQUIRE(typeid(*obj.get()) == typeid(String));
       String * sObj = dynamic_cast<String*>(obj.get());
       CHECK(sObj->val == "Hello World!");
@@ -67,7 +67,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       auto statements = parse(tokens);
       Expression * ast = getFirstExpression(statements);
 
-      SafeObject obj = i->visitExpression(ast);
+      SObject obj = i->visitExpression(ast);
       REQUIRE(typeid(*obj.get()) == typeid(Int));
       CHECK(obj->toStr() == "-25");
    }
@@ -79,7 +79,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       auto statements = parse(tokens);
       Expression * binaryComparison = getFirstExpression(statements);
 
-      SafeObject obj = i->visitExpression(binaryComparison);
+      SObject obj = i->visitExpression(binaryComparison);
       REQUIRE(typeid(*obj.get()) == typeid(Bool));
 
       Bool * bObj = dynamic_cast<Bool*>(obj.get());
@@ -94,7 +94,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       auto statements = parse(tokens);
       Expression * ast = getFirstExpression(statements);
 
-      SafeObject obj = i->visitExpression(ast);
+      SObject obj = i->visitExpression(ast);
       Bool * bObj = dynamic_cast<Bool*>(obj.get());
       CHECK(bObj->val == true);
    }
@@ -107,7 +107,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       auto statements = parse(tokens);
       Expression * ast = getFirstExpression(statements);
 
-      SafeObject obj = i->visitExpression(ast);
+      SObject obj = i->visitExpression(ast);
       Bool * bObj = dynamic_cast<Bool*>(obj.get());
       CHECK(bObj->val == true);
    }
@@ -134,7 +134,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
       auto statements = parse(tokens);
       Expression * logical = getFirstExpression(statements);
-      SafeObject obj = i->visitExpression(logical);
+      SObject obj = i->visitExpression(logical);
 
       REQUIRE(typeid(*obj.get()) == typeid(Int));
       Int * intObj = dynamic_cast<Int*>(obj.get());
@@ -183,7 +183,7 @@ TEST_CASE( "Interpret Statements", "Statements" )
 
       i->visitStatement(statement);
 
-      SafeObject result = i->getVar("a");
+      SObject result = i->getVar("a");
       REQUIRE(typeid(*result.get()) == typeid(Int));
 
       Int * obj = dynamic_cast<Int*>(result.get());

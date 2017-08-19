@@ -14,10 +14,10 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
 
    SECTION("Define with initialized")
    {
-      SafeObject value = SafeObject(new Int(4));
-      global.define("test", value);
+      SObject value = SObject(new Int(4));
+      global.define("test", value.get());
 
-      SafeObject storedValue = global.get("test");
+      SObject storedValue = global.get("test");
 
       //Pointers won't equal, but values should
       CHECK(storedValue.get() != value.get());
@@ -30,21 +30,21 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
    {
       global.define("test", 0);
 
-      SafeObject storedValue = global.get("test");
+      SObject storedValue = global.get("test");
 
       CHECK(storedValue.get() == Null::addr());
    }
 
    SECTION("Assign writes over")
    {
-      SafeObject value = SafeObject(new Int(4));
-      global.define("test", value);
+      SObject value = SObject(new Int(4));
+      global.define("test", value.get());
 
       Bool* b = dynamic_cast<Bool*>(global.get("test")->operator==(value.get()));
       CHECK(b->val == true);
       delete b;
 
-      global.assign("test", Null::get());
+      global.assign("test", Null::addr());
 
       CHECK(global.get("test").get()  == Null::addr());
 
@@ -62,8 +62,8 @@ TEST_CASE( "Test Nested", "Assign" )
 
    SECTION("Access parent variables")
    {
-      SafeObject value = SafeObject(new Int(4));
-      global.define("test", value);
+      SObject value = SObject(new Int(4));
+      global.define("test", value.get());
 
       Environment inner = Environment(&global);
 
@@ -74,8 +74,8 @@ TEST_CASE( "Test Nested", "Assign" )
 
    SECTION("Modify parent variables")
    {
-      SafeObject value = SafeObject(new Int(4));
-      global.define("test", value);
+      SObject value = SObject(new Int(4));
+      global.define("test", value.get());
 
       Environment inner = Environment(&global);
 
@@ -83,7 +83,7 @@ TEST_CASE( "Test Nested", "Assign" )
       CHECK(b->val == true);
       delete b;
 
-      inner.assign("test", Null::get());
+      inner.assign("test", Null::addr());
 
       CHECK(inner.get("test").get() == Null::addr());
       CHECK(global.get("test").get() == Null::addr());

@@ -23,7 +23,7 @@ using namespace std;
 namespace JarJar
 {
 
-   class Interpreter : public ExperssionVisitor<SafeObject>, public StatementVisitor
+   class Interpreter : public ExperssionVisitor<SObject>, public StatementVisitor
    {
       private:
          void typeCheck(Object* left, Object* right, Token t);
@@ -46,14 +46,14 @@ namespace JarJar
          void interpert(vector<shared_ptr<Statement>> statements);
 
          /* ExperssionVisitor<Object*> virtual methods */
-         virtual SafeObject visitBinary(Binary* expr);
-         virtual SafeObject visitUnary(Unary* expr);
-         virtual SafeObject visitGrouping(Grouping* expr);
-         virtual SafeObject visitLiteral(Literal* expr);
-         virtual SafeObject visitVariable(Variable* expr);
-         virtual SafeObject visitAssign(Assign* expr);
-         virtual SafeObject visitLogical(Logical * expr);
-         virtual SafeObject visitCall(Call * expr);
+         virtual SObject visitBinary(Binary* expr);
+         virtual SObject visitUnary(Unary* expr);
+         virtual SObject visitGrouping(Grouping* expr);
+         virtual SObject visitLiteral(Literal* expr);
+         virtual SObject visitVariable(Variable* expr);
+         virtual SObject visitAssign(Assign* expr);
+         virtual SObject visitLogical(Logical * expr);
+         virtual SObject visitCall(Call * expr);
 
          /* StatementVisitor virtual methods */
 
@@ -68,7 +68,7 @@ namespace JarJar
          void executeBlock(Block* statement, Environment* env);
 
          /* Public test method for accessing private env safely */
-         SafeObject getVar(string name);
+         SObject getVar(string name);
    };
 
 

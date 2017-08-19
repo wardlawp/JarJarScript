@@ -17,10 +17,10 @@ namespace JarJar
       }
    }
 
-   SafeObject Interpreter::visitBinary(Binary * expr)
+   SObject Interpreter::visitBinary(Binary * expr)
    {
-      SafeObject lRef = visitExpression(expr->left);
-      SafeObject rRef = visitExpression(expr->right);
+      SObject lRef = visitExpression(expr->left);
+      SObject rRef = visitExpression(expr->right);
 
       Object * left = lRef.get();
       Object * right = rRef.get();
@@ -64,38 +64,38 @@ namespace JarJar
             throw InterpreterException("Binary operation " + getStringRepr(expr->op.type) + " not implemented");
       }
 
-      return SafeObject(val);
+      return SObject(val);
    }
 
-   SafeObject Interpreter::visitUnary(Unary * expr)
+   SObject Interpreter::visitUnary(Unary * expr)
    {
-      SafeObject ref = visitExpression(expr->right);
+      SObject ref = visitExpression(expr->right);
       Object * right = ref.get();
 
 
       switch (expr->op.type) {
          case TokenType::SUB:
-           return SafeObject(right->negate());
+           return SObject(right->negate());
          case TokenType::NOT:
-             return SafeObject(right->operator !());
+             return SObject(right->operator !());
         default:
            throw InterpreterException("Unary operation " + getStringRepr(expr->op.type) + " not implemented");
       }
 
    }
 
-   SafeObject Interpreter::visitAssign(Assign * expr)
+   SObject Interpreter::visitAssign(Assign * expr)
    {
-      SafeObject value = visitExpression(expr->exp);
+      SObject value = visitExpression(expr->exp);
 
-      env->assign(expr->name.value, value);
+      env->assign(expr->name.value, value.get());
 
       return value;
    }
 
-   SafeObject Interpreter::visitLogical(Logical * expr)
+   SObject Interpreter::visitLogical(Logical * expr)
    {
-      SafeObject leftResult = visitExpression(expr->left);
+      SObject leftResult = visitExpression(expr->left);
 
       if(expr->t == TokenType::OR)
       {
@@ -111,10 +111,10 @@ namespace JarJar
       return visitExpression(expr->right);
    }
 
-   SafeObject Interpreter::visitCall(Call * expr)
+   SObject Interpreter::visitCall(Call * expr)
    {
       //Eval callee
-      SafeObject so = visitExpression(expr->callee);
+      SObject so = visitExpression(expr->callee);
 
       Function* fun = dynamic_cast<Function*>(so.get());
       if (fun == nullptr)
@@ -125,10 +125,11 @@ namespace JarJar
 
       if (expr->arguments.size() != fun->arity())
       {
+         throw InterpreterException("Invalid number of arguments supplied");
          //TODO throw exception
       }
 
-      vector<SafeObject> args{};
+      vector<SObject> args{};
 
       for (auto e : expr->arguments)
       {
@@ -139,24 +140,24 @@ namespace JarJar
       return fun->call(this, args);
    }
 
-   SafeObject Interpreter::visitGrouping(Grouping * expr)
+   SObject Interpreter::visitGrouping(Grouping * expr)
    {
       return visitExpression(expr->exp);
    }
 
-   SafeObject Interpreter::visitLiteral(Literal * expr)
+   SObject Interpreter::visitLiteral(Literal * expr)
    {
-      return SafeObject(expr->value);
+      return SObject(expr->value);
    }
 
-   SafeObject Interpreter::visitVariable(Variable * expr)
+   SObject Interpreter::visitVariable(Variable * expr)
    {
       return env->get(expr->name.value);
    }
 
    void Interpreter::visitPrintStatment(PrintStatment * statement)
    {
-      SafeObject result = visitExpression(statement->expr);
+      SObject result = visitExpression(statement->expr);
 
       if(output != nullptr){
          output->push(result->toStr());
@@ -173,7 +174,7 @@ namespace JarJar
       string name = statement->name.value;
       if(statement->expr != 0)
       {
-         env->define(name, visitExpression(statement->expr));
+         env->define(name, visitExpression(statement->expr).get());
       } else {
          env->define(name, 0);
       }
@@ -200,7 +201,7 @@ namespace JarJar
 
    void Interpreter::visitIfStatement(IfStatement * statement)
    {
-      SafeObject truth = visitExpression(statement->truthTest);
+      SObject truth = visitExpression(statement->truthTest);
       Object * t = truth.get();
 
       if(t->truthy())
@@ -222,8 +223,8 @@ namespace JarJar
    
    void Interpreter::visitFunctionDeclaration(FunctionDeclaration* decl)
    {
-      Object* funObj = new Function(decl);
-      env->define(decl->name.value, SafeObject(funObj));
+      Object* funObj = new Function(new FunctionDeclaration(*decl));
+      env->define(decl->name.value, funObj);
    }
 
 
@@ -237,7 +238,7 @@ namespace JarJar
       }
    }
 
-   SafeObject Interpreter::getVar(string name)
+   SObject Interpreter::getVar(string name)
    {
       return env->get(name);
    }

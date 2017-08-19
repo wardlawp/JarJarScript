@@ -22,7 +22,7 @@ namespace JarJar
    class Callable 
    {
    public:
-      virtual SafeObject call(Interpreter* interpreter, vector<SafeObject> args) = 0;
+      virtual SObject call(Interpreter* interpreter, vector<SObject> args) = 0;
       virtual int arity() = 0;
    };
 
@@ -37,7 +37,7 @@ namespace JarJar
          //delete decl;
       }
 
-      virtual SafeObject call(Interpreter* interpreter, vector<SafeObject> args);
+      virtual SObject call(Interpreter* interpreter, vector<SObject> args);
      
 
       virtual int arity()
