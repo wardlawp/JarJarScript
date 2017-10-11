@@ -24,7 +24,9 @@ namespace JarJar {
                visitIfStatement(dynamic_cast<IfStatement*>(s));
             } else if (typeid(*s) == typeid(WhileStatement)){
                visitWhileStatement(dynamic_cast<WhileStatement*>(s));
-            } else {
+            } else if (typeid(*s) == typeid(FunctionDeclaration)) {
+               visitFunctionDeclaration(dynamic_cast<FunctionDeclaration*>(s));
+            }  else {
                throw invalid_argument("Statement type not supported");
             }
          }
@@ -36,6 +38,7 @@ namespace JarJar {
          virtual void visitBlock(Block * statement) = 0;
          virtual void visitIfStatement(IfStatement * statement) = 0;
          virtual void visitWhileStatement(WhileStatement * statement) = 0;
+         virtual void visitFunctionDeclaration(FunctionDeclaration * statement) = 0;
    };
 }
 
