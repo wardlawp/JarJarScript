@@ -5,7 +5,6 @@
 #include <Exceptions.h>
 #include <Type.h>
 #include <TokenConstants.h>
-#include <Token.h>
 #include <memory>
 
 using namespace std;
@@ -498,6 +497,8 @@ namespace JarJar
          Null() {};
          ~Null() {};
    };
+
+
 }
 
 #endif /* SRC_OBJECT_H_ */
