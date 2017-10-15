@@ -31,8 +31,6 @@ TEST_CASE( "Parser matches basic grammars", "Parser match grammar" )
       REQUIRE(lit->value.get()->toStr() == "5");
    }
 
-   //TODO match more types of primaries (string, bool, null, grouping)
-
    SECTION("Match Unary")
    {
       vector<Token> tokens = { Token(TokenType::SUB, "-", 1), Token(TokenType::INT, "32", 1), Token(TokenType::EOL, ";", 1) };

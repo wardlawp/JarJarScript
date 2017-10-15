@@ -3,10 +3,15 @@
 
 #include <string>
 #include <TokenConstants.h>
+#include <Exceptions.h>
 using namespace std;
 
 namespace JarJar
 {
+   //Forward Declarations
+   class TokenizerException;
+   class LiteralConversionException;
+
    class Token
    {
       public:

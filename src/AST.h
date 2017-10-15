@@ -59,6 +59,7 @@ namespace JarJar
 
       ~Call()
       {
+         //TODO: why not delete callee?
          for (auto a : arguments)
          {
             delete a;

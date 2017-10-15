@@ -22,7 +22,7 @@ namespace JarJar
    class Callable 
    {
    public:
-      virtual SObject call(Interpreter* interpreter, vector<SObject> args) = 0;
+      virtual SObject call(Interpreter* interpreter, const vector<SObject> & args) = 0;
       virtual int arity() = 0;
    };
 
@@ -33,11 +33,10 @@ namespace JarJar
 
       ~Function()
       {
-         //todo?
-         //delete decl;
+         delete decl;
       }
 
-      virtual SObject call(Interpreter* interpreter, vector<SObject> args);
+      virtual SObject call(Interpreter* interpreter, const vector<SObject> & args);
      
 
       virtual int arity()
@@ -59,7 +58,8 @@ namespace JarJar
 
 
       virtual bool truthy() {
-         //TODO must eval?
+         //TODO: this would be a programmer bug: if(functionName) ...
+         //Therefore throw an Exception
          return true;
       }
 

@@ -10,7 +10,7 @@ namespace JarJar
 {
 
    enum TokenType
-    {
+   {
       //Operators
       ASSIGN, EQUALS, NOT_EQUALS, LT, GT, LTE, GTE, ADD, SUB, MUL, DIV, NOT,
 
@@ -22,60 +22,59 @@ namespace JarJar
 
       //Keywords
       AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT, VAR, FUN
-    };
+   };
 
    const string TRUE_REPR = "ya";
    const string FALSE_REPR = "na";
    const char DECIMEL_DOT_REPR = '.';
 
    /**
-     * TODO: This would be better as a map
      * Important: order tokens by longest string values to shortest
      * for maximal munch
      */
-    const vector<pair<TokenType ,string>> typesToString  =
-    {
-      {TokenType::BREAK, "break"},
-      {TokenType::WHILE, "while"},
-      {TokenType::PRINT, "print"},
-      {TokenType::IF, "ifsa"},
-      {TokenType::ELSE, "elsa"},
-      {TokenType::NADA, "nada"},
-      {TokenType::VAR, "var"},
-      {TokenType::FUN, "fun" },
-      {TokenType::FOR, "for"},
-      {TokenType::AND, "and"},
-      {TokenType::OR, "or"},
-      {TokenType::BOOL, TRUE_REPR},
-      {TokenType::BOOL, FALSE_REPR},
-      {TokenType::EQUALS, "=="},
-      {TokenType::NOT_EQUALS, "!="},
-      {TokenType::LTE, "<="},
-      {TokenType::GTE, ">="},
-      {TokenType::LPAREN, "("},
-      {TokenType::RPAREN, ")"},
-      {TokenType::LBRACKET, "{"},
-      {TokenType::RBRACKET, "}"},
-      {TokenType::EOL, ";"},
-      {TokenType::ADD, "+"},
-      {TokenType::SUB, "-"},
-      {TokenType::LT, "<"},
-      {TokenType::GT, ">"},
-      {TokenType::MUL, "*"},
-      {TokenType::DIV, "/"},
-      {TokenType::COMMA, "," },
-      {TokenType::ASSIGN, "="},
-      {TokenType::NOT, "!"}
+   const vector<pair<TokenType, string>> typesToString =
+   {
+     {TokenType::IDENTIFIER, "<Identifier>"},
+     {TokenType::BREAK, "break"},
+     {TokenType::WHILE, "while"},
+     {TokenType::PRINT, "print"},
+     {TokenType::IF, "ifsa"},
+     {TokenType::ELSE, "elsa"},
+     {TokenType::NADA, "nada"},
+     {TokenType::VAR, "var"},
+     {TokenType::FUN, "fun" },
+     {TokenType::FOR, "for"},
+     {TokenType::AND, "and"},
+     {TokenType::OR, "or"},
+     {TokenType::BOOL, TRUE_REPR},
+     {TokenType::BOOL, FALSE_REPR},
+     {TokenType::EQUALS, "=="},
+     {TokenType::NOT_EQUALS, "!="},
+     {TokenType::LTE, "<="},
+     {TokenType::GTE, ">="},
+     {TokenType::LPAREN, "("},
+     {TokenType::RPAREN, ")"},
+     {TokenType::LBRACKET, "{"},
+     {TokenType::RBRACKET, "}"},
+     {TokenType::EOL, ";"},
+     {TokenType::ADD, "+"},
+     {TokenType::SUB, "-"},
+     {TokenType::LT, "<"},
+     {TokenType::GT, ">"},
+     {TokenType::MUL, "*"},
+     {TokenType::DIV, "/"},
+     {TokenType::COMMA, "," },
+     {TokenType::ASSIGN, "="},
+     {TokenType::NOT, "!"}
+   };
 
-    };
+   const string getStringRepr(const TokenType & t);
 
-    const string getStringRepr(const TokenType & t);
-
-    const map<bool, string> boolsToString =
-    {
-      {true, TRUE_REPR},
-      {false, FALSE_REPR}
-    };
+   const map<bool, string> boolsToString =
+   {
+     {true, TRUE_REPR},
+     {false, FALSE_REPR}
+   };
 }
 
 #endif /* _TOKE_CONSTANTS */

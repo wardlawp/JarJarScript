@@ -176,7 +176,7 @@ namespace JarJar
       {
          env->define(name, visitExpression(statement->expr).get());
       } else {
-         env->define(name, 0);
+         env->define(name, nullptr);
       }
    }
 

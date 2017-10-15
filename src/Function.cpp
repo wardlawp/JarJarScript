@@ -1,7 +1,7 @@
 #include <Function.h>
 
 namespace JarJar {
-   SObject Function::call(Interpreter* interpreter, vector<SObject> args) 
+   SObject Function::call(Interpreter* interpreter, const vector<SObject> &args) 
    {
       Environment* funEnv = new Environment(interpreter->global);
 

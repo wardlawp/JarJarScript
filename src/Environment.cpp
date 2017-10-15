@@ -11,7 +11,7 @@ namespace JarJar {
    void Environment::assign(string name, Object* value)
    {
       if(m.count(name) != 1){
-         if(parent == 0) {
+         if(parent == nullptr) {
              throw VariableNotDefinedException(name + " was not declared");
          }
          return parent->assign(name, value);
@@ -22,7 +22,7 @@ namespace JarJar {
 
    void Environment::define(string name, Object* value)
    {
-      if(value == 0 || value == Null::addr()){
+      if(value == nullptr || value == Null::addr()){
          m[name] = Null::get();
       } else {
          m[name] = SObject(Object::copyObject(value));
@@ -32,7 +32,7 @@ namespace JarJar {
    SObject Environment::get(string name)
    {
       if(m.count(name) != 1){
-         if(parent != 0)
+         if(parent != nullptr)
          {
             return parent->get(name);
          }

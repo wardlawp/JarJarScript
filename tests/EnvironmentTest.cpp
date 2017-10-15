@@ -28,7 +28,7 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
 
    SECTION("Define without initialized")
    {
-      global.define("test", 0);
+      global.define("test", nullptr);
 
       SObject storedValue = global.get("test");
 
@@ -47,7 +47,6 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
       global.assign("test", Null::addr());
 
       CHECK(global.get("test").get()  == Null::addr());
-
    }
 
    SECTION("Assign to not defined throws exception")

@@ -33,7 +33,13 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
    SECTION("Interpret Binary")
    {
-      vector<Token> tokens = { Token(TokenType::INT, "32", 1), Token(TokenType::SUB, "-", 1), Token(TokenType::INT, "15", 1), Token(TokenType::EOL, ";", 1) };
+      vector<Token> tokens = 
+      { 
+         Token(TokenType::INT, "32", 1),
+         Token(TokenType::SUB, "-", 1),
+         Token(TokenType::INT, "15", 1),
+         Token(TokenType::EOL, ";", 1) 
+      };
 
       auto statements = parse(tokens);
       Expression * binaryExpr = getFirstExpression(statements);
@@ -48,7 +54,13 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
    SECTION("Concat String")
    {
-      vector<Token> tokens = { Token(TokenType::STRING, "Hello ", 1), Token(TokenType::ADD, "+", 1), Token(TokenType::STRING, "World!", 1), Token(TokenType::EOL, ";", 1) };
+      vector<Token> tokens = 
+      { 
+         Token(TokenType::STRING, "Hello ", 1), 
+         Token(TokenType::ADD, "+", 1), 
+         Token(TokenType::STRING, "World!", 1), 
+         Token(TokenType::EOL, ";", 1) 
+};
 
       auto statements = parse(tokens);
       Expression * binaryExpr = getFirstExpression(statements);
@@ -125,10 +137,29 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
    SECTION("Variable Expression")
    {
-     //TODO
+      //Setup: Interpreter with environment and variable
+      vector<Token> tokens = stringToTokens("var a = 5;");
+      auto statements = parse(tokens);
+      Statement * statement = statements.front().get();
+
+      i->visitStatement(statement);
+
+      //Act: Interpreter interprets a VaraiableExpression
+      tokens = stringToTokens("a;");
+      statements = parse(tokens);
+      Expression * ast = getFirstExpression(statements);
+      REQUIRE(typeid(*ast) == typeid(Variable));
+
+      SObject result = i->visitExpression(ast);
+
+      //Assert: Interpreter returns variable
+      REQUIRE(typeid(*result.get()) == typeid(Int));
+      Int* resultInt = dynamic_cast<Int*>(result.get());
+
+      CHECK(resultInt->val == 5);
    }
 
-   SECTION("Interperet Logical Expression")
+   SECTION("Logical Expression")
    {
       vector<Token> tokens = stringToTokens("5 and 6;");
 
@@ -149,6 +180,56 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       REQUIRE(typeid(*obj.get()) == typeid(String));
       String * sObj = dynamic_cast<String*>(obj.get());
       CHECK(sObj->val == "wabbits");
+   }
+
+   SECTION("Assignment expression")
+   {
+      //Setup: Declare Variable
+      vector<Token> tokens = stringToTokens("var a;");
+      auto statements = parse(tokens);
+      Statement * statement = statements.front().get();
+
+      i->visitStatement(statement);
+
+
+      //Act: Interpreter interprets assignement expression
+      tokens = stringToTokens("a = 5;");
+      statements = parse(tokens);
+      Expression * ast = getFirstExpression(statements);
+      REQUIRE(typeid(*ast) == typeid(Assign));
+
+      //Assert declared but not initialized
+      REQUIRE(i->getVar("a").get() == Null::addr());
+
+      //Act: visit the assignment
+      i->visitExpression(ast);
+
+      //Assert assigned
+      SObject result = i->getVar("a");
+      REQUIRE(typeid(*result.get()) == typeid(Int));
+      Int* resultInt = dynamic_cast<Int*>(result.get());
+
+      CHECK(resultInt->val == 5);
+   }
+
+   SECTION("Call expression")
+   {
+      auto output = queue<string>();
+      i = new Interpreter(&output);
+
+      //Declare function
+      vector<Token> tokens = stringToTokens("fun a(b){ print b; }");
+      auto statements = parse(tokens);
+      i->visitStatement(statements[0].get());
+      
+      //Call function
+      tokens = stringToTokens("a(\"test\");");
+      statements = parse(tokens);
+      i->visitStatement(statements[0].get());
+
+      REQUIRE(output.size() == 1);
+      CHECK(output.front() == "\"test\"");
+      delete i;
    }
 }
 
@@ -243,5 +324,40 @@ TEST_CASE( "Interpret Statements", "Statements" )
       delete i;
    }
 
-   //TODO test Assignment, block execution,
+  
+
+   SECTION("Block Statment")
+   {
+      vector<Token> tokens = stringToTokens("var a; { a = 5;  a = a - 2; }");
+      auto statements = parse(tokens);
+
+      REQUIRE(statements.size() == 2);
+
+      i->visitStatement(statements[0].get());
+      i->visitStatement(statements[1].get());
+
+      SObject result = i->getVar("a");
+      REQUIRE(typeid(*result.get()) == typeid(Int));
+            
+      Int * obj = dynamic_cast<Int*>(result.get());
+
+      CHECK(obj->val == 3);
+   }
+
+   SECTION("Function Declaration Statment")
+   {
+      vector<Token> tokens = stringToTokens("fun a(b){ print b; }");
+      auto statements = parse(tokens);
+
+      REQUIRE(statements.size() == 1);
+
+      i->visitStatement(statements[0].get());
+
+      SObject result = i->getVar("a");
+      REQUIRE(typeid(*result.get()) == typeid(Function));
+
+      Function * obj = dynamic_cast<Function*>(result.get());
+
+      CHECK(obj->arity() == 1);
+   }
 }

@@ -11,9 +11,9 @@
 
 using namespace JarJar;
 
-Expression * getFirstExpression(const vector<shared_ptr<Statement>>&  statement);
-vector<shared_ptr<Statement>> parse(const vector<Token>& tokens);
-vector<Token> stringToTokens(const string& input);
+Expression *                    getFirstExpression(const vector<shared_ptr<Statement>>&  statement);
+vector<shared_ptr<Statement>>   parse(const vector<Token>& tokens);
+vector<Token>                   stringToTokens(const string& input);
 
 
 #endif /* TESTS_TESTHELPERS_H_ */

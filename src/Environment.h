@@ -14,7 +14,7 @@ namespace JarJar {
 
    class Environment {
       public:
-         Environment(Environment * parent = 0);
+         Environment(Environment * parent = nullptr);
          void define(string name, Object* value);
          void assign(string name, Object* value);
          SObject get(string name);

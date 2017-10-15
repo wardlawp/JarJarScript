@@ -11,7 +11,7 @@ TEST_CASE( "Token inputs to correct type", "Token Value Parse" ) {
     }
 
     SECTION("Double parse"){
-        Token t = Token(TokenType::INT, "123.23", 0);
+        Token t = Token(TokenType::DECIMAL, "123.23", 0);
         REQUIRE( t.getDoubleVal() == 123.23);
     }
 
@@ -21,10 +21,10 @@ TEST_CASE( "Token inputs to correct type", "Token Value Parse" ) {
     }
 
     SECTION("Bool parse"){
-       Token t = Token(TokenType::STRING, "na", 0);
+       Token t = Token(TokenType::BOOL, "na", 0);
        REQUIRE( t.getBoolVal() == false);
 
-       t = Token(TokenType::STRING, "ya", 0);
+       t = Token(TokenType::BOOL, "ya", 0);
        REQUIRE( t.getBoolVal() == true);
    }
 }

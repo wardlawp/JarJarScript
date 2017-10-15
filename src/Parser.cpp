@@ -46,7 +46,7 @@ namespace JarJar
 
    Statement * Parser::function()
    {
-      expect(TokenType::IDENTIFIER); //TODO no text to string repr for this type
+      expect(TokenType::IDENTIFIER);
       Token name = previous();
 
       vector<Token> params = parameters();
