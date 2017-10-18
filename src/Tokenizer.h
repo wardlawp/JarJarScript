@@ -34,7 +34,7 @@ namespace JarJar
          bool matchKeywords();
          bool matchIdentifier();
          void matchNumeric();
-         bool whitespace(char c);
+         bool isWhitespace(char c);
          void skipWhitespace();
          void parseString();
          bool matchMultiCharToken(TokenType t, string reperesentation);

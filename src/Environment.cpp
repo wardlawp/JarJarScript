@@ -40,7 +40,7 @@ namespace JarJar {
          throw VariableNotDefinedException(name + " was not declared");
       }
 
-      return m[name];
+      return SObject(m[name]);
    }
 
 }

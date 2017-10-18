@@ -12,14 +12,14 @@
 using namespace std;
 using namespace JarJar;
 
-TEST_CASE( "Interpret Expressions", "Expressions" )
+TEST_CASE("Interpret Expressions", "Expressions")
 {
    auto interp = unique_ptr<Interpreter>(new Interpreter());
    Interpreter *i = interp.get();
 
    SECTION("Interpret Literal")
    {
-      vector<Token> tokens = { Token(TokenType::INT, "5", 1), Token(TokenType::EOL, ";", 1)  };
+      vector<Token> tokens = { Token(TokenType::INT, "5", 1), Token(TokenType::EOL, ";", 1) };
 
       auto statements = parse(tokens);
       Expression * literalExp = getFirstExpression(statements);
@@ -33,12 +33,12 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
    SECTION("Interpret Binary")
    {
-      vector<Token> tokens = 
-      { 
+      vector<Token> tokens =
+      {
          Token(TokenType::INT, "32", 1),
          Token(TokenType::SUB, "-", 1),
          Token(TokenType::INT, "15", 1),
-         Token(TokenType::EOL, ";", 1) 
+         Token(TokenType::EOL, ";", 1)
       };
 
       auto statements = parse(tokens);
@@ -54,13 +54,13 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
 
    SECTION("Concat String")
    {
-      vector<Token> tokens = 
-      { 
-         Token(TokenType::STRING, "Hello ", 1), 
-         Token(TokenType::ADD, "+", 1), 
-         Token(TokenType::STRING, "World!", 1), 
-         Token(TokenType::EOL, ";", 1) 
-};
+      vector<Token> tokens =
+      {
+         Token(TokenType::STRING, "Hello ", 1),
+         Token(TokenType::ADD, "+", 1),
+         Token(TokenType::STRING, "World!", 1),
+         Token(TokenType::EOL, ";", 1)
+      };
 
       auto statements = parse(tokens);
       Expression * binaryExpr = getFirstExpression(statements);
@@ -221,7 +221,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
       vector<Token> tokens = stringToTokens("fun a(b){ print b; }");
       auto statements = parse(tokens);
       i->visitStatement(statements[0].get());
-      
+
       //Call function
       tokens = stringToTokens("a(\"test\");");
       statements = parse(tokens);
@@ -233,7 +233,7 @@ TEST_CASE( "Interpret Expressions", "Expressions" )
    }
 }
 
-TEST_CASE( "Interpret Statements", "Statements" )
+TEST_CASE("Interpret Statements", "Statements")
 {
    auto interp = unique_ptr<Interpreter>(new Interpreter());
    Interpreter *i = interp.get();
@@ -324,7 +324,7 @@ TEST_CASE( "Interpret Statements", "Statements" )
       delete i;
    }
 
-  
+
 
    SECTION("Block Statment")
    {
@@ -338,7 +338,7 @@ TEST_CASE( "Interpret Statements", "Statements" )
 
       SObject result = i->getVar("a");
       REQUIRE(typeid(*result.get()) == typeid(Int));
-            
+
       Int * obj = dynamic_cast<Int*>(result.get());
 
       CHECK(obj->val == 3);
@@ -359,5 +359,46 @@ TEST_CASE( "Interpret Statements", "Statements" )
       Function * obj = dynamic_cast<Function*>(result.get());
 
       CHECK(obj->arity() == 1);
+   }
+
+   SECTION("Return Statment")
+   {
+      //Declare fibonacci
+      string jjCode = "fun fib(n){ ifsa(n <= 1) return n; return fib(n-2) + fib(n-1); }";
+      vector<Token> tokens =  stringToTokens(jjCode);
+      auto statements = parse(tokens);
+      i->visitStatement(statements[0].get());
+      
+      //Call function
+      tokens = stringToTokens("fib(6);");
+      statements = parse(tokens);
+      Expression* exp = getFirstExpression(statements);
+      SObject obj = i->visitExpression(exp);
+
+      //Verify result
+      REQUIRE(typeid(*obj.get()) == typeid(Int));
+      Int* resultInt = dynamic_cast<Int*>(obj.get());
+      CHECK(resultInt->val == 8);
+   }
+
+   SECTION("Closure")
+   {
+      //Declare fibonacci
+      string jjCode = "fun closure() { var a = \"abc\"; fun b() { return a;} return b;} var c = closure();";
+      vector<Token> tokens = stringToTokens(jjCode);
+      auto statements = parse(tokens);
+      i->visitStatement(statements[0].get());
+      i->visitStatement(statements[1].get());
+
+      //Call function
+      tokens = stringToTokens("c();");
+      statements = parse(tokens);
+      Expression* exp = getFirstExpression(statements);
+      SObject obj = i->visitExpression(exp);
+
+      //Verify result
+      REQUIRE(typeid(*obj.get()) == typeid(String));
+      String* resultStr = dynamic_cast<String*>(obj.get());
+      CHECK(resultStr->val == "abc");
    }
 }

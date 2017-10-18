@@ -136,5 +136,20 @@ namespace JarJar
 
    };
 
+   class ReturnSatatment : public Statement
+   {
+   public:
+      ReturnSatatment(Token t, Expression* ex) : token(t), exp(ex){};
+
+      ~ReturnSatatment() 
+      { 
+         delete exp;
+      }
+
+      Token token;
+      Expression* exp;
+
+   };
+
 }
 #endif /* SRC_STATMENT_H_ */

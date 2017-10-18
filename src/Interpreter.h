@@ -17,31 +17,28 @@
 #include <Typedefs.h>
 #include <memory>
 #include <Function.h>
+#include <Return.h>
 
 using namespace std;
 
 namespace JarJar
 {
+   typedef std::shared_ptr<JarJar::Environment> RefEnvironment;
 
    class Interpreter : public ExperssionVisitor<SObject>, public StatementVisitor
    {
       private:
          void typeCheck(Object* left, Object* right, Token t);
-         Environment * env;
+         RefEnvironment env;
          queue<string> * output;
       public:
-         Environment * global;
+         RefEnvironment global;
          Interpreter(queue<string> * op = nullptr)
          {
             output = op;
-            global = new Environment();
+            global = make_shared<Environment>();
             env = global;
          };
-
-         ~Interpreter()
-         {
-            delete env;
-         }
 
          void interpert(vector<shared_ptr<Statement>> statements);
 
@@ -64,8 +61,9 @@ namespace JarJar
          virtual void visitIfStatement(IfStatement * statement);
          virtual void visitWhileStatement(WhileStatement * statement);
          virtual void visitFunctionDeclaration(FunctionDeclaration * statement);
+         virtual void visitReturnStatement(ReturnSatatment* statement);
 
-         void executeBlock(Block* statement, Environment* env);
+         void executeBlock(Block* statement, RefEnvironment env);
 
          /* Public test method for accessing private env safely */
          SObject getVar(string name);

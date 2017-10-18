@@ -21,7 +21,7 @@ namespace JarJar
       BOOL, INT, DECIMAL, STRING, NADA,
 
       //Keywords
-      AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT, VAR, FUN
+      AND, OR, IF, ELSE, BREAK, WHILE, FOR, PRINT, VAR, FUN, RETURN
    };
 
    const string TRUE_REPR = "ya";
@@ -35,6 +35,7 @@ namespace JarJar
    const vector<pair<TokenType, string>> typesToString =
    {
      {TokenType::IDENTIFIER, "<Identifier>"},
+     {TokenType::RETURN, "return" },
      {TokenType::BREAK, "break"},
      {TokenType::WHILE, "while"},
      {TokenType::PRINT, "print"},

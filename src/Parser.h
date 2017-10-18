@@ -23,7 +23,8 @@ using namespace std;
  * function            → IDENTIFIER '(' parameters? ')' block
  * parameters          → IDENTIFIER ( ',' IDENTIFIER )*
  * varDeclaration      → 'var' IDENTIFIER ( '=' expression )? ';' //initializer is optional
- * statement           → exprStatement | ifStatement | printStatement | block | whileStatement | forStatement
+ * statement           → exprStatement | ifStatement | printStatement | block | whileStatement | forStatement | returnStatement
+ * returnStatement     → 'return' expression? ';'
  * whileStatement      → 'while' '(' expression ')' statement;
  * forStatement        → 'for' '(' varDeclaration | exprStatement | ':' expression? ';' expression? ')' statement
  * ifStatement         → 'if' '(' expression ')' statement ( 'else' statement )? ;
@@ -63,6 +64,7 @@ namespace JarJar {
          Statement* printStatement();
          Statement* ifStatement();
          Statement* expressionStatement();
+         Statement* returnStatement();
          Statement* block();
          Statement* whilE();
 

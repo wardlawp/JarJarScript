@@ -114,7 +114,9 @@ namespace JarJar
    SObject Interpreter::visitCall(Call * expr)
    {
       //Eval callee
+      //Our function "c" is getting deleted here
       SObject so = visitExpression(expr->callee);
+      //so.
 
       Function* fun = dynamic_cast<Function*>(so.get());
       if (fun == nullptr)
@@ -182,21 +184,31 @@ namespace JarJar
 
    void Interpreter::visitBlock(Block * statement){
      
-      return executeBlock(statement, new Environment(env));
+      return executeBlock(statement, make_shared<Environment>(env.get()));
    }
 
-   void Interpreter::executeBlock(Block * statement, Environment* targetEnv)
+   void Interpreter::executeBlock(Block * statement, RefEnvironment targetEnv)
    {
-      Environment* previous = env;
+      RefEnvironment previous = env;
       env = targetEnv;
+      
+      auto returnEnvToPrevious = [this, &previous]() 
+      { 
+         this->env = previous;
+      };
 
-      for(auto s: statement->statements)
+      try
       {
-         visitStatement(s);
+         for (auto s : statement->statements)
+         {
+            visitStatement(s);
+         }
+      } catch (Return ret) {
+         returnEnvToPrevious(); //here
+         throw ret;
       }
 
-      delete env;
-      env = previous;
+      returnEnvToPrevious();
    }
 
    void Interpreter::visitIfStatement(IfStatement * statement)
@@ -223,10 +235,21 @@ namespace JarJar
    
    void Interpreter::visitFunctionDeclaration(FunctionDeclaration* decl)
    {
-      Object* funObj = new Function(new FunctionDeclaration(*decl));
+      Object* funObj = new Function(new FunctionDeclaration(*decl), make_shared<Environment>(env.get()));
       env->define(decl->name.value, funObj);
    }
 
+   void Interpreter::visitReturnStatement(ReturnSatatment* statement)
+   {
+      SObject obj;
+      if (statement->exp != nullptr) {
+         obj = visitExpression(statement->exp);
+      }  else {
+         obj = Null::get();
+      }
+
+      throw Return(obj);
+   }
 
    void Interpreter::typeCheck(Object * left, Object * right, Token t)
    {

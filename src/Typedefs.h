@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <Object.h>
+#include <Environment.h>
 
 typedef std::shared_ptr<JarJar::Object> SObject;
 

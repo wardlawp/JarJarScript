@@ -1,16 +1,25 @@
+#pragma once
 #include <Function.h>
+#include <Typedefs.h>
+
+using namespace std;
 
 namespace JarJar {
    SObject Function::call(Interpreter* interpreter, const vector<SObject> &args) 
    {
-      Environment* funEnv = new Environment(interpreter->global);
+      RefEnvironment funEnv = RefEnvironment(closure);
 
       for (int i = 0; i < arity(); i++)
       {
          funEnv->define(decl->parameters[i].value, args[i].get());
       }
 
-      interpreter->executeBlock(decl->body.get(), funEnv);
+      try {
+         interpreter->executeBlock(decl->body.get(), funEnv);
+      } catch (Return ret) {
+         return ret.result;
+      }
+      
 
       //TODO
       return Null::get();

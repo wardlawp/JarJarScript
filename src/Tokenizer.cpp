@@ -30,7 +30,7 @@ namespace JarJar
          matchNumeric();
       } else if (curr == '"') {
          parseString();
-      } else if (whitespace(curr)) {
+      } else if (isWhitespace(curr)) {
          skipWhitespace();
       } else if (!matchKeywords() && !matchIdentifier()) {
          Token errorToken = Token(TokenType::ADD, source.substr(start), line);
@@ -54,7 +54,7 @@ namespace JarJar
       return false;
    }
 
-   bool Tokenizer::whitespace(char c)
+   bool Tokenizer::isWhitespace(char c)
    {
       return (c == ' ' || c == '\t');
    }
@@ -98,6 +98,7 @@ namespace JarJar
 
    bool Tokenizer::matchKeywords()
    {
+      //TODO break this out so that keywords are not match the same what as operators so that we can enforce whitespace padding
       for (pair<TokenType, string> rule : typesToString) {
          if (matchMultiCharToken(rule.first, rule.second))
             return true;

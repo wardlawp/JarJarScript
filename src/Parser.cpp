@@ -87,6 +87,9 @@ namespace JarJar
       } else if (match({ TokenType::FOR })) {
          return foR();
       }
+      else if (match({ TokenType::RETURN })) {
+         return returnStatement();
+      }
 
       return expressionStatement();
    }
@@ -115,6 +118,22 @@ namespace JarJar
       vector<Statement*> forDeSugared{ initStatement, while_ };
 
       return new Block(forDeSugared);
+   }
+
+   //TODO test
+   Statement* Parser::returnStatement()
+   {
+      Token keyword = previous();
+      
+      Expression* exp = nullptr;
+
+      if (!check(TokenType::EOL)) {
+         exp = expression();
+      }
+
+      expect(TokenType::EOL);
+
+      return new ReturnSatatment(keyword, exp);
    }
 
    Block* Parser::forBody(Expression* postExpression)

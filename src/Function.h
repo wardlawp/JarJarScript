@@ -7,6 +7,7 @@
 #include <Object.h>
 #include <Statement.h>
 #include <Interpreter.h>
+#include <Return.h>
 
 using namespace std;
 
@@ -26,10 +27,14 @@ namespace JarJar
       virtual int arity() = 0;
    };
 
+
+   typedef std::shared_ptr<JarJar::Environment> RefEnvironment;
+
    class Function : public Callable, public Object
    {
+      RefEnvironment closure;
    public:
-      Function(FunctionDeclaration* fun) : decl(fun) {};
+      Function(FunctionDeclaration* fun, RefEnvironment _closure) : decl(fun), closure(_closure) {};
 
       ~Function()
       {
