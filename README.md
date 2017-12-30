@@ -10,7 +10,6 @@ A scripting language project for fun. Inspired by Robert Nystrom's new book: htt
 
 Coming in the future I will add...
 
-- Functions (currently working on this, will be ready in August '17)
 - Classes
 - Standard Lib
 
@@ -24,6 +23,7 @@ The languge supports:
 - Arithemitic of build in types
 - Conditional statements
 - Loops 
+- Functions
 
 
 ```bash
@@ -42,6 +42,9 @@ ya
 >ifsa(a) { var b = 2; while(b) { print a; b = b -1; } }
 "I like pie"
 "I like pie"
+>fun fib(n){ ifsa(n <= 1) return n; return fib(n-2) + fib(n-1); }";
+>print fib(6);
+8
 ```
 
 ## Installation
