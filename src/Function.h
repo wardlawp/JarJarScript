@@ -37,7 +37,7 @@ namespace JarJar
    public:
       Function(FunctionDeclaration* fun, RefEnvironment _closure) : decl(fun), closure(_closure) {};
 
-      ~Function()
+      ~Function() override
       {
          delete decl;
       }
@@ -65,12 +65,50 @@ namespace JarJar
       virtual bool truthy() {
          //TODO: this would be a programmer bug: if(functionName) ...
          //Therefore throw an Exception
-         return true;
+         return false;
       }
 
       FunctionDeclaration* decl;
    };
 
+
+   class StdLibFunc : public Callable, public Object 
+   {
+   public:
+      const static string name;
+
+      /* StdLib functions are stateless*/
+      virtual  Object* clone() override
+      {
+         return this;
+      }
+
+      virtual bool truthy() override
+      {
+         //todo throw
+         return false;
+      }
+   };
+
+   class OpenFile : public StdLibFunc
+   {
+   public:
+      OpenFile() {};
+      ~OpenFile() override {}
+
+      virtual SObject call(Interpreter* interpreter, const vector<SObject> & args);
+
+
+      virtual int arity() override
+      {
+         return 2;
+      }
+
+      virtual string toStr() const
+      {
+         return "<Stdlib Function> " __FUNCTION__;
+      }
+   };
 }
 
 

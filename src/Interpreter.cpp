@@ -3,6 +3,20 @@
 namespace JarJar
 {
 
+   Interpreter::Interpreter(queue<string> * op)
+   {
+      output = op;
+      global = make_shared<Environment>();
+      env = global;
+
+      initStdLibFunctions();
+   };
+
+   void Interpreter::initStdLibFunctions()
+   {
+      env->define(OpenFile::name, new OpenFile());
+   }
+
    void Interpreter::interpert(vector<shared_ptr<Statement>> statements)
    {
       for(auto statement: statements)
@@ -116,7 +130,7 @@ namespace JarJar
       SObject so = visitExpression(expr->callee);
       //so.
 
-      Function* fun = dynamic_cast<Function*>(so.get());
+      Callable* fun = dynamic_cast<Callable*>(so.get());
       if (fun == nullptr)
       {
          throw InterpreterException(so->toStr() + " not callable");

@@ -27,18 +27,8 @@ namespace JarJar
 
    class Interpreter : public ExperssionVisitor<SObject>, public StatementVisitor
    {
-      private:
-         void typeCheck(Object* left, Object* right, Token t);
-         RefEnvironment env;
-         queue<string> * output;
       public:
-         RefEnvironment global;
-         Interpreter(queue<string> * op = nullptr)
-         {
-            output = op;
-            global = make_shared<Environment>();
-            env = global;
-         };
+         Interpreter(queue<string> * op = nullptr);
 
          void interpert(vector<shared_ptr<Statement>> statements);
 
@@ -53,7 +43,6 @@ namespace JarJar
          virtual SObject visitCall(Call * expr);
 
          /* StatementVisitor virtual methods */
-
          virtual void visitPrintStatment(PrintStatment* statment);
          virtual void visitExpressionStatment(ExpressionStatment* statment);
          virtual void visitVariableStatment(VariableStatment* statement);
@@ -67,6 +56,14 @@ namespace JarJar
 
          /* Public test method for accessing private env safely */
          SObject getVar(string name);
+
+         RefEnvironment global;
+
+   private:
+      void initStdLibFunctions();
+      void typeCheck(Object* left, Object* right, Token t);
+      RefEnvironment env;
+      queue<string> * output;
    };
 
 

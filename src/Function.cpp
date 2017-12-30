@@ -22,4 +22,36 @@ namespace JarJar {
       
       return Null::get();
    }
+
+   const string OpenFile::name = "open";
+
+   static void checkOpenFileArgs(const vector<SObject> &args)
+   {
+      if (args.size() != 2) {
+         throw StdLibException(OpenFile::name + " takes two string arguments");
+      }
+
+      auto isJJString = [](Object* o) {
+         return (dynamic_cast<String*>(o) != nullptr);
+      };
+
+      if (!isJJString(args[0].get()) || !isJJString(args[1].get())) {
+
+         throw StdLibException(OpenFile::name +  " takes two string arguments");
+      }
+
+      string mode = args[1]->toStr();
+
+      if (mode != "r" && mode != "w")
+      {
+
+         throw StdLibException(OpenFile::name + "'s second argument must be 'r' or 'w'");
+      }
+   }
+
+   SObject OpenFile::call(Interpreter* interpreter, const vector<SObject> &args)
+   {
+      checkOpenFileArgs(args);
+      return SObject(new File(args[0]->toStr(), args[1]->toStr()));
+   }
 }

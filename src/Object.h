@@ -6,6 +6,8 @@
 #include <Type.h>
 #include <TokenConstants.h>
 #include <memory>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -346,6 +348,56 @@ namespace JarJar
          {
             return new Decimal(val);
          }
+   };
+
+   //todo state checks on methods
+   class File : public Object
+   {
+      string path;
+      fstream fileStream;
+   public:
+      File(string _path, string mode) : path(_path) 
+      {
+         ios_base::openmode fMode = ios_base::in;
+         if (mode == "w")
+         {
+            fMode = ios_base::out;
+         }
+
+
+         fileStream = fstream(_path, fMode);
+      }
+      
+      virtual string toStr() const
+      {
+         return "<File> " + path;
+      }
+
+      virtual Object* clone()
+      {
+         return this; // todo
+      }
+
+      void close()
+      {
+         fileStream.close();
+      }
+
+      void write(string input)
+      {
+         fileStream << input;
+      }
+
+      /*string getLine()
+      {
+         string line = fileStream.getline();
+         return line;
+      }*/
+
+      virtual bool truthy()
+      {
+         return fileStream.is_open();
+      }
    };
 
    class String: public Object
