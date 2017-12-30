@@ -1,12 +1,18 @@
 #include "Tokenizer.h"
 
+static bool isWhitespace(char c)
+{
+   return (c == ' ' || c == '\t' || c == '\n');
+}
+
 namespace JarJar
 {
 
    Tokenizer::Tokenizer(string source)
    {
       this->source = source;
-      start = current = line = 0;
+      start = current = 0;
+      line = 1;
    }
 
    vector<Token> Tokenizer::getTokens()
@@ -56,12 +62,13 @@ namespace JarJar
 
    bool Tokenizer::isWhitespace(char c)
    {
-      return (c == ' ' || c == '\t');
+      line = line + ((c == '\n') ? 1: 0);
+      return ::isWhitespace(c);
    }
 
    void Tokenizer::skipWhitespace()
    {
-      while (source[current] == ' ' || source[current] == '\t') {
+      while (::isWhitespace(source[current])) {
          current++;
       }
    }

@@ -13,7 +13,7 @@ namespace JarJar
    {
       auto result = vector<shared_ptr<Statement>>();
 
-      while (!atEnd()) {
+      while (!pastEnd()) {
          auto ptr = shared_ptr<Statement>(declaration());
          result.push_back(ptr);
       }
@@ -163,7 +163,7 @@ namespace JarJar
          || (typeid(*forInit) == typeid(VariableStatment));
 
       if (!correctStatementType) {
-         string cusMsg = "Expected var declaration or expression statement.";
+         string cusMsg = "Expected var declaration or expression statement";
          throw ParserException(tokens.at(pos), cusMsg);
       }
 
@@ -377,6 +377,11 @@ namespace JarJar
 
    Expression * Parser::primary()
    {
+      if (pastEnd()) {
+         Token t = previous();
+         throw ParserException(t, "Expected expression after " + t.value);
+      }
+
       TokenType next = peek();
 
       if (next == TokenType::INT) {
@@ -393,7 +398,7 @@ namespace JarJar
          Literal * result = new Literal(new Bool(tokens.at(pos).getBoolVal()));
          advance();
          return result;
-      }else if (next == TokenType::DECIMAL) {
+      } else if (next == TokenType::DECIMAL) {
          Literal * result = new Literal(new Decimal(tokens.at(pos).getDoubleVal()));
          advance();
          return result;
@@ -415,9 +420,14 @@ namespace JarJar
 
    bool Parser::match(initializer_list<TokenType> types)
    {
-      TokenType next = peek();
+      if (pastEnd())
+      {
+         return false;
+      }
+
+      TokenType current = peek();
       for (TokenType t : types) {
-         if (next == t) {
+         if (current == t) {
             advance();
             return true;
          }
@@ -429,6 +439,11 @@ namespace JarJar
    bool Parser::atEnd()
    {
       return pos >= (tokens.size() - 1);
+   }
+
+   bool Parser::pastEnd()
+   {
+      return (pos >= tokens.size());
    }
 
    bool Parser::check(TokenType t)
@@ -449,18 +464,16 @@ namespace JarJar
       return tokens.at(max(0, pos - 1));
    }
 
-   Token Parser::advance()
+   void Parser::advance()
    {
-      if (!atEnd())
-         pos++;
-      return previous();
+      pos++;
    }
 
    void Parser::expect(TokenType t)
    {
       if (!match( { t })) {
          string cusMsg = "Expected token '" + getStringRepr(t) + "'";
-         throw ParserException(tokens.at(pos), cusMsg);
+         throw ParserException(tokens.at(pastEnd() ? pos - 1: pos), cusMsg);
       }
    }
 }

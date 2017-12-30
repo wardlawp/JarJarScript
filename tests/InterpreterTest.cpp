@@ -228,7 +228,7 @@ TEST_CASE("Interpret Expressions", "Expressions")
       i->visitStatement(statements[0].get());
 
       REQUIRE(output.size() == 1);
-      CHECK(output.front() == "\"test\"");
+      CHECK(output.front() == "test");
       delete i;
    }
 }
@@ -252,7 +252,7 @@ TEST_CASE("Interpret Statements", "Statements")
       i->visitStatement(statement);
 
       REQUIRE(output.size() == 1);
-      CHECK(output.front() == "\"test\"");
+      CHECK(output.front() == "test");
       delete i;
    }
 
@@ -292,9 +292,9 @@ TEST_CASE("Interpret Statements", "Statements")
       i->visitStatement(statement);
 
       REQUIRE(output.size() == 2);
-      CHECK(output.front() == "\"test\"");
+      CHECK(output.front() == "test");
       output.pop();
-      CHECK(output.front() == "\"yusssss\"");
+      CHECK(output.front() == "yusssss");
 
       delete i;
    }

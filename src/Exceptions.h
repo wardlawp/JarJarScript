@@ -13,13 +13,14 @@ namespace JarJar {
    class Token;
 
    class TokenizerException : public runtime_error {
-      private:
+      protected:
          string msg;
       public:
+         TokenizerException(): runtime_error("") {}
          TokenizerException(const Token t, const string customMsg = "");
 
 
-         const char* what()
+         virtual const char* what() const
          {
             return msg.c_str();
          }
@@ -27,7 +28,8 @@ namespace JarJar {
 
    class ParserException: public TokenizerException {
       public:
-         ParserException(const Token t, const string customMsg = "");
+         ParserException() = default;
+         ParserException(const Token t, const string customMsg);
    };
 
    class ObjectMethodDoesNotExistException: public runtime_error

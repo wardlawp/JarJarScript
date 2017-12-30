@@ -372,7 +372,7 @@ namespace JarJar
 
          virtual  string toStr() const
          {
-            return "\"" + val + "\"";
+            return val;
          }
 
          virtual Object * operator+(Object * other)

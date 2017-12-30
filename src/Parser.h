@@ -90,11 +90,12 @@ namespace JarJar {
          Expression* primary();
 
          bool match(initializer_list<TokenType> types);
-         Token advance();
+         void advance();
          Token previous();
          TokenType peek();
          bool check(TokenType t);
          bool atEnd();
+         bool pastEnd();
          void expect(TokenType t);
    };
 }
