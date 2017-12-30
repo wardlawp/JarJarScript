@@ -8,6 +8,7 @@
 #include <Statement.h>
 #include <Interpreter.h>
 #include <Return.h>
+#include <string>
 
 using namespace std;
 
@@ -51,8 +52,7 @@ namespace JarJar
 
       virtual string toStr() const
       {
-         return "TODO";
-
+         return "<Function> " + decl->name.value;
       }
 
       virtual Object* clone()
@@ -69,7 +69,6 @@ namespace JarJar
       }
 
       FunctionDeclaration* decl;
-
    };
 
 }

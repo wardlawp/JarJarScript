@@ -7,7 +7,7 @@ using namespace std;
 namespace JarJar {
    SObject Function::call(Interpreter* interpreter, const vector<SObject> &args) 
    {
-      RefEnvironment funEnv = RefEnvironment(closure);
+      RefEnvironment funEnv = make_shared<Environment>(closure.get());
 
       for (int i = 0; i < arity(); i++)
       {
@@ -20,8 +20,6 @@ namespace JarJar {
          return ret.result;
       }
       
-
-      //TODO
       return Null::get();
    }
 }

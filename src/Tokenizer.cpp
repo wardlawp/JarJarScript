@@ -98,7 +98,6 @@ namespace JarJar
 
    bool Tokenizer::matchKeywords()
    {
-      //TODO break this out so that keywords are not match the same what as operators so that we can enforce whitespace padding
       for (pair<TokenType, string> rule : typesToString) {
          if (matchMultiCharToken(rule.first, rule.second))
             return true;

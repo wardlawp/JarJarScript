@@ -120,7 +120,6 @@ namespace JarJar
       return new Block(forDeSugared);
    }
 
-   //TODO test
    Statement* Parser::returnStatement()
    {
       Token keyword = previous();

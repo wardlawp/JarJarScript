@@ -10,10 +10,8 @@ namespace JarJar
          try {
             visitStatement(statement.get());
          } catch (InterpreterException &e){
-            //todo
             cout << e.what() << endl;
          }
-
       }
    }
 
@@ -121,14 +119,12 @@ namespace JarJar
       Function* fun = dynamic_cast<Function*>(so.get());
       if (fun == nullptr)
       {
-         throw InterpreterException("Object not callable"); //TODO improve
-         //TODO throw exception
+         throw InterpreterException(so->toStr() + " not callable");
       }
 
       if (expr->arguments.size() != fun->arity())
       {
          throw InterpreterException("Invalid number of arguments supplied");
-         //TODO throw exception
       }
 
       vector<SObject> args{};
@@ -235,7 +231,7 @@ namespace JarJar
    
    void Interpreter::visitFunctionDeclaration(FunctionDeclaration* decl)
    {
-      Object* funObj = new Function(new FunctionDeclaration(*decl), make_shared<Environment>(env.get()));
+      Object* funObj = new Function(new FunctionDeclaration(*decl), env);
       env->define(decl->name.value, funObj);
    }
 
