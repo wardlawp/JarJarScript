@@ -23,15 +23,18 @@ namespace JarJar
          virtual string toStr() const = 0;
          virtual Object* clone() = 0;
 
-         static void deleteObject(Object* obj);
-         static Object* copyObject(Object* obj);
+         // Most objects are implicity assigned by copy
+         virtual bool assignByRef() const
+         {
+            return false;
+         }
 
          virtual bool truthy() = 0;
 
          virtual Object * negate()
          {
             throw ObjectMethodDoesNotExistException(
-                  notImplementedMsg(__FUNCTION__));
+               notImplementedMsg(__FUNCTION__));
          }
 
          virtual Object * operator+(Object * other)
@@ -353,39 +356,50 @@ namespace JarJar
    //todo state checks on methods
    class File : public Object
    {
-      string path;
-      fstream fileStream;
+      unique_ptr<string> path;
+      unique_ptr<fstream> fileStream;
+
    public:
-      File(string _path, string mode) : path(_path) 
+      File(string _path, string mode) 
       {
+         path = make_unique<string>(_path);
          ios_base::openmode fMode = ios_base::in;
+         
          if (mode == "w")
          {
             fMode = ios_base::out;
          }
 
-
-         fileStream = fstream(_path, fMode);
+         fileStream = make_unique<fstream>(_path, fMode);
       }
       
-      virtual string toStr() const
+      virtual bool assignByRef() const override
       {
-         return "<File> " + path;
+         return true;
       }
 
+      virtual string toStr() const
+      {
+         string msg = "<File> " + *path;
+
+         return msg;
+      }
+
+      /* When files are passed around the old variable will become invalid */
       virtual Object* clone()
       {
-         return this; // todo
+         //todo throw - copies by ref
+         return this;
       }
 
       void close()
       {
-         fileStream.close();
+         fileStream->close();
       }
 
       void write(string input)
       {
-         fileStream << input;
+         *fileStream << input;
       }
 
       /*string getLine()
@@ -396,7 +410,7 @@ namespace JarJar
 
       virtual bool truthy()
       {
-         return fileStream.is_open();
+         return fileStream->is_open();
       }
    };
 

@@ -15,7 +15,7 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
    SECTION("Define with initialized")
    {
       SObject value = SObject(new Int(4));
-      global.define("test", value.get());
+      global.define("test", value);
 
       SObject storedValue = global.get("test");
 
@@ -28,7 +28,7 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
 
    SECTION("Define without initialized")
    {
-      global.define("test", nullptr);
+      global.define("test", Null::get());
 
       SObject storedValue = global.get("test");
 
@@ -38,20 +38,20 @@ TEST_CASE( "Test Un-Nested", "Un-Nested" )
    SECTION("Assign writes over")
    {
       SObject value = SObject(new Int(4));
-      global.define("test", value.get());
+      global.define("test", value);
 
       Bool* b = dynamic_cast<Bool*>(global.get("test")->operator==(value.get()));
       CHECK(b->val == true);
       delete b;
 
-      global.assign("test", Null::addr());
+      global.assign("test", Null::get());
 
       CHECK(global.get("test").get()  == Null::addr());
    }
 
    SECTION("Assign to not defined throws exception")
    {
-      REQUIRE_THROWS_AS(global.assign("test", 0), VariableNotDefinedException);
+      REQUIRE_THROWS_AS(global.assign("test", Null::get()), VariableNotDefinedException);
    }
 }
 
@@ -62,7 +62,7 @@ TEST_CASE( "Test Nested", "Assign" )
    SECTION("Access parent variables")
    {
       SObject value = SObject(new Int(4));
-      global.define("test", value.get());
+      global.define("test", value);
 
       Environment inner = Environment(&global);
 
@@ -74,7 +74,7 @@ TEST_CASE( "Test Nested", "Assign" )
    SECTION("Modify parent variables")
    {
       SObject value = SObject(new Int(4));
-      global.define("test", value.get());
+      global.define("test", value);
 
       Environment inner = Environment(&global);
 
@@ -82,7 +82,7 @@ TEST_CASE( "Test Nested", "Assign" )
       CHECK(b->val == true);
       delete b;
 
-      inner.assign("test", Null::addr());
+      inner.assign("test", Null::get());
 
       CHECK(inner.get("test").get() == Null::addr());
       CHECK(global.get("test").get() == Null::addr());
@@ -91,7 +91,7 @@ TEST_CASE( "Test Nested", "Assign" )
    SECTION("Defined variables are owned by inner scope")
    {
       Environment inner = Environment(&global);
-      inner.define("test", 0);
+      inner.define("test", Null::get());
 
       REQUIRE_THROWS_AS(global.get("test"), VariableNotDefinedException);
       CHECK(inner.get("test").get() == Null::addr());

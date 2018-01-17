@@ -75,6 +75,8 @@ int fileMode(Interpreter *i, char* cfilePath)
       int returnVal = interpret(buffer.str(), i);
 
       scriptFile.close();
+      cout << endl << "Press any key to continue...";
+      cin.get();
       return returnVal;
 
    } else {

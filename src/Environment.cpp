@@ -8,7 +8,7 @@ namespace JarJar {
       m = map<string, SObject>();
    }
 
-   void Environment::assign(string name, Object* value)
+   void Environment::assign(string name, SObject value)
    {
       if(m.count(name) != 1){
          if(parent == nullptr) {
@@ -20,12 +20,14 @@ namespace JarJar {
       define(name, value);
    }
 
-   void Environment::define(string name, Object* value)
+   void Environment::define(string name, SObject value)
    {
-      if(value == nullptr || value == Null::addr()){
+      if(value.get() == Null::addr()){
          m[name] = Null::get();
+      } else if (value->assignByRef()) {
+         m[name] = value;
       } else {
-         m[name] = SObject(Object::copyObject(value));
+         m[name] = SObject(value->clone());
       }
    }
 

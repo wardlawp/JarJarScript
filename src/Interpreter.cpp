@@ -14,7 +14,7 @@ namespace JarJar
 
    void Interpreter::initStdLibFunctions()
    {
-      env->define(OpenFile::name, new OpenFile());
+      env->define(OpenFile::name, SObject(new OpenFile()));
    }
 
    void Interpreter::interpert(vector<shared_ptr<Statement>> statements)
@@ -100,7 +100,7 @@ namespace JarJar
    {
       SObject value = visitExpression(expr->exp);
 
-      env->assign(expr->name.value, value.get());
+      env->assign(expr->name.value, value);
 
       return value;
    }
@@ -186,9 +186,9 @@ namespace JarJar
       string name = statement->name.value;
       if(statement->expr != 0)
       {
-         env->define(name, visitExpression(statement->expr).get());
+         env->define(name, visitExpression(statement->expr));
       } else {
-         env->define(name, nullptr);
+         env->define(name, Null::get());
       }
    }
 
@@ -245,8 +245,8 @@ namespace JarJar
    
    void Interpreter::visitFunctionDeclaration(FunctionDeclaration* decl)
    {
-      Object* funObj = new Function(new FunctionDeclaration(*decl), env);
-      env->define(decl->name.value, funObj);
+      SObject funObj = SObject(new Function(new FunctionDeclaration(*decl), env));
+      env->define(decl->name.value, funObj); 
    }
 
    void Interpreter::visitReturnStatement(ReturnSatatment* statement)

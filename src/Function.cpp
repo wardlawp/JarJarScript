@@ -11,7 +11,7 @@ namespace JarJar {
 
       for (int i = 0; i < arity(); i++)
       {
-         funEnv->define(decl->parameters[i].value, args[i].get());
+         funEnv->define(decl->parameters[i].value, args[i]);
       }
 
       try {
@@ -24,6 +24,7 @@ namespace JarJar {
    }
 
    const string OpenFile::name = "open";
+   //const string GetLine::name = "get_line";
 
    static void checkOpenFileArgs(const vector<SObject> &args)
    {
@@ -44,7 +45,6 @@ namespace JarJar {
 
       if (mode != "r" && mode != "w")
       {
-
          throw StdLibException(OpenFile::name + "'s second argument must be 'r' or 'w'");
       }
    }
@@ -54,4 +54,21 @@ namespace JarJar {
       checkOpenFileArgs(args);
       return SObject(new File(args[0]->toStr(), args[1]->toStr()));
    }
+
+   /*static void checkGetLineArgs(const vector<SObject> &args)
+   {
+      if (args.size() != 1) {
+         throw StdLibException(GetLine::name + " takes one string arguments");
+      }
+
+      if (dynamic_cast<File*>(args[0].get()) == nullptr){
+         throw StdLibException(GetLine::name + " takes a file argument");
+      }
+   }
+
+   SObject GetLine::call(Interpreter* interpreter, const vector<SObject> &args)
+   {
+      checkOpenFileArgs(args);
+      return SObject(dynamic_cast<File*>(args[0].get())->getLine());
+   }*/
 }

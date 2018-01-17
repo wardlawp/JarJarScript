@@ -42,6 +42,11 @@ namespace JarJar
          delete decl;
       }
 
+      virtual bool assignByRef() const override
+      {
+         return true;
+      }
+
       virtual SObject call(Interpreter* interpreter, const vector<SObject> & args);
      
 
@@ -57,7 +62,7 @@ namespace JarJar
 
       virtual Object* clone()
       {
-         //TODO 
+         //TODO  -throw
          return this;
       }
 
@@ -88,6 +93,16 @@ namespace JarJar
          //todo throw
          return false;
       }
+
+      virtual bool assignByRef() const override
+      {
+         return true;
+      }
+
+      virtual string toStr() const
+      {
+         return "<Stdlib Function> " + name;
+      }
    };
 
    class OpenFile : public StdLibFunc
@@ -104,11 +119,17 @@ namespace JarJar
          return 2;
       }
 
-      virtual string toStr() const
-      {
-         return "<Stdlib Function> " __FUNCTION__;
-      }
+      
    };
+
+   /*class GetLine : public StdLibFunc
+   {
+   public:
+      GetLine() {}
+      ~GetLine() override {}
+
+      virtual SObject call(Interpreter* interpreter, const vector<SObject> & args);
+   };*/
 }
 
 
