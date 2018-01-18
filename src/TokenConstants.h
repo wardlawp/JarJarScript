@@ -1,10 +1,12 @@
 #ifndef _TOKE_CONSTANTS
 #define _TOKE_CONSTANTS
 
-using namespace std;
 #include <vector>
 #include <map>
 #include <exception>
+#include <string>
+
+using namespace std;
 
 namespace JarJar
 {

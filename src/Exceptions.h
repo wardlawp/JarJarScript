@@ -20,7 +20,7 @@ namespace JarJar {
          TokenizerException(const Token t, const string customMsg = "");
 
 
-         virtual const char* what() const
+         virtual const char* what()
          {
             return msg.c_str();
          }
