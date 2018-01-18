@@ -75,61 +75,6 @@ namespace JarJar
 
       FunctionDeclaration* decl;
    };
-
-
-   class StdLibFunc : public Callable, public Object 
-   {
-   public:
-      const static string name;
-
-      /* StdLib functions are stateless*/
-      virtual  Object* clone() override
-      {
-         return this;
-      }
-
-      virtual bool truthy() override
-      {
-         //todo throw
-         return false;
-      }
-
-      virtual bool assignByRef() const override
-      {
-         return true;
-      }
-
-      virtual string toStr() const
-      {
-         return "<Stdlib Function> " + name;
-      }
-   };
-
-   class OpenFile : public StdLibFunc
-   {
-   public:
-      OpenFile() {};
-      ~OpenFile() override {}
-
-      virtual SObject call(Interpreter* interpreter, const vector<SObject> & args);
-
-
-      virtual int arity() override
-      {
-         return 2;
-      }
-
-      
-   };
-
-   /*class GetLine : public StdLibFunc
-   {
-   public:
-      GetLine() {}
-      ~GetLine() override {}
-
-      virtual SObject call(Interpreter* interpreter, const vector<SObject> & args);
-   };*/
 }
 
 

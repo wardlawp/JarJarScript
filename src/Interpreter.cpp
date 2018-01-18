@@ -1,5 +1,7 @@
 #include <Interpreter.h>
+#include <StandardLib.h>
 
+#define ADD_STD_FUNC(NAME, CLASS)env->define(NAME, SObject(new CLASS));
 namespace JarJar
 {
 
@@ -14,7 +16,11 @@ namespace JarJar
 
    void Interpreter::initStdLibFunctions()
    {
-      env->define(OpenFile::name, SObject(new OpenFile()));
+      ADD_STD_FUNC(StandardLib::OpenFileName, StandardLib::OpenFile);
+      ADD_STD_FUNC(StandardLib::ReadFileName, StandardLib::ReadFile);
+      ADD_STD_FUNC(StandardLib::CloseFileName, StandardLib::CloseFile);
+      ADD_STD_FUNC(StandardLib::WriteLineName, StandardLib::WriteLine);
+      ADD_STD_FUNC(StandardLib::WriteName, StandardLib::Write);
    }
 
    void Interpreter::interpert(vector<shared_ptr<Statement>> statements)

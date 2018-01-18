@@ -353,67 +353,6 @@ namespace JarJar
          }
    };
 
-   //todo state checks on methods
-   class File : public Object
-   {
-      unique_ptr<string> path;
-      unique_ptr<fstream> fileStream;
-
-   public:
-      File(string _path, string mode) 
-      {
-         path = make_unique<string>(_path);
-         ios_base::openmode fMode = ios_base::in;
-         
-         if (mode == "w")
-         {
-            fMode = ios_base::out;
-         }
-
-         fileStream = make_unique<fstream>(_path, fMode);
-      }
-      
-      virtual bool assignByRef() const override
-      {
-         return true;
-      }
-
-      virtual string toStr() const
-      {
-         string msg = "<File> " + *path;
-
-         return msg;
-      }
-
-      /* When files are passed around the old variable will become invalid */
-      virtual Object* clone()
-      {
-         //todo throw - copies by ref
-         return this;
-      }
-
-      void close()
-      {
-         fileStream->close();
-      }
-
-      void write(string input)
-      {
-         *fileStream << input;
-      }
-
-      /*string getLine()
-      {
-         string line = fileStream.getline();
-         return line;
-      }*/
-
-      virtual bool truthy()
-      {
-         return fileStream->is_open();
-      }
-   };
-
    class String: public Object
    {
       public:
@@ -517,6 +456,90 @@ namespace JarJar
 
    };
 
+   //todo state checks on methods
+   class File : public Object
+   {
+      unique_ptr<string> path;
+      unique_ptr<fstream> fileStream;
+      ios_base::openmode fMode;
+
+   public:
+      File(string _path, string mode)
+      {
+         path = make_unique<string>(_path);
+         
+
+         if (mode == "w")
+         {
+            fMode = ios_base::out;
+         } else if (mode == "r") {
+            fMode = ios_base::in;
+         } //else todo throw
+
+         fileStream = make_unique<fstream>(_path, fMode);
+      }
+
+      virtual bool assignByRef() const override
+      {
+         return true;
+      }
+
+      virtual string toStr() const
+      {
+         string msg = "<File> " + *path;
+
+         return msg;
+      }
+
+      /* When files are passed around the old variable will become invalid */
+      virtual Object* clone()
+      {
+         //todo throw - copies by ref
+         return this;
+      }
+
+      void close()
+      {
+         fileStream->close();
+      }
+
+      void write(string input)
+      {
+         check(ios_base::out);
+         *fileStream << input;
+      }
+
+      void writeLine(string input)
+      {
+         check(ios_base::out);
+         *fileStream << input << endl;
+      }
+
+      shared_ptr<String> read()
+      {
+         check(ios_base::in);
+         //todo check mode and closed
+         stringstream sstream;
+         sstream << fileStream->rdbuf();
+         return make_shared<String>(sstream.str());
+      }
+
+
+      void check(ios_base::openmode mode)
+      {
+         if (mode != fMode){
+            //todo throw
+         } else if (!fileStream->is_open()){
+
+         }
+      }
+
+      virtual bool truthy()
+      {
+         return fileStream->is_open();
+      }
+   };
+
    /**
     * Singleton, use get()
     */
@@ -534,10 +557,7 @@ namespace JarJar
 
          static shared_ptr<JarJar::Object> get()
          {
-            static Null instance;
-
-            auto dontDeleteMe = [](Object*){};
-            return shared_ptr<JarJar::Object>(&instance, dontDeleteMe);
+            return instance;
          }
 
          static Object* addr()
@@ -560,6 +580,7 @@ namespace JarJar
          }
 
       private:
+         static shared_ptr<Object> instance;
          Null() {};
          ~Null() {};
    };
