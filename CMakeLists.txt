@@ -4,7 +4,7 @@ project (JarJarScript)
 #version number
 set (JarJarScript_VERSION_MAJOR 0)
 set (JarJarScript_VERSION_MINOR 1)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3 --closure 1")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 ###############################################################################
 ## Interpreter
@@ -26,6 +26,7 @@ if(Readline_ROOT_DIR)
 endif(Readline_ROOT_DIR)
 
 if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -s DISABLE_EXCEPTION_CATCHING=0")
 	add_executable (JarJarScript main_emscripten.cpp)
 else()
 	add_executable (JarJarScript main.cpp)
