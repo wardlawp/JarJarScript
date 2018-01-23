@@ -40,6 +40,9 @@ void replaceEndls(string&);
 int main(int argc, char *argv[])
 {
    log("Starting...");
+   
+   output.push("Welcome to JarJarScript! Type <b>print \"Hello world\";</b> to begin.");
+   print();
 
    i = new Interpreter(&output);
 
