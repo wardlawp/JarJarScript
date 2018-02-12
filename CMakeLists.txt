@@ -25,7 +25,13 @@ if(Readline_ROOT_DIR)
   set(READLINE_LIBS readline)
 endif(Readline_ROOT_DIR)
 
-add_executable (JarJarScript main.cpp)
+if(CMAKE_CXX_COMPILER MATCHES "/em\\+\\+(-[a-zA-Z0-9.])?$")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -s DISABLE_EXCEPTION_CATCHING=0")
+	add_executable (JarJarScript main_emscripten.cpp)
+else()
+	add_executable (JarJarScript main.cpp)
+endif()
+
 target_link_libraries (JarJarScript JarJar ${READLINE_LIBS})
 
 install (TARGETS JarJarScript DESTINATION bin)

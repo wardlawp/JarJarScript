@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Emscripten-Generated Code</title>
+    <style>
+      #output {
+        width: 100%;
+        height: 200px;
+		overflow: scroll;
+        margin: 0 auto;
+        margin-top: 10px;
+        border-left: 0px;
+        border-right: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        display: block;
+        background-color: black;
+        color: white;
+        font-family: 'Lucida Console', Monaco, monospace;
+        outline: none;
+		overflow-x:hidden;
+      }
+	  
+	  #output p { margin: 0 !important; font-size: 11pt; }
+	  
+	  #input {
+		font-size: 11pt;
+		width: 100%; 
+		margin: 0 auto; 
+		border: 0;
+        background-color: black;
+		color: white;
+		font-family: 'Lucida Console', Monaco, monospace;
+		outline: none;
+	  }
+	  </style>
+  </head>
+  <body>
+	
+	<div id="output" onclick="document.getElementById('input').focus();">
+		<textarea type="text" id="input" rows="2"></textarea>
+	</div>
+	
+    <script async type="text/javascript" src="JarJarScript.js"></script>
+  </body>
+</html>
